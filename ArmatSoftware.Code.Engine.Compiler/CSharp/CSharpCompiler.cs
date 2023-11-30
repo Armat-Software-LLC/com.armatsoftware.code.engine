@@ -36,7 +36,6 @@ namespace ArmatSoftware.Code.Engine.Compiler.CSharp
 
 			// generate code
 			var codeGenerator = new CSharpExecutorTemplate(configuration);
-			codeGenerator.Initialize();
 			var code = codeGenerator.TransformText();
 
 			var executorClassName = $"{configuration.GetNamespace()}.{configuration.GetClassName()}";
