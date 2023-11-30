@@ -1,0 +1,44 @@
+﻿<#@ template language="C#" debug="true" hostspecific="false" #>
+<#@ output extension=".vb" #>
+<#@ assembly name="System.Core" #>
+
+<#@ import namespace="System" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+
+<# foreach (var import in Configuration.GetImports()) { #>
+Imports <#=import#>
+<# } #>
+
+Namespace <#=Configuration.GetNamespace()#>
+	Public Class <#=Configuration.GetClassName()#>
+		Implements IExecutor(Of <#=Configuration.GetSubjectType()#>)
+	
+		Private runtimeValues As Dictionary(Of String, Object) = new Dictionary(Of String, Object)
+
+		Public Property Subject As <#=Configuration.GetSubjectType()#> Implements IExecutor(Of <#=Configuration.GetSubjectType()#>).Subject
+
+        Public Function Read(key As String) As Object Implements IExecutionContext.Read
+            Return runtimeValues(key)
+        End Function
+        
+        Public Sub Save(key As String, value As Object) Implements IExecutionContext.Save
+            runtimeValues.Add(key, value)
+        End Sub
+
+		Public Sub Execute() Implements IExecutor(Of <#=Configuration.GetSubjectType()#>).Execute
+<# foreach (var action in Configuration.GetActions()) { #>
+			<#=action.Key#>()
+<# } #>
+		End Sub
+		
+<# foreach (var action in Configuration.GetActions()) { #>
+
+		Private Sub <#=action.Key#>()
+			<#=action.Value#>
+		End Sub
+<# } #>
+
+	End Class
+End Namespace

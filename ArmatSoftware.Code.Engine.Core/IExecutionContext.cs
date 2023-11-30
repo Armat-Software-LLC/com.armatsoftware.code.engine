@@ -13,13 +13,13 @@
 		/// </summary>
 		/// <param name="key">Unique key</param>
 		/// <param name="value">Value stored at run-time</param>
-		void Set(string key, object value);
+		void Save(string key, object value);
 
 		/// <summary>
 		/// Gets the run-time value by its unique key
 		/// </summary>
 		/// <param name="key">Unique key</param>
 		/// <returns>Dynamic run-time value</returns>
-		object Get(string key);
+		object Read(string key);
 	}
 }

@@ -31,14 +31,24 @@
     <Compile Update="CSharp\CSharpExecutorTemplate.cs">
       <DependentUpon>CSharpExecutorTemplate.tt</DependentUpon>
     </Compile>
+    <Compile Update="Vb\VbExecutorTemplate.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VbExecutorTemplate.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Update="CSharp\CSharpExecutorTemplate.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>CSharpExecutorTemplate.cs</LastGenOutput>
     </None>
+    <None Update="Vb\VbExecutorTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>VbExecutorTemplate.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic" Version="3.6.0" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="System.CodeDom" Version="4.7.0" />
     <PackageReference Include="NuGet.Build.Packaging" Version="0.2.2">

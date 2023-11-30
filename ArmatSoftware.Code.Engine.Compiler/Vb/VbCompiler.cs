@@ -10,16 +10,16 @@ using System.Text;
 using ArmatSoftware.Code.Engine.Compiler.Utils;
 using ArmatSoftware.Code.Engine.Core;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Emit;
+using Microsoft.CodeAnalysis.VisualBasic;
 
-namespace ArmatSoftware.Code.Engine.Compiler.CSharp
+namespace ArmatSoftware.Code.Engine.Compiler.Vb
 {
 	/// <summary>
 	/// Default implementation for the C# compiler
 	/// </summary>
 	/// <typeparam name="S">Subject type</typeparam>
-	public class CSharpCompiler<S> : ICompiler<S> where S : class
+	public class VbCompiler<S> : ICompiler<S> where S : class
 	{
 		/// <summary>
 		/// Compile the actions using C# compiler.
@@ -34,18 +34,18 @@ namespace ArmatSoftware.Code.Engine.Compiler.CSharp
 			AddTemplateReferences(configuration);
 
 			// generate code
-			var codeGenerator = new CSharpExecutorTemplate(configuration);
+			var codeGenerator = new VbExecutorTemplate(configuration);
 			var code = codeGenerator.TransformText();
 			
 			var typeName = Names.GenerateFullTypeName(configuration);
 
-			SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(text: code);
+			SyntaxTree syntaxTree = VisualBasicSyntaxTree.ParseText(text: code);
 
-			Compilation compilation = CSharpCompilation.Create(
+			Compilation compilation = VisualBasicCompilation.Create(
 				assemblyName: Names.GenerateUniqueAssemblyName(),
 				syntaxTrees: new[] { syntaxTree },
 				references: GenerateRequiredReferences(configuration),
-				options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary)
+				options: new VisualBasicCompilationOptions(OutputKind.DynamicallyLinkedLibrary)
 			);
 
 			// Emit the image of this assembly 
@@ -61,7 +61,7 @@ namespace ArmatSoftware.Code.Engine.Compiler.CSharp
 
 			var assembly = AssemblyLoadContext.Default.LoadFromStream(stream);
 
-			var executorInstanceHandle = Activator.CreateInstance(assembly.FullName, typeName) ?? 
+			var executorInstanceHandle = Activator.CreateInstance(assembly.FullName, typeName) ??
 			                             throw new ApplicationException($"Could not instantiate {typeName}");
 
 			return (IExecutor<S>)executorInstanceHandle.Unwrap();
@@ -82,7 +82,7 @@ namespace ArmatSoftware.Code.Engine.Compiler.CSharp
 			// adding required references to compile successfully
 			references.AddRange(new List<MetadataReference>
 			{
-				MetadataReference.CreateFromFile(Assembly.Load(new AssemblyName("Microsoft.CSharp")).Location),
+				MetadataReference.CreateFromFile(Assembly.Load(new AssemblyName("Microsoft.VisualBasic")).Location),
 				MetadataReference.CreateFromFile(Assembly.Load(new AssemblyName("netstandard")).Location),
 				MetadataReference.CreateFromFile(Assembly.Load(new AssemblyName("System.Runtime")).Location)
 			});

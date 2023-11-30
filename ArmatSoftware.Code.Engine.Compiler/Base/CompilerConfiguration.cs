@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using ArmatSoftware.Code.Engine.Core;
+using ArmatSoftware.Code.Engine.Compiler;
 
-namespace ArmatSoftware.Code.Engine.Compiler.Base
+namespace ArmatSoftware.Code.Engine.Tests.Unit
 {
 	/// <summary>
 	/// Default implementation of the configuration contract
@@ -68,15 +69,7 @@ namespace ArmatSoftware.Code.Engine.Compiler.Base
 
 		public string GetSubjectType()
 		{
-			var subjectType = typeof(S);
-			if (subjectType.IsGenericType && subjectType.GenericTypeArguments.Any())
-			{
-				var genericType = subjectType.GenericTypeArguments[0];
-
-				return subjectType.Name.Replace("`1", genericType.Name);
-			}
-
-			return subjectType.Name;
+			return typeof(S).Name;
 		}
 	}
 }

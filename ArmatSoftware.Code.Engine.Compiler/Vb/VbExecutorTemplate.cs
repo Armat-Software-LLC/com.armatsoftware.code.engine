@@ -7,7 +7,7 @@
 //     the code is regenerated.
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace ArmatSoftware.Code.Engine.Compiler.CSharp
+namespace ArmatSoftware.Code.Engine.Compiler.Vb
 {
     using System;
     using System.Linq;
@@ -19,9 +19,9 @@ namespace ArmatSoftware.Code.Engine.Compiler.CSharp
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "/Users/yurikazarov/Git/com.ArmatSoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
+    #line 1 "/Users/yurikazarov/Projects/Com.ArmatSoftware.Code.Engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "16.0.0.0")]
-    public partial class CSharpExecutorTemplate : CSharpExecutorTemplateBase
+    public partial class VbExecutorTemplate : VbExecutorTemplateBase
     {
 #line hidden
         /// <summary>
@@ -32,103 +32,117 @@ namespace ArmatSoftware.Code.Engine.Compiler.CSharp
             this.Write("\n");
             this.Write("\n");
             
-            #line 10 "/Users/yurikazarov/Git/com.ArmatSoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
+            #line 10 "/Users/yurikazarov/Projects/Com.ArmatSoftware.Code.Engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
  foreach (var import in Configuration.GetImports()) { 
             
             #line default
             #line hidden
-            this.Write("using ");
+            this.Write("Imports ");
             
-            #line 11 "/Users/yurikazarov/Git/com.ArmatSoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
+            #line 11 "/Users/yurikazarov/Projects/Com.ArmatSoftware.Code.Engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(import));
             
             #line default
             #line hidden
-            this.Write(";\n");
+            this.Write("\n");
             
-            #line 12 "/Users/yurikazarov/Git/com.ArmatSoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
+            #line 12 "/Users/yurikazarov/Projects/Com.ArmatSoftware.Code.Engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
  } 
             
             #line default
             #line hidden
-            this.Write("\nnamespace ");
+            this.Write("\nNamespace ");
             
-            #line 14 "/Users/yurikazarov/Git/com.ArmatSoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
+            #line 14 "/Users/yurikazarov/Projects/Com.ArmatSoftware.Code.Engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Configuration.GetNamespace()));
             
             #line default
             #line hidden
-            this.Write("\n{\n\tpublic class ");
+            this.Write("\n\tPublic Class ");
             
-            #line 16 "/Users/yurikazarov/Git/com.ArmatSoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
+            #line 15 "/Users/yurikazarov/Projects/Com.ArmatSoftware.Code.Engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Configuration.GetClassName()));
             
             #line default
             #line hidden
-            this.Write(" : IExecutor<");
+            this.Write("\n\t\tImplements IExecutor(Of ");
             
-            #line 16 "/Users/yurikazarov/Git/com.ArmatSoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
+            #line 16 "/Users/yurikazarov/Projects/Com.ArmatSoftware.Code.Engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Configuration.GetSubjectType()));
             
             #line default
             #line hidden
-            this.Write(">\n\t{\n\t\tprivate Dictionary<string, dynamic> runtimeValues = new Dictionary<string, dynamic>();\n\n\t\tpublic ");
+            this.Write(")\n\t\n\t\tPrivate runtimeValues As Dictionary(Of String, Object) = new Dictionary(Of String, Object)\n\n\t\tPublic Property Subject As ");
             
-            #line 20 "/Users/yurikazarov/Git/com.ArmatSoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
+            #line 20 "/Users/yurikazarov/Projects/Com.ArmatSoftware.Code.Engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Configuration.GetSubjectType()));
             
             #line default
             #line hidden
-            this.Write(" Subject { get; set; }\n\n\t\tpublic dynamic Read(string key)\n\t\t{\n\t\t\treturn this.runtimeValues[key];\n\t\t}\n\n\t\tpublic void Save(string key, dynamic value)\n\t\t{\n\t\t\tthis.runtimeValues.Add(key, value);\n\t\t}\n\n\t\tpublic void Execute()\n\t\t{\n");
+            this.Write(" Implements IExecutor(Of ");
             
-            #line 34 "/Users/yurikazarov/Git/com.ArmatSoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
+            #line 20 "/Users/yurikazarov/Projects/Com.ArmatSoftware.Code.Engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Configuration.GetSubjectType()));
+            
+            #line default
+            #line hidden
+            this.Write(").Subject\n\n        Public Function Read(key As String) As Object Implements IExecutionContext.Read\n            Return runtimeValues(key)\n        End Function\n        \n        Public Sub Save(key As String, value As Object) Implements IExecutionContext.Save\n            runtimeValues.Add(key, value)\n        End Sub\n\n\t\tPublic Sub Execute() Implements IExecutor(Of ");
+            
+            #line 30 "/Users/yurikazarov/Projects/Com.ArmatSoftware.Code.Engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Configuration.GetSubjectType()));
+            
+            #line default
+            #line hidden
+            this.Write(").Execute\n");
+            
+            #line 31 "/Users/yurikazarov/Projects/Com.ArmatSoftware.Code.Engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
  foreach (var action in Configuration.GetActions()) { 
             
             #line default
             #line hidden
             this.Write("\t\t\t");
             
-            #line 35 "/Users/yurikazarov/Git/com.ArmatSoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
+            #line 32 "/Users/yurikazarov/Projects/Com.ArmatSoftware.Code.Engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(action.Key));
             
             #line default
             #line hidden
-            this.Write("();\n");
+            this.Write("()\n");
             
-            #line 36 "/Users/yurikazarov/Git/com.ArmatSoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
+            #line 33 "/Users/yurikazarov/Projects/Com.ArmatSoftware.Code.Engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
  } 
             
             #line default
             #line hidden
-            this.Write("\t\t}\n\t\t\n");
+            this.Write("\t\tEnd Sub\n\t\t\n");
             
-            #line 39 "/Users/yurikazarov/Git/com.ArmatSoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
+            #line 36 "/Users/yurikazarov/Projects/Com.ArmatSoftware.Code.Engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
  foreach (var action in Configuration.GetActions()) { 
             
             #line default
             #line hidden
-            this.Write("\t\tprivate void ");
+            this.Write("\n\t\tPrivate Sub ");
             
-            #line 40 "/Users/yurikazarov/Git/com.ArmatSoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
+            #line 38 "/Users/yurikazarov/Projects/Com.ArmatSoftware.Code.Engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(action.Key));
             
             #line default
             #line hidden
-            this.Write("()\n\t\t{\n\t\t\t");
+            this.Write("()\n\t\t\t");
             
-            #line 42 "/Users/yurikazarov/Git/com.ArmatSoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
+            #line 39 "/Users/yurikazarov/Projects/Com.ArmatSoftware.Code.Engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(action.Value));
             
             #line default
             #line hidden
-            this.Write("\n\t\t}\n");
+            this.Write("\n\t\tEnd Sub\n");
             
-            #line 44 "/Users/yurikazarov/Git/com.ArmatSoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
+            #line 41 "/Users/yurikazarov/Projects/Com.ArmatSoftware.Code.Engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
  } 
             
             #line default
             #line hidden
-            this.Write("\t}\n}");
+            this.Write("\n\tEnd Class\nEnd Namespace");
             return this.GenerationEnvironment.ToString();
         }
     }
@@ -140,7 +154,7 @@ namespace ArmatSoftware.Code.Engine.Compiler.CSharp
     /// Base class for this transformation
     /// </summary>
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "16.0.0.0")]
-    public class CSharpExecutorTemplateBase
+    public class VbExecutorTemplateBase
     {
         #region Fields
         private global::System.Text.StringBuilder generationEnvironmentField;
