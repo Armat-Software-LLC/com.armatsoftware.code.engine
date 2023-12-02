@@ -7,6 +7,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArmatSoftware.Code.Engine.C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArmatSoftware.Code.Engine.Tests.Unit", "ArmatSoftware.Code.Engine.Tests.Unit\ArmatSoftware.Code.Engine.Tests.Unit.csproj", "{0242EA6B-8A9F-4B01-9BEC-22A1AA19CB1D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DevOps", "DevOps", "{DE41AB76-58D2-47A2-901D-2865B88E191D}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\build-test.yml = .github\workflows\build-test.yml
+		.github\workflows\build-publish.yml = .github\workflows\build-publish.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
