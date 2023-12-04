@@ -4,7 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0ae22d29-de2b-4f3c-bd2a-49a84396b937" name="Changes" comment="" />
+    <list default="true" id="0ae22d29-de2b-4f3c-bd2a-49a84396b937" name="Changes" comment="added VB compiler and made minor fixes">
+      <change afterPath="$PROJECT_DIR$/ArmatSoftware.Code.Engine.Core/Logging/ICodeEngineLogger.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ArmatSoftware.Code.Engine.Logger.File.Tests/ArmatSoftware.Code.Engine.Logger.File.Tests.csproj" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ArmatSoftware.Code.Engine.Logger.File.Tests/FileLoggerConstructorTests.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ArmatSoftware.Code.Engine.Logger.File.Tests/FileLoggerInitializeTests.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ArmatSoftware.Code.Engine.Logger.File.Tests/FileLoggerTestsBase.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ArmatSoftware.Code.Engine.Logger.File.Tests/FileLoggerWriteToFileTests.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ArmatSoftware.Code.Engine.Logger.File.Tests/GlobalUsings.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ArmatSoftware.Code.Engine.Logger.File/ArmatSoftware.Code.Engine.Logger.File.csproj" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ArmatSoftware.Code.Engine.Logger.File/CodeEngineFileLogger.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Com.ArmatSoftware.Code.Engine/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Com.ArmatSoftware.Code.Engine/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ArmatSoftware.Code.Engine.Tests.Unit/ArmatSoftware.Code.Engine.Tests.Unit.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/ArmatSoftware.Code.Engine.Tests.Unit/ArmatSoftware.Code.Engine.Tests.Unit.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Com.ArmatSoftware.Code.Engine.sln" beforeDir="false" afterPath="$PROJECT_DIR$/Com.ArmatSoftware.Code.Engine.sln" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -19,17 +32,21 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="mock:///Users/yurikazarov/Projects/Com.ArmatSoftware.Code.Engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpCompiler.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/.local/share/Symbols/src/nunit/nunit/c933a883ea25263ec575a654dae69fa38000edd9/src/NUnitFramework/framework/Internal/Commands/BeforeAndAfterTestCommand.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/.local/share/Symbols/src/nunit/nunit/c933a883ea25263ec575a654dae69fa38000edd9/src/NUnitFramework/framework/Internal/Commands/SetUpTearDownCommand.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/.local/share/Symbols/src/nunit/nunit/c933a883ea25263ec575a654dae69fa38000edd9/src/NUnitFramework/framework/Internal/Commands/SetUpTearDownItem.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/.local/share/Symbols/src/nunit/nunit/c933a883ea25263ec575a654dae69fa38000edd9/src/NUnitFramework/framework/Internal/Reflect.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/5af9ddc9d631dc656452ccf55cadfa13b41b9f23bb342cf682e5672c2b2816/NonVoidSetupPhrase.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/65efd16220fd90c5cc1e3a9e94595f409536e8dc1cf2f81f9a9ee4dd3b6c/NullReferenceException.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Users/yurikazarov/Projects/Com.ArmatSoftware.Code.Engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbCompiler.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 3
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
   <component name="ProjectId" id="2Yu4OxHTf1HfpiuKqqkrg7gMTTq" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -39,27 +56,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;CEC-5-Create-Custom-Logger&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.IDE.editor.colors.Color Scheme Font&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "rider.external.source.directories": [
-      "/Users/yurikazarov/Library/Application Support/JetBrains/Rider2023.2/resharper-host/DecompilerCache",
-      "/Users/yurikazarov/Library/Application Support/JetBrains/Rider2023.2/resharper-host/SourcesCache",
-      "/Users/yurikazarov/.local/share/Symbols/src"
+  &quot;keyToStringList&quot;: {
+    &quot;rider.external.source.directories&quot;: [
+      &quot;/Users/yurikazarov/Library/Application Support/JetBrains/Rider2023.2/resharper-host/DecompilerCache&quot;,
+      &quot;/Users/yurikazarov/Library/Application Support/JetBrains/Rider2023.2/resharper-host/SourcesCache&quot;,
+      &quot;/Users/yurikazarov/.local/share/Symbols/src&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -69,6 +87,7 @@
       <option name="presentableId" value="Default" />
       <updated>1701362102176</updated>
       <workItem from="1701362103440" duration="9294000" />
+      <workItem from="1701637525424" duration="23260000" />
     </task>
     <task id="LOCAL-00001" summary="Added IDE config to VSC">
       <option name="closed" value="true" />
@@ -109,5 +128,9 @@
     <MESSAGE value="Added IDE config to VSC" />
     <MESSAGE value="added VB compiler and made minor fixes" />
     <option name="LAST_COMMIT_MESSAGE" value="added VB compiler and made minor fixes" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>
