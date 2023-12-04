@@ -41,7 +41,7 @@ namespace ArmatSoftware.Code.Engine.Logger.File
                     throw new ApplicationException($"Configuration section {LogFilePathKey} not found or empty");
                 }
             
-                Initialize(logFilePathSection.Value);                
+                Initialize(logFilePathSection.Value);
             }
 
         }

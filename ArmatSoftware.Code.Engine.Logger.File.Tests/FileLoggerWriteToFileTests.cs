@@ -16,6 +16,7 @@ public class FileLoggerWriteToFileTests : FileLoggerTestsBase
             
             TestSubject.Info(TestLogEntry);
             
+            Assert.IsTrue(LogSink.Count == 1);
             Assert.IsTrue(LogSink[0].Contains("INFO"));
             Assert.IsTrue(LogSink[0].Contains(TestLogEntry));
 
@@ -34,6 +35,7 @@ public class FileLoggerWriteToFileTests : FileLoggerTestsBase
             
             TestSubject.Warning(TestLogEntry);
             
+            Assert.IsTrue(LogSink.Count == 1);
             Assert.IsTrue(LogSink[0].Contains("WARN"));
             Assert.IsTrue(LogSink[0].Contains(TestLogEntry));
 
@@ -52,9 +54,9 @@ public class FileLoggerWriteToFileTests : FileLoggerTestsBase
             
             TestSubject.Error(TestLogEntry);
             
+            Assert.IsTrue(LogSink.Count == 2);
             Assert.IsTrue(LogSink[0].Contains("ERROR"));
             Assert.IsTrue(LogSink[0].Contains(TestLogEntry));
-            Assert.IsTrue(LogSink.Count == 2);
         }, Throws.Nothing);
     }
 }

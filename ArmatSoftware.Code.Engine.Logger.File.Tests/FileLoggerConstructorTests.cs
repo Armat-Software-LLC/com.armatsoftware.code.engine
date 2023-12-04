@@ -49,8 +49,8 @@ namespace ArmatSoftware.Code.Engine.Logger.File.Tests
         {
             Assert.That(() =>
             {
-                Build();
                 Configuration = null;
+                LogWriter = null;
                 TestSubject = new CodeEngineFileLogger(Configuration);
             }, Throws.ArgumentNullException);
         }
