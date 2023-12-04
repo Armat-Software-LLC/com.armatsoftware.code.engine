@@ -4,7 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0ae22d29-de2b-4f3c-bd2a-49a84396b937" name="Changes" comment="" />
+    <list default="true" id="0ae22d29-de2b-4f3c-bd2a-49a84396b937" name="Changes" comment="fixed null ctor test">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Com.ArmatSoftware.Code.Engine/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Com.ArmatSoftware.Code.Engine/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ArmatSoftware.Code.Engine.Logger.File.Tests/FileLoggerTestsBase.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ArmatSoftware.Code.Engine.Logger.File.Tests/FileLoggerTestsBase.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ArmatSoftware.Code.Engine.Logger.File/CodeEngineFileLogger.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ArmatSoftware.Code.Engine.Logger.File/CodeEngineFileLogger.cs" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -19,17 +23,22 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="mock:///Users/yurikazarov/Projects/Com.ArmatSoftware.Code.Engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpCompiler.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/.local/share/Symbols/src/nunit/nunit/c933a883ea25263ec575a654dae69fa38000edd9/src/NUnitFramework/framework/Internal/Commands/BeforeAndAfterTestCommand.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/.local/share/Symbols/src/nunit/nunit/c933a883ea25263ec575a654dae69fa38000edd9/src/NUnitFramework/framework/Internal/Commands/SetUpTearDownCommand.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/.local/share/Symbols/src/nunit/nunit/c933a883ea25263ec575a654dae69fa38000edd9/src/NUnitFramework/framework/Internal/Commands/SetUpTearDownItem.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/.local/share/Symbols/src/nunit/nunit/c933a883ea25263ec575a654dae69fa38000edd9/src/NUnitFramework/framework/Internal/Reflect.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/5af9ddc9d631dc656452ccf55cadfa13b41b9f23bb342cf682e5672c2b2816/NonVoidSetupPhrase.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/65efd16220fd90c5cc1e3a9e94595f409536e8dc1cf2f81f9a9ee4dd3b6c/NullReferenceException.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Users/yurikazarov/Projects/Com.ArmatSoftware.Code.Engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbCompiler.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/yurikazarov/Projects/Com.ArmatSoftware.Code.Engine/ArmatSoftware.Code.Engine.Logger.File/CodeEngineFileLogger.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 3
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
   <component name="ProjectId" id="2Yu4OxHTf1HfpiuKqqkrg7gMTTq" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -45,11 +54,13 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "CEC-5-Create-Custom-Logger",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "reference.settingsdialog.IDE.editor.colors.Color Scheme Font",
     "vue.rearranger.settings.migration": "true"
   },
   "keyToStringList": {
@@ -69,6 +80,7 @@
       <option name="presentableId" value="Default" />
       <updated>1701362102176</updated>
       <workItem from="1701362103440" duration="9294000" />
+      <workItem from="1701637525424" duration="26646000" />
     </task>
     <task id="LOCAL-00001" summary="Added IDE config to VSC">
       <option name="closed" value="true" />
@@ -86,7 +98,23 @@
       <option name="project" value="LOCAL" />
       <updated>1701365750977</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="added default file logger with test coverage">
+      <option name="closed" value="true" />
+      <created>1701675118593</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1701675118593</updated>
+    </task>
+    <task id="LOCAL-00004" summary="fixed null ctor test">
+      <option name="closed" value="true" />
+      <created>1701697228440</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1701697228440</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -108,6 +136,31 @@
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="Added IDE config to VSC" />
     <MESSAGE value="added VB compiler and made minor fixes" />
-    <option name="LAST_COMMIT_MESSAGE" value="added VB compiler and made minor fixes" />
+    <MESSAGE value="added default file logger with test coverage" />
+    <MESSAGE value="fixed null ctor test" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed null ctor test" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/ArmatSoftware.Code.Engine.Logger.File/CodeEngineFileLogger.cs</url>
+          <line>29</line>
+          <properties documentPath="$PROJECT_DIR$/ArmatSoftware.Code.Engine.Logger.File/CodeEngineFileLogger.cs" initialLine="28" containingFunctionPresentation="Constructor 'CodeEngineFileLogger'">
+            <startOffsets>
+              <option value="1045" />
+            </startOffsets>
+            <endOffsets>
+              <option value="1072" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="22" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>
