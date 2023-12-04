@@ -9,12 +9,12 @@ public class FileLoggerTestsBase
     protected readonly string LogFilePath = $"{Path.GetTempPath()}/test.log";
     
     protected ICodeEngineLogger TestSubject { get; set; }
-    protected TextWriter LogWriter { get; set; }
+    protected TextWriter? LogWriter { get; set; }
     protected Mock<TextWriter> LogWriterMock { get; private set; }
-    protected FileStream LogStream { get; set; }
+    protected FileStream? LogStream { get; set; }
     protected Mock<FileStream> LogStreamMock { get; set; }
     protected List<string> LogSink { get; private set; }
-    protected IConfiguration Configuration { get; set; }
+    protected IConfiguration? Configuration { get; set; }
     protected Mock<IConfiguration> ConfigurationMock { get; private set; }
     
     protected Mock<IConfigurationSection> ConfigurationSectionMock { get; set; }

@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0ae22d29-de2b-4f3c-bd2a-49a84396b937" name="Changes" comment="added default file logger with test coverage">
+    <list default="true" id="0ae22d29-de2b-4f3c-bd2a-49a84396b937" name="Changes" comment="fixed null ctor test">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Com.ArmatSoftware.Code.Engine/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Com.ArmatSoftware.Code.Engine/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ArmatSoftware.Code.Engine.Logger.File.Tests/FileLoggerConstructorTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ArmatSoftware.Code.Engine.Logger.File.Tests/FileLoggerConstructorTests.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ArmatSoftware.Code.Engine.Logger.File.Tests/FileLoggerWriteToFileTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ArmatSoftware.Code.Engine.Logger.File.Tests/FileLoggerWriteToFileTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ArmatSoftware.Code.Engine.Logger.File.Tests/FileLoggerTestsBase.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ArmatSoftware.Code.Engine.Logger.File.Tests/FileLoggerTestsBase.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ArmatSoftware.Code.Engine.Logger.File/CodeEngineFileLogger.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ArmatSoftware.Code.Engine.Logger.File/CodeEngineFileLogger.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -31,6 +30,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/5af9ddc9d631dc656452ccf55cadfa13b41b9f23bb342cf682e5672c2b2816/NonVoidSetupPhrase.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/65efd16220fd90c5cc1e3a9e94595f409536e8dc1cf2f81f9a9ee4dd3b6c/NullReferenceException.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/yurikazarov/Projects/Com.ArmatSoftware.Code.Engine/ArmatSoftware.Code.Engine.Logger.File/CodeEngineFileLogger.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -80,7 +80,7 @@
       <option name="presentableId" value="Default" />
       <updated>1701362102176</updated>
       <workItem from="1701362103440" duration="9294000" />
-      <workItem from="1701637525424" duration="25597000" />
+      <workItem from="1701637525424" duration="26646000" />
     </task>
     <task id="LOCAL-00001" summary="Added IDE config to VSC">
       <option name="closed" value="true" />
@@ -106,7 +106,15 @@
       <option name="project" value="LOCAL" />
       <updated>1701675118593</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="fixed null ctor test">
+      <option name="closed" value="true" />
+      <created>1701697228440</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1701697228440</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -129,20 +137,21 @@
     <MESSAGE value="Added IDE config to VSC" />
     <MESSAGE value="added VB compiler and made minor fixes" />
     <MESSAGE value="added default file logger with test coverage" />
-    <option name="LAST_COMMIT_MESSAGE" value="added default file logger with test coverage" />
+    <MESSAGE value="fixed null ctor test" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed null ctor test" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/ArmatSoftware.Code.Engine.Logger.File/CodeEngineFileLogger.cs</url>
-          <line>28</line>
+          <line>29</line>
           <properties documentPath="$PROJECT_DIR$/ArmatSoftware.Code.Engine.Logger.File/CodeEngineFileLogger.cs" initialLine="28" containingFunctionPresentation="Constructor 'CodeEngineFileLogger'">
             <startOffsets>
-              <option value="972" />
+              <option value="1045" />
             </startOffsets>
             <endOffsets>
-              <option value="999" />
+              <option value="1072" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="22" />

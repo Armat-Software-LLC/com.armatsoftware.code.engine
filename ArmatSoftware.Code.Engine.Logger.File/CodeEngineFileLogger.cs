@@ -15,7 +15,7 @@ namespace ArmatSoftware.Code.Engine.Logger.File
     {
         public const string LogFilePathKey = "ARCE_LOG_FILE_PATH";
         
-        private static TextWriter _logFileWriter;
+        private TextWriter _logFileWriter;
         
         /// <summary>
         /// Read the necessary configuration from the supplied parameter and initialize logger
@@ -25,25 +25,21 @@ namespace ArmatSoftware.Code.Engine.Logger.File
         /// <exception cref="ApplicationException"></exception>
         public CodeEngineFileLogger(IConfiguration configuration)
         {
-            // initialize only if not yet initialized
-            if (_logFileWriter == null)
+            Console.WriteLine($"config is null: {null == configuration}");
+            // fail on invalid configuration
+            if (null == configuration)
             {
-                // fail on invalid configuration
-                if (null == configuration)
-                {
-                    throw new ArgumentNullException("Configuration object is not initialized");
-                }
-
-                // fail on missing or empty config value
-                var logFilePathSection = configuration.GetSection(LogFilePathKey);
-                if (!logFilePathSection.Exists())
-                {
-                    throw new ApplicationException($"Configuration section {LogFilePathKey} not found or empty");
-                }
-            
-                Initialize(logFilePathSection.Value);
+                throw new ArgumentNullException(nameof(configuration));
             }
 
+            // fail on missing or empty config value
+            var logFilePathSection = configuration.GetSection(LogFilePathKey);
+            if (!logFilePathSection.Exists())
+            {
+                throw new ApplicationException($"Configuration section {LogFilePathKey} not found or empty");
+            }
+        
+            Initialize(logFilePathSection.Value);
         }
 
         /// <summary>
