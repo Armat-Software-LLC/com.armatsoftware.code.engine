@@ -5,9 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0ae22d29-de2b-4f3c-bd2a-49a84396b937" name="Changes" comment="fixed null ctor test">
+      <change afterPath="$PROJECT_DIR$/ArmatSoftware.Code.Engine.Tests.Unit/CompilerPerformanceTests.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Com.ArmatSoftware.Code.Engine/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Com.ArmatSoftware.Code.Engine/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ArmatSoftware.Code.Engine.Logger.File.Tests/FileLoggerTestsBase.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ArmatSoftware.Code.Engine.Logger.File.Tests/FileLoggerTestsBase.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ArmatSoftware.Code.Engine.Logger.File/CodeEngineFileLogger.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ArmatSoftware.Code.Engine.Logger.File/CodeEngineFileLogger.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,10 +16,17 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="feature/add-vb-compiler" />
+        <entry key="$PROJECT_DIR$" value="master" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GithubProjectSettings">
+    <option name="branchProtectionPatterns">
+      <list>
+        <option value="master" />
+      </list>
+    </option>
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$USER_HOME$/.local/share/Symbols/src/nunit/nunit/c933a883ea25263ec575a654dae69fa38000edd9/src/NUnitFramework/framework/Internal/Commands/BeforeAndAfterTestCommand.cs" root0="SKIP_HIGHLIGHTING" />
@@ -48,29 +54,29 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "CEC-5-Create-Custom-Logger",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "reference.settingsdialog.IDE.editor.colors.Color Scheme Font",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;devops/setup-publich-pipeline&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.IDE.editor.colors.Color Scheme Font&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "rider.external.source.directories": [
-      "/Users/yurikazarov/Library/Application Support/JetBrains/Rider2023.2/resharper-host/DecompilerCache",
-      "/Users/yurikazarov/Library/Application Support/JetBrains/Rider2023.2/resharper-host/SourcesCache",
-      "/Users/yurikazarov/.local/share/Symbols/src"
+  &quot;keyToStringList&quot;: {
+    &quot;rider.external.source.directories&quot;: [
+      &quot;/Users/yurikazarov/Library/Application Support/JetBrains/Rider2023.2/resharper-host/DecompilerCache&quot;,
+      &quot;/Users/yurikazarov/Library/Application Support/JetBrains/Rider2023.2/resharper-host/SourcesCache&quot;,
+      &quot;/Users/yurikazarov/.local/share/Symbols/src&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -81,6 +87,8 @@
       <updated>1701362102176</updated>
       <workItem from="1701362103440" duration="9294000" />
       <workItem from="1701637525424" duration="26646000" />
+      <workItem from="1701791293835" duration="6357000" />
+      <workItem from="1701890393246" duration="5751000" />
     </task>
     <task id="LOCAL-00001" summary="Added IDE config to VSC">
       <option name="closed" value="true" />
