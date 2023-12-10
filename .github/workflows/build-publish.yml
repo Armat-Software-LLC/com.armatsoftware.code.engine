@@ -28,4 +28,6 @@ jobs:
       - name: Dotnet Build
         run: dotnet build --configuration Release
       - name: Dotnet Pack
-        run: dotnet pack -o ./nupkgs
+        run: dotnet pack "**/*.csproj;-:**/*.Tests.csproj" -o ./nupkgs -p:PackageVersion=${{ github.ref_name }}
+      # - name: Dotnet Publish
+      #   run: dotnet publish -c Release -o ./publish
