@@ -24,4 +24,4 @@ jobs:
         with:
           dotnet-version: 3.1.x
       - name: Dotnet Pack
-        run: dotnet pack -configuration Release --verbosity detailed -output ./nupkgs
+        run: dotnet pack
