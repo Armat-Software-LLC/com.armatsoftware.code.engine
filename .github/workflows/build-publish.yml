@@ -11,7 +11,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    environment: production
+    # environment: production // TODO: Add production environment
     steps:
       - uses: actions/checkout@v3
       - name: Setup .NET
@@ -21,8 +21,16 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
       - name: Dotnet Build
-        run: dotnet build --configuration Release
-      - name: Dotnet Pack
-        run: dotnet pack "./ArmatSoftware.Code.Engine.Compiler/ArmatSoftware.Code.Engine.Compiler.csproj" -o ./nupkgs -p:PackageVersion="${{ github.ref_name }}"
+        run: |
+          dotnet build "./ArmatSoftware.Code.Engine.Compiler/ArmatSoftware.Code.Engine.Compiler.csproj" \
+          --configuration Release \
+          -p:Version="${{ github.ref_name }}" \
+          -p:PackageVersion="${{ github.ref_name }}" \
+          -p:PackageIconUrl="https://github.com/ykazarov/Com.ArmatSoftware.Code.Engine/blob/1ba1a7ddf9b6b632cd7a8671b4964e334d177cfc/assets/logo-web-notext-code.png&raw=true" \
+          -p:packageIcon="https://raw.githubusercontent.com/ArmatSoftware/Code.Engine/master/ArmatSoftware.Code.Engine.Compiler/icon.png" \
+          -o ./nupkgs \
+          -v d
+      # - name: Dotnet Pack
+      #   run: dotnet pack "./ArmatSoftware.Code.Engine.Compiler/ArmatSoftware.Code.Engine.Compiler.csproj" -o ./nupkgs -p:PackageVersion="${{ github.ref_name }}"
       - name: Dotnet Publish
         run: dotnet nuget push "./nupkgs/com.armatsoftware.code.engine.${{ github.ref_name }}.nupkg" -s https://api.nuget.org/v3/index.json -k ${{ secrets.CODE_ENGINE_PRODUCTION }}
