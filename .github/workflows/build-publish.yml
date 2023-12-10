@@ -5,20 +5,15 @@ name: Build and publish
 
 on:
   push:
-    branches: [ "master", "CEC-17-Automate-build-and-push-via-tags" ]
+    branches: [ "CEC-17-Automate-build-and-push-via-tags" ]
     tags:
     - '[0-9]+.[0-9]+.[0-9]+'
-    # - '[0-9]+.[0-9]+.[0-9]+rc[0-9]+'
 
 jobs:
   build:
     runs-on: ubuntu-latest
     environment: production
     steps:
-      - name: echo-test
-        run: echo "test"
-        env:
-          TEST: ${{  toJson(github) }}
       - uses: actions/checkout@v3
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
@@ -30,3 +25,5 @@ jobs:
         run: dotnet build --configuration Release
       - name: Dotnet Pack
         run: dotnet pack "./ArmatSoftware.Code.Engine.Compiler/ArmatSoftware.Code.Engine.Compiler.csproj" -o ./nupkgs -p:PackageVersion="${{ github.ref_name }}"
+      - name: Dotnet Publish
+        run: dotnet nuget push "./nupkgs/com.armatsoftware.code.engine.${{ github.ref_name }}.nupkg" -s https://api.nuget.org/v3/index.json -k ${{ secrets.CODE_ENGINE_PRODUCTION }}
