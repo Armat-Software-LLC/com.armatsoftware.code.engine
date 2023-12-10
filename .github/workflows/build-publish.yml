@@ -29,7 +29,8 @@ jobs:
           -p:PackageIconUrl="https://github.com/ykazarov/Com.ArmatSoftware.Code.Engine/blob/1ba1a7ddf9b6b632cd7a8671b4964e334d177cfc/assets/logo-web-notext-code.png&raw=true" \
           -p:packageIcon="https://raw.githubusercontent.com/ArmatSoftware/Code.Engine/master/ArmatSoftware.Code.Engine.Compiler/icon.png" \
           -o ./nupkgs \
-          -v d
+          -v d \
+          --no-restore
       # - name: Dotnet Pack
       #   run: dotnet pack "./ArmatSoftware.Code.Engine.Compiler/ArmatSoftware.Code.Engine.Compiler.csproj" -o ./nupkgs -p:PackageVersion="${{ github.ref_name }}"
       - name: Dotnet Publish
