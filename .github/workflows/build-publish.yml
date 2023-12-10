@@ -28,4 +28,4 @@ jobs:
       - name: Dotnet Build
         run: dotnet build --configuration Release
       - name: Dotnet Pack
-        run: dotnet pack
+        run: dotnet pack -o ./nupkgs
