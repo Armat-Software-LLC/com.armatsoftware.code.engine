@@ -8,11 +8,12 @@ on:
     branches: [ "master", "CEC-17-Automate-build-and-push-via-tags" ]
     tags:
     - '[0-9]+.[0-9]+.[0-9]+'
-    - '[0-9]+.[0-9]+.[0-9]+rc[0-9]+'
+    # - '[0-9]+.[0-9]+.[0-9]+rc[0-9]+'
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment: production
     steps:
       - name: echo-test
         run: echo "test"
@@ -28,4 +29,4 @@ jobs:
       - name: Dotnet Build
         run: dotnet build --configuration Release
       - name: Dotnet Pack
-        run: dotnet pack "./ArmatSoftware.Code.Engine.Compiler/ArmatSoftware.Code.Engine.Compiler.csproj" -o ./nupkgs -p:PackageVersion=${{ github.ref_name }}
+        run: dotnet pack "./ArmatSoftware.Code.Engine.Compiler/ArmatSoftware.Code.Engine.Compiler.csproj" -o ./nupkgs -p:PackageVersion="${{ github.ref_name }}"
