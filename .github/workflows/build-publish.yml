@@ -26,7 +26,7 @@ jobs:
           --configuration Release \
           -p:Version="${{ github.ref_name }}" \
           -p:PackageId="com.armatsoftware.code.engine" \
-          -p:Description="Compose, compile, and execute custom code at run time" \
+          -p:Description="Compose%2c compile%2c and execute custom code at run time" \
           -p:PackageVersion="${{ github.ref_name }}" \
           -p:PackageIconUrl="https://raw.githubusercontent.com/ykazarov/Com.ArmatSoftware.Code.Engine/${{ github.ref_name }}/ArmatSoftware.Code.Engine.Compiler/assets/logo-web-notext-code.png?raw=true" \
           -p:PackageIcon="assets/logo-web-notext-code.png" \
