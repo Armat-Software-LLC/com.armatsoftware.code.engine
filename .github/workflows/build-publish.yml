@@ -24,22 +24,21 @@ jobs:
         run: |
           dotnet build "./ArmatSoftware.Code.Engine.Compiler/ArmatSoftware.Code.Engine.Compiler.csproj" \
           --configuration Release \
-          -p:Version="${{ github.ref_name }}" \
-          -p:PackageVersion="${{ github.ref_name }}" \
+          -p:Version="1.0.1" \
+          -p:PackageVersion="1.0.1" \
           -p:PackageIconUrl="https://github.com/ykazarov/Com.ArmatSoftware.Code.Engine/blob/1ba1a7ddf9b6b632cd7a8671b4964e334d177cfc/assets/logo-web-notext-code.png&raw=true" \
           -p:PackageIcon="./assets/logo-web-notext-code.png" \
           -p:IconUrl="https://github.com/ykazarov/Com.ArmatSoftware.Code.Engine/blob/1ba1a7ddf9b6b632cd7a8671b4964e334d177cfc/assets/logo-web-notext-code.png&raw=true" \
           -p:PackageLicenseExpression="MIT" \
           -p:PackageProjectUrl="https://github.com/ykazarov/Com.ArmatSoftware.Code.Engine" \
           -p:ProjectUrl="https://github.com/ykazarov/Com.ArmatSoftware.Code.Engine" \
-          -p:PackageTags="code,engine,compiler,code-engine,code-engine-compiler" \
           -p:Licenses="https://raw.githubusercontent.com/ykazarov/Com.ArmatSoftware.Code.Engine/master/LICENSE.md" \
           -p:LicenseUrl="https://raw.githubusercontent.com/ykazarov/Com.ArmatSoftware.Code.Engine/master/LICENSE.md" \
           -p:RepositoryUrl="https://github.com/ykazarov/Com.ArmatSoftware.Code.Engine" \
           -p:RepositoryType="git" \
           -p:ReadmeFile="README.md" \
           -o ./nupkgs \
-          -v d \
+          -v m \
           --no-restore
       # - name: Dotnet Publish
-      #   run: dotnet nuget push "./nupkgs/com.armatsoftware.code.engine.${{ github.ref_name }}.nupkg" -s https://api.nuget.org/v3/index.json -k ${{ secrets.CODE_ENGINE_PRODUCTION }}
+      #   run: dotnet nuget push "./nupkgs/com.armatsoftware.code.engine.1.0.1.nupkg" -s https://api.nuget.org/v3/index.json -k ${{ secrets.CODE_ENGINE_PRODUCTION }}
