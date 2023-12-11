@@ -51,11 +51,12 @@
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>VbExecutorTemplate.cs</LastGenOutput>
     </None>
-    <None Include="..\assets\logo-web-notext-code.png">
+    <Content Include="..\assets\logo-web-notext-code.png">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
       <Link>logo-web-notext-code.png</Link>
-    </None>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic" Version="3.6.0" />
