@@ -2,16 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <IsPackable>true</IsPackable>
     <PackageId>com.armatsoftware.code.engine</PackageId>
     <Authors>Yuri Kazarov</Authors>
-    <PackageIconUrl>http://global.armatlab.com/assets/logos/armatsoftware.jpg</PackageIconUrl>
-    <PackageLicenseUrl>https://github.com/ykazarov/Com.ArmatSoftware.Code.Engine/blob/master/LICENSE.md</PackageLicenseUrl>
-    <Owners>Armat Software LLC</Owners>
-    <PackageProjectUrl>https://github.com/ykazarov/Com.ArmatSoftware.Code.Engine</PackageProjectUrl>
-    <Description>Essential components for custom code compilation and execution at run time</Description>
-    <PackageVersion>1.0.1</PackageVersion>
-    <PackOnBuild>true</PackOnBuild>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <Description>No description</Description>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -46,6 +41,10 @@
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>VbExecutorTemplate.cs</LastGenOutput>
     </None>
+    <None Update="logo-web-notext-code.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic" Version="3.6.0" />
@@ -59,5 +58,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ArmatSoftware.Code.Engine.Core\ArmatSoftware.Code.Engine.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="assets/logo-web-notext-code.png" />
+    <Content Include="assets/logo-web-notext-code.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 </Project>

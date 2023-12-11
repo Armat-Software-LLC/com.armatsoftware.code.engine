@@ -30,6 +30,7 @@ bld/
 [Oo]bj/
 [Ll]og/
 [Ll]ogs/
+nupkgs/
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/
@@ -351,3 +352,6 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+
+# Additional test files for local automation testing
+test.sh
