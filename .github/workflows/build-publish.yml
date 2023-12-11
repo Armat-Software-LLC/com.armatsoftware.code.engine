@@ -24,7 +24,9 @@ jobs:
         run: |
           dotnet build "./ArmatSoftware.Code.Engine.Compiler/ArmatSoftware.Code.Engine.Compiler.csproj" \
           --configuration Release \
+          -p:PackageId="com.armatsoftware.code.engine" \
           -p:Version="${{ github.ref_name }}" \
+          -p:Description="Essential components for custom code compilation and execution at run time" \
           -p:PackageVersion="${{ github.ref_name }}" \
           -p:PackageIconUrl="https://github.com/ykazarov/Com.ArmatSoftware.Code.Engine/blob/1ba1a7ddf9b6b632cd7a8671b4964e334d177cfc/assets/logo-web-notext-code.png&raw=true" \
           -p:PackageIcon="./assets/logo-web-notext-code.png" \
@@ -34,6 +36,7 @@ jobs:
           -p:ProjectUrl="https://github.com/ykazarov/Com.ArmatSoftware.Code.Engine" \
           -p:Licenses="https://raw.githubusercontent.com/ykazarov/Com.ArmatSoftware.Code.Engine/master/LICENSE.md" \
           -p:LicenseUrl="https://raw.githubusercontent.com/ykazarov/Com.ArmatSoftware.Code.Engine/master/LICENSE.md" \
+          -p:RequireLicenseAcceptance="true" \
           -p:RepositoryUrl="https://github.com/ykazarov/Com.ArmatSoftware.Code.Engine" \
           -p:RepositoryType="git" \
           -p:ReadmeFile="README.md" \

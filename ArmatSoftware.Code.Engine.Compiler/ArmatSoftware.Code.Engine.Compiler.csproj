@@ -2,21 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <PackageId>com.armatsoftware.code.engine</PackageId>
-    <Authors>Yuri Kazarov</Authors>
-    <PackageLicenseUrl>https://github.com/ykazarov/Com.ArmatSoftware.Code.Engine/blob/master/LICENSE.md</PackageLicenseUrl>
-    <Owners>Armat Software LLC</Owners>
-    <PackageProjectUrl>https://armatsoftware.com/code-engine/</PackageProjectUrl>
-    <Description>Essential components for custom code compilation and execution at run time</Description>
-    <PackageVersion></PackageVersion>
-    <PackOnBuild>true</PackOnBuild>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Title>Armat Software Code Engine</Title>
-    <Copyright>Armat Software LLC</Copyright>
-    <PackageIcon>logo-web-notext-code.png</PackageIcon>
-    <RepositoryUrl>https://github.com/ykazarov/Com.ArmatSoftware.Code.Engine</RepositoryUrl>
-    <RepositoryType>public</RepositoryType>
+    <IsPackable>true</IsPackable>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -51,12 +38,10 @@
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>VbExecutorTemplate.cs</LastGenOutput>
     </None>
-    <Content Include="..\assets\logo-web-notext-code.png">
+    <None Update="logo-web-notext-code.png">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
-      <Link>logo-web-notext-code.png</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic" Version="3.6.0" />
@@ -70,5 +55,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ArmatSoftware.Code.Engine.Core\ArmatSoftware.Code.Engine.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="assets/logo-web-notext-code.png" />
+    <Content Include="assets/logo-web-notext-code.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 </Project>

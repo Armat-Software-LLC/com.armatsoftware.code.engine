@@ -4,7 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0ae22d29-de2b-4f3c-bd2a-49a84396b937" name="Changes" comment="added package icon" />
+    <list default="true" id="0ae22d29-de2b-4f3c-bd2a-49a84396b937" name="Changes" comment="added package icon">
+      <change afterPath="$PROJECT_DIR$/ArmatSoftware.Code.Engine.Compiler/assets/logo-web-notext-code.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.github/workflows/build-publish.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/build-publish.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Com.ArmatSoftware.Code.Engine/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Com.ArmatSoftware.Code.Engine/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ArmatSoftware.Code.Engine.Compiler/ArmatSoftware.Code.Engine.Compiler.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/ArmatSoftware.Code.Engine.Compiler/ArmatSoftware.Code.Engine.Compiler.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/logo-web-notext-code.png" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -86,8 +94,8 @@
   },
   "keyToStringList": {
     "rider.external.source.directories": [
-      "/Users/yurikazarov/Library/Application Support/JetBrains/Rider2023.2/resharper-host/DecompilerCache",
-      "/Users/yurikazarov/Library/Application Support/JetBrains/Rider2023.2/resharper-host/SourcesCache",
+      "/Users/yurikazarov/Library/Application Support/JetBrains/Rider2023.3/resharper-host/DecompilerCache",
+      "/Users/yurikazarov/Library/Application Support/JetBrains/Rider2023.3/resharper-host/SourcesCache",
       "/Users/yurikazarov/.local/share/Symbols/src"
     ]
   }
@@ -105,6 +113,7 @@
       <workItem from="1701791293835" duration="6357000" />
       <workItem from="1701890393246" duration="5751000" />
       <workItem from="1702247784662" duration="541000" />
+      <workItem from="1702265180766" duration="1294000" />
     </task>
     <task id="LOCAL-00001" summary="Added IDE config to VSC">
       <option name="closed" value="true" />
