@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <PackOnBuild>true</PackOnBuild>
-    <PackageVersion>1.0.1</PackageVersion>
+    <PackageVersion>${{ github.ref_name }}</PackageVersion>
     <Authors>Yuri Kazarov</Authors>
     <PackageIconUrl>http://global.armatlab.com/assets/logos/armatsoftware.jpg</PackageIconUrl>
     <PackageLicenseUrl>https://github.com/ykazarov/Com.ArmatSoftware.Code.Engine/blob/master/LICENSE.md</PackageLicenseUrl>
