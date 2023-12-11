@@ -28,7 +28,7 @@ jobs:
           -p:PackageVersion="${{ github.ref_name }}" \
           -p:PackageIconUrl="https://github.com/ykazarov/Com.ArmatSoftware.Code.Engine/blob/1ba1a7ddf9b6b632cd7a8671b4964e334d177cfc/assets/logo-web-notext-code.png&raw=true" \
           -p:PackageIcon="./assets/logo-web-notext-code.png" \
-          -p: IconUrl="https://github.com/ykazarov/Com.ArmatSoftware.Code.Engine/blob/1ba1a7ddf9b6b632cd7a8671b4964e334d177cfc/assets/logo-web-notext-code.png&raw=true" \
+          -p:IconUrl="https://github.com/ykazarov/Com.ArmatSoftware.Code.Engine/blob/1ba1a7ddf9b6b632cd7a8671b4964e334d177cfc/assets/logo-web-notext-code.png&raw=true" \
           -p:PackageLicenseExpression="MIT" \
           -p:PackageProjectUrl="https://github.com/ykazarov/Com.ArmatSoftware.Code.Engine" \
           -p:ProjectUrl="https://github.com/ykazarov/Com.ArmatSoftware.Code.Engine" \
