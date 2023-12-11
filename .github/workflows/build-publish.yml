@@ -40,5 +40,5 @@ jobs:
           -o ./nupkgs \
           -v m \
           --no-restore
-      # - name: Dotnet Publish
-      #   run: dotnet nuget push "./nupkgs/com.armatsoftware.code.engine.1.0.1.nupkg" -s https://api.nuget.org/v3/index.json -k ${{ secrets.CODE_ENGINE_PRODUCTION }}
+      - name: Dotnet Publish
+        run: dotnet nuget push "./nupkgs/com.armatsoftware.code.engine.1.0.1.nupkg" -s https://api.nuget.org/v3/index.json -k ${{ secrets.CODE_ENGINE_PRODUCTION }}
