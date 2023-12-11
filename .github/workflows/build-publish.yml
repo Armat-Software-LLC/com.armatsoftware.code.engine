@@ -37,6 +37,9 @@ jobs:
           -p:RepositoryUrl="https://github.com/ykazarov/Com.ArmatSoftware.Code.Engine" \
           -p:RepositoryType="git" \
           -p:ReadmeFile="README.md" \
+          -p:Authors="${{ github.event.head_commit.author.name }}" \
+          -p:Company="Armat Software LLC" \
+          -p:Owners="Armat Software LLC" \
           -o ./nupkgs \
           -v m \
           --no-restore
