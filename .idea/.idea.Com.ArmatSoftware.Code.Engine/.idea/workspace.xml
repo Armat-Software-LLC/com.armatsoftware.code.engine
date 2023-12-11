@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0ae22d29-de2b-4f3c-bd2a-49a84396b937" name="Changes" comment="added package icon" />
+    <list default="true" id="0ae22d29-de2b-4f3c-bd2a-49a84396b937" name="Changes" comment="added package icon">
+      <change beforePath="$PROJECT_DIR$/ArmatSoftware.Code.Engine.Compiler/ArmatSoftware.Code.Engine.Compiler.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/ArmatSoftware.Code.Engine.Compiler/ArmatSoftware.Code.Engine.Compiler.csproj" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -105,7 +107,7 @@
       <workItem from="1701791293835" duration="6357000" />
       <workItem from="1701890393246" duration="5751000" />
       <workItem from="1702247784662" duration="541000" />
-      <workItem from="1702265180766" duration="2051000" />
+      <workItem from="1702265180766" duration="2393000" />
     </task>
     <task id="LOCAL-00001" summary="Added IDE config to VSC">
       <option name="closed" value="true" />
