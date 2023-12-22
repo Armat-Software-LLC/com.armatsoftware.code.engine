@@ -13,7 +13,7 @@ namespace ArmatSoftware.Code.Engine.Logger.File
     /// </summary>
     public class CodeEngineFileLogger : ICodeEngineLogger
     {
-        public const string LogFilePathKey = "ARCE_LOG_FILE_PATH";
+        public const string LogFilePathKey = "ASCE_LOG_FILE_PATH";
         
         private TextWriter _logFileWriter;
         

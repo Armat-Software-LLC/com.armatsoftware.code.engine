@@ -16,7 +16,6 @@ public class FileLoggerTestsBase
     protected List<string> LogSink { get; private set; }
     protected IConfiguration? Configuration { get; set; }
     protected Mock<IConfiguration> ConfigurationMock { get; private set; }
-    
     protected Mock<IConfigurationSection> ConfigurationSectionMock { get; set; }
     
     [SetUp]
@@ -26,7 +25,7 @@ public class FileLoggerTestsBase
         
         LogWriterMock = new Mock<TextWriter>();
         LogWriterMock.Setup(fsm => fsm.WriteLine(It.IsAny<string>()))
-            .Callback((string message) => ReceiveLog(message));
+            .Callback((string message) => ReceiveLogMessage(message));
 
         LogStreamMock = new Mock<FileStream>(LogFilePath, FileMode.OpenOrCreate);
         LogStreamMock.Setup(lsm => lsm.CanWrite).Returns(true);
@@ -37,7 +36,7 @@ public class FileLoggerTestsBase
         ConfigurationMock = new Mock<IConfiguration>();
     }
 
-    private void ReceiveLog(string message)
+    private void ReceiveLogMessage(string message)
     {
         LogSink.Add(message);
     }
