@@ -26,7 +26,7 @@ public class CodeEngineFileStorage : ICodeEngineStorage
 
         _fileExtension = _configuration[FileStorageExtension] ?? "code";
         
-        var fileStorageConfiguration = _configuration[FileStoragePath]; // .GetSection(FileStoragePath);
+        var fileStorageConfiguration = _configuration[FileStoragePath];
         if (fileStorageConfiguration == null)
         {
             throw new ApplicationException("File storage configuration is null or invalid");
@@ -70,30 +70,55 @@ public class CodeEngineFileStorage : ICodeEngineStorage
 
     public string Retrieve(Type subjectType, Guid executorId)
     {
-        var fullPath = GeneratePath(subjectType, executorId);
-        var codeFile = _storageRootPath.GetFiles(fullPath).First();
-        var code = codeFile.OpenText().ReadToEnd();
+        var generatedPathInfo = GeneratePath(subjectType, executorId);
+        var containingDirectory = new DirectoryInfo(generatedPathInfo.DirectoryPath);
+        var files = containingDirectory.GetFiles(generatedPathInfo.FileName);
+        if (!files.Any())
+        {
+            throw new FileNotFoundException(
+                $"File {generatedPathInfo.FileName} at {generatedPathInfo.DirectoryPath} is not found");
+        }
+        var code = files.First().OpenText().ReadToEnd();
         return code;
     }
 
     public void Store(Type subjectType, Guid executorId, string code)
     {
-        var fullPath = GeneratePath(subjectType, executorId);
-        var codeFile = _storageRootPath.GetFiles(fullPath).First();
-        var stream = codeFile.Open(FileMode.OpenOrCreate, FileAccess.Write, FileShare.None);
+        if (string.IsNullOrWhiteSpace(code))
+        {
+            throw new ArgumentNullException(nameof(code), "Code is null or empty");
+        }
+        
+        var generatedPathInfo = GeneratePath(subjectType, executorId);
+        var containingDirectory = Directory.CreateDirectory(generatedPathInfo.DirectoryPath);
+        var fullFilePath = Path.Join(containingDirectory.FullName, generatedPathInfo.FileName);
+        using var stream = System.IO.File.Open(fullFilePath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.None);
         byte[] bytes = new UTF8Encoding(true).GetBytes(code);
         stream.Write(bytes, 0, bytes.Length);
+        stream.Flush(true);
+        stream.Close();
     }
 
-    private string GeneratePath(Type subjectType, Guid executorId)
+    private GeneratedPathInfo GeneratePath(Type subjectType, Guid executorId)
     {
         //TODO: add replace for each non-path character
         var folderPath = subjectType.FullName?
-                             .Replace("+", "_") ?? 
+                             .Replace("+", "/") ?? // contained classes turn into subfolders
                          throw new ArgumentNullException(nameof(subjectType), "Supplied subject type is null");
 
         var fileName = $"{executorId.ToString()}.{_fileExtension}";
 
-        return Path.Join(_storageRootPath.FullName, folderPath, fileName);
+        // return Path.Join(_storageRootPath.FullName, folderPath, fileName);
+        return new GeneratedPathInfo()
+        {
+            DirectoryPath = Path.Join(_storageRootPath.FullName, folderPath),
+            FileName = fileName
+        };
+    }
+
+    private class GeneratedPathInfo
+    {
+        public string DirectoryPath { get; set; } = string.Empty;
+        public string FileName { get; set; } = string.Empty;
     }
 }

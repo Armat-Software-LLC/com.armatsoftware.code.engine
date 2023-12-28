@@ -4,17 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0ae22d29-de2b-4f3c-bd2a-49a84396b937" name="Changes" comment="fixed null ctor test">
-      <change afterPath="$PROJECT_DIR$/ArmatSoftware.Code.Engine.Storage.File.Tests/ArmatSoftware.Code.Engine.Storage.File.Tests.csproj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ArmatSoftware.Code.Engine.Storage.File.Tests/CodeEngineFileStorageConstructorTests.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ArmatSoftware.Code.Engine.Storage.File.Tests/CodeEngineFileStorageStoreTests.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ArmatSoftware.Code.Engine.Storage.File.Tests/CodeEngineFileStorageTestsBuilder.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ArmatSoftware.Code.Engine.Storage.File/ArmatSoftware.Code.Engine.Storage.File.csproj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ArmatSoftware.Code.Engine.Storage.File/CodeEngineFileStorage.cs" afterDir="false" />
+    <list default="true" id="0ae22d29-de2b-4f3c-bd2a-49a84396b937" name="Changes" comment="added storage contract, implementation, and test coverage, more to come">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Com.ArmatSoftware.Code.Engine/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Com.ArmatSoftware.Code.Engine/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ArmatSoftware.Code.Engine.Logger.File.Tests/FileLoggerTestsBase.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ArmatSoftware.Code.Engine.Logger.File.Tests/FileLoggerTestsBase.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ArmatSoftware.Code.Engine.Logger.File/CodeEngineFileLogger.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ArmatSoftware.Code.Engine.Logger.File/CodeEngineFileLogger.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Com.ArmatSoftware.Code.Engine.sln" beforeDir="false" afterPath="$PROJECT_DIR$/Com.ArmatSoftware.Code.Engine.sln" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ArmatSoftware.Code.Engine.Storage.File.Tests/CodeEngineFileStorageStoreTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ArmatSoftware.Code.Engine.Storage.File.Tests/CodeEngineFileStorageStoreTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ArmatSoftware.Code.Engine.Storage.File/CodeEngineFileStorage.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ArmatSoftware.Code.Engine.Storage.File/CodeEngineFileStorage.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,9 +52,9 @@
     <setting file="file://$USER_HOME$/.local/share/Symbols/src/nunit/nunit/c933a883ea25263ec575a654dae69fa38000edd9/src/NUnitFramework/framework/Internal/Commands/SetUpTearDownCommand.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/.local/share/Symbols/src/nunit/nunit/c933a883ea25263ec575a654dae69fa38000edd9/src/NUnitFramework/framework/Internal/Commands/SetUpTearDownItem.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/.local/share/Symbols/src/nunit/nunit/c933a883ea25263ec575a654dae69fa38000edd9/src/NUnitFramework/framework/Internal/Reflect.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/acd42998b3a78cba6a801563f9ed2fb64a17e42b5879d2fc67490bc57ffa3/ArgumentNullException.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Users/yurikazarov/Projects/Com.ArmatSoftware.Code.Engine/ArmatSoftware.Code.Engine.Logger.File.Tests/FileLoggerTestsBase.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Users/yurikazarov/Projects/Com.ArmatSoftware.Code.Engine/ArmatSoftware.Code.Engine.Logger.File/CodeEngineFileLogger.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/yurikazarov/Projects/Com.ArmatSoftware.Code.Engine/ArmatSoftware.Code.Engine.Storage.File/CodeEngineFileStorage.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -92,7 +85,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "reference.settingsdialog.IDE.editor.colors.Color Scheme Font",
+    "settings.editor.selected.configurable": "preferences.editor",
     "vue.rearranger.settings.migration": "true"
   },
   "keyToStringList": {
@@ -120,7 +113,9 @@
       <workItem from="1702282027536" duration="3394000" />
       <workItem from="1702445057899" duration="461000" />
       <workItem from="1702850924107" duration="2514000" />
-      <workItem from="1703170046843" duration="11771000" />
+      <workItem from="1703170046843" duration="23016000" />
+      <workItem from="1703701399643" duration="334000" />
+      <workItem from="1703714196189" duration="5259000" />
     </task>
     <task id="LOCAL-00001" summary="Added IDE config to VSC">
       <option name="closed" value="true" />
@@ -154,7 +149,15 @@
       <option name="project" value="LOCAL" />
       <updated>1701697228440</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="added storage contract, implementation, and test coverage, more to come">
+      <option name="closed" value="true" />
+      <created>1703218428559</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1703218428559</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -178,36 +181,30 @@
     <MESSAGE value="added VB compiler and made minor fixes" />
     <MESSAGE value="added default file logger with test coverage" />
     <MESSAGE value="fixed null ctor test" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed null ctor test" />
+    <MESSAGE value="added storage contract, implementation, and test coverage, more to come" />
+    <option name="LAST_COMMIT_MESSAGE" value="added storage contract, implementation, and test coverage, more to come" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
+        <breakpoint enabled="true" type="DotNet Exception Breakpoints">
+          <properties exception="System.ArgumentNullException" isInternal="false" displayValue="ArgumentNullException" namespaceName="System">
+            <option name="internal" value="false" />
+          </properties>
+          <option name="timeStamp" value="11" />
+        </breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/ArmatSoftware.Code.Engine.Storage.File/CodeEngineFileStorage.cs</url>
-          <line>28</line>
-          <properties documentPath="$PROJECT_DIR$/ArmatSoftware.Code.Engine.Storage.File/CodeEngineFileStorage.cs" initialLine="28" containingFunctionPresentation="Constructor 'CodeEngineFileStorage'">
+          <url>file://$PROJECT_DIR$/ArmatSoftware.Code.Engine.Storage.File.Tests/CodeEngineFileStorageStoreTests.cs</url>
+          <line>47</line>
+          <properties documentPath="$PROJECT_DIR$/ArmatSoftware.Code.Engine.Storage.File.Tests/CodeEngineFileStorageStoreTests.cs" initialLine="47" containingFunctionPresentation="Lambda expression inside Method 'Should_Replace_Same_File'">
             <startOffsets>
-              <option value="1128" />
+              <option value="1463" />
             </startOffsets>
             <endOffsets>
-              <option value="1191" />
+              <option value="1526" />
             </endOffsets>
           </properties>
-          <option name="timeStamp" value="5" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/ArmatSoftware.Code.Engine.Storage.File/CodeEngineFileStorage.cs</url>
-          <line>80</line>
-          <properties documentPath="$PROJECT_DIR$/ArmatSoftware.Code.Engine.Storage.File/CodeEngineFileStorage.cs" initialLine="80" containingFunctionPresentation="Method 'Store'">
-            <startOffsets>
-              <option value="2676" />
-            </startOffsets>
-            <endOffsets>
-              <option value="2729" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="6" />
+          <option name="timeStamp" value="13" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
