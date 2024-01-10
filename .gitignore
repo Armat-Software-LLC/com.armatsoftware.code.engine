@@ -355,3 +355,9 @@ MigrationBackup/
 
 # Additional test files for local automation testing
 test.sh
+
+# JetBrains Rider
+.idea/
+*.sln.iml
+*.ipr
+*.iws
