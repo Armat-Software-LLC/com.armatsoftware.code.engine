@@ -6,6 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="0ae22d29-de2b-4f3c-bd2a-49a84396b937" name="Changes" comment="added storage contract, implementation, and test coverage, more to come">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Com.ArmatSoftware.Code.Engine/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Com.ArmatSoftware.Code.Engine/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ArmatSoftware.Code.Engine.Storage.File.Tests/CodeEngineFileStorageStoreTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ArmatSoftware.Code.Engine.Storage.File.Tests/CodeEngineFileStorageStoreTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ArmatSoftware.Code.Engine.Storage.File/CodeEngineFileStorage.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ArmatSoftware.Code.Engine.Storage.File/CodeEngineFileStorage.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,30 +72,30 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;fcd970b3-ca02-4b03-9df3-524760679a02.executor&quot;: &quot;Debug&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.editor&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "fcd970b3-ca02-4b03-9df3-524760679a02.executor": "Debug",
+    "git-widget-placeholder": "CEC-20-Create-default-storage-adapter-file",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.editor",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;rider.external.source.directories&quot;: [
-      &quot;/Users/yurikazarov/Library/Application Support/JetBrains/Rider2023.3/resharper-host/DecompilerCache&quot;,
-      &quot;/Users/yurikazarov/Library/Application Support/JetBrains/Rider2023.3/resharper-host/SourcesCache&quot;,
-      &quot;/Users/yurikazarov/.local/share/Symbols/src&quot;
+  "keyToStringList": {
+    "rider.external.source.directories": [
+      "/Users/yurikazarov/Library/Application Support/JetBrains/Rider2023.3/resharper-host/DecompilerCache",
+      "/Users/yurikazarov/Library/Application Support/JetBrains/Rider2023.3/resharper-host/SourcesCache",
+      "/Users/yurikazarov/.local/share/Symbols/src"
     ]
   }
-}</component>
+}]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -114,9 +116,6 @@
       <workItem from="1703170046843" duration="23016000" />
       <workItem from="1703701399643" duration="334000" />
       <workItem from="1703714196189" duration="5259000" />
-      <workItem from="1704733050695" duration="1245000" />
-      <workItem from="1704768131185" duration="2036000" />
-      <workItem from="1704838291021" duration="166000" />
     </task>
     <task id="LOCAL-00001" summary="Added IDE config to VSC">
       <option name="closed" value="true" />
@@ -178,7 +177,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
     <MESSAGE value="Added IDE config to VSC" />
     <MESSAGE value="added VB compiler and made minor fixes" />
     <MESSAGE value="added default file logger with test coverage" />
