@@ -7,9 +7,13 @@ namespace ArmatSoftware.Code.Engine.Compiler.DI
         where T : class, new()
     {
 
-        private IExecutor<T> _executor;
+        private readonly IExecutor<T> _executor;
         
-        public T Subject { get; set; }
+        public T Subject
+        {
+            get => _executor.Subject;
+            set => _executor.Subject = value;
+        }
 
         public DefaultExecutor(ICodeEngineExecutorFactory factory)
         {
