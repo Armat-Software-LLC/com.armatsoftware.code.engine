@@ -1,5 +1,6 @@
 using System;
 using ArmatSoftware.Code.Engine.Compiler;
+using ArmatSoftware.Code.Engine.Compiler.Base;
 using ArmatSoftware.Code.Engine.Compiler.CSharp;
 using NUnit.Framework;
 

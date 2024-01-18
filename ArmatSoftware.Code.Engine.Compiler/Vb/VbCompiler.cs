@@ -16,7 +16,7 @@ using Microsoft.CodeAnalysis.VisualBasic;
 namespace ArmatSoftware.Code.Engine.Compiler.Vb
 {
 	/// <summary>
-	/// Default implementation for the C# compiler
+	/// Default implementation for the VB compiler
 	/// </summary>
 	/// <typeparam name="S">Subject type</typeparam>
 	public class VbCompiler<S> : ICompiler<S> where S : class

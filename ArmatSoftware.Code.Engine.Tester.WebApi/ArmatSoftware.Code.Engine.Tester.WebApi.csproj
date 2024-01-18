@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <InvariantGlobalization>true</InvariantGlobalization>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNet.WebApi" Version="5.3.0" />
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.0-rc.2.23480.2"/>
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\ArmatSoftware.Code.Engine.Compiler\ArmatSoftware.Code.Engine.Compiler.csproj" />
+      <ProjectReference Include="..\ArmatSoftware.Code.Engine.Logger.File\ArmatSoftware.Code.Engine.Logger.File.csproj" />
+      <ProjectReference Include="..\ArmatSoftware.Code.Engine.Storage.File\ArmatSoftware.Code.Engine.Storage.File.csproj" />
+    </ItemGroup>
+
+</Project>

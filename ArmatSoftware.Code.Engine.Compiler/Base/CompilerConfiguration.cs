@@ -4,7 +4,7 @@ using System.Linq;
 using ArmatSoftware.Code.Engine.Core;
 using ArmatSoftware.Code.Engine.Compiler;
 
-namespace ArmatSoftware.Code.Engine.Tests.Unit
+namespace ArmatSoftware.Code.Engine.Compiler.Base
 {
 	/// <summary>
 	/// Default implementation of the configuration contract
