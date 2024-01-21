@@ -70,7 +70,8 @@ namespace ArmatSoftware.Code.Engine.Compiler.DI
 }
 
 /// <summary>
-/// 
+/// IExecutor factory used to create new instances of IExecutor for the supplied
+/// subject type. Caching is used for performance.
 /// </summary>
 public interface ICodeEngineExecutorFactory : IDisposable
 {
