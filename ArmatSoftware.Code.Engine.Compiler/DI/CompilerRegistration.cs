@@ -13,16 +13,16 @@ namespace ArmatSoftware.Code.Engine.Compiler.DI
 {
     /// <summary>
     /// Initialize the code engine framework within the executing application
-    /// and ready it for use via injection
+    /// and ready it for use.
     /// </summary>
     public static class CompilerRegistration
     {
         /// <summary>
-        /// Make all 
+        /// Use this method to register the code engine within the executing application.
         /// </summary>
         /// <param name="services"></param>
         /// <param name="options"></param>
-        public static void UseCodeEngine(this IServiceCollection services, CodeEngineRegistrationOptions options)
+        public static void UseCodeEngine(this IServiceCollection services, CodeEngineOptions options)
         {
             services.AddSingleton(options);
             
@@ -37,25 +37,26 @@ namespace ArmatSoftware.Code.Engine.Compiler.DI
 
             if (options.Storage != null)
             {
-                services.AddTransient<ICodeEngineStorage>(provider => options.Storage);
+                services.AddScoped<ICodeEngineStorage>(provider => options.Storage);
             }
             else
             {
-                services.AddTransient<ICodeEngineStorage, CodeEngineFileStorage>();
+                services.AddScoped<ICodeEngineStorage, CodeEngineFileStorage>();
             }
             
             RegisterAllHardcodedExecutors(services);
-            RegisterExecutorServiceProvider(services);
+            RegisterExecutorFactory(services);
         }
 
         /// <summary>
-        /// register service provider for generic executo injections
+        /// Register service provider for generic executor injections
         /// </summary>
         /// <param name="services"><c>IServiceCollection</c> for the app builder</param>
-        private static void RegisterExecutorServiceProvider(IServiceCollection services)
+        private static void RegisterExecutorFactory(IServiceCollection services)
         {
-            services.AddScoped<ICodeEngineExecutorFactory, CodeEngineExecutorFactory>();
-            services.AddScoped(typeof(IExecutor<>), typeof(DefaultExecutor<>));
+            services.AddSingleton<ICodeEngineExecutorFactory, CodeEngineExecutorFactory>();
+            services.AddSingleton<ICodeEngineExecutorCache, CodeEngineExecutorCache>();
+            services.AddScoped(typeof(IExecutor<>), typeof(Executor<>));
         }
 
         /// <summary>
@@ -117,10 +118,10 @@ namespace ArmatSoftware.Code.Engine.Compiler.DI
         /// Pass to the <c>UseCodeEngine</c> method to configure the code engine.
         /// Make sure to supply at least the <c>CompilerType</c> and <c>CodeEngineNamespace</c> properties.
         /// </summary>
-        public class CodeEngineRegistrationOptions
+        public class CodeEngineOptions
         {
             /// <summary>
-            /// Choose between S# and VB.NET compilers. This depends on the language of the code you use.
+            /// Choose between C# and VB.NET compilers. This depends on the language of the code you use.
             /// </summary>
             public CompilerTypeEnum CompilerType { get; set; }
             

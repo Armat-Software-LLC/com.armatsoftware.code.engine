@@ -15,5 +15,12 @@
 		/// Execute the actions
 		/// </summary>
 		void Execute();
+		
+		/// <summary>
+		/// Efficient cloning of the executors allows effective thread safe execution
+		/// without using singletons or activating new instances
+		/// </summary>
+		/// <returns></returns>
+		IExecutor<S> Clone();
 	}
 }

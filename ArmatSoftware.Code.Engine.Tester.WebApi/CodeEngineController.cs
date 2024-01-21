@@ -7,19 +7,21 @@ namespace ArmatSoftware.Code.Engine.Tester.WebApi;
 [Route("api/[controller]")]
 public class CodeEngineController : ControllerBase
 {
-    private IExecutor<TestPayload> _executor;
-    
-    public CodeEngineController(IExecutor<TestPayload> executor)
+    [HttpGet, Route("get1")]
+    public async Task<IActionResult> GetTestPayload(IExecutor<StringOnlySubject> executor, CancellationToken token)
     {
-        _executor = executor;
+        executor.Subject = new StringOnlySubject();
+        executor.Execute();
+        
+        return await Task.FromResult(new OkObjectResult(executor.Subject.Data));
     }
     
-    [HttpGet]
-    public async Task<IActionResult> Get(CancellationToken token)
+    [HttpGet, Route("get2")]
+    public async Task<IActionResult> GetTestPayload2(IExecutor<NumericAndStringSubject> executor, CancellationToken token)
     {
-        _executor.Subject = new TestPayload { Data = "bye, world!" };
-        _executor.Execute();
+        executor.Subject = new NumericAndStringSubject();
+        executor.Execute();
         
-        return await Task.FromResult(new OkObjectResult(_executor.Subject.Data));
+        return await Task.FromResult(new OkObjectResult(executor.Subject.NumericData + " " + executor.Subject.StringData));
     }
 }

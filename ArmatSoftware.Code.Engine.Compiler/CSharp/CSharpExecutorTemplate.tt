@@ -29,6 +29,11 @@ namespace <#=Configuration.GetNamespace()#>
 			this.runtimeValues.Add(key, value);
 		}
 
+        public IExecutor<<#=Configuration.GetSubjectType()#>> Clone()
+        {
+            return (IExecutor<<#=Configuration.GetSubjectType()#>>) MemberwiseClone();
+        }
+
 		public void Execute()
 		{
 <# foreach (var action in Configuration.GetActions()) { #>

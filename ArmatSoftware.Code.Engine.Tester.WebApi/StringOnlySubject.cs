@@ -1,6 +1,6 @@
 namespace ArmatSoftware.Code.Engine.Tester.WebApi;
 
-public class TestPayload
+public class StringOnlySubject
 {
     public string Data { get; set; }
 }

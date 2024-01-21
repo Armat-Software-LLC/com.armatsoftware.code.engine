@@ -11,6 +11,15 @@ public class CustomCodeStorage : ICodeEngineStorage
 
     public string Retrieve(Type subjectType, Guid executorId)
     {
-        return "Subject.Data = \"hello world!\";";
+        switch (subjectType.Name)
+        {
+            case nameof(StringOnlySubject):
+                return "Subject.Data = \"hello world!\";";
+            case nameof(NumericAndStringSubject):
+                return "Subject.StringData = \"hello world 2!\";" +
+                       "Subject.NumericData = 42;";
+            default:
+                throw new ArgumentOutOfRangeException(nameof(subjectType), subjectType, null);
+        }
     }
 }

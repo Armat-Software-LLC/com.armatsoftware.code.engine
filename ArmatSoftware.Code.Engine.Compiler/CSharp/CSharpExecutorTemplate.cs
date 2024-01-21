@@ -19,7 +19,7 @@ namespace ArmatSoftware.Code.Engine.Compiler.CSharp
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "/Users/yurikazarov/Git/com.ArmatSoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
+    #line 1 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "16.0.0.0")]
     public partial class CSharpExecutorTemplate : CSharpExecutorTemplateBase
     {
@@ -32,98 +32,112 @@ namespace ArmatSoftware.Code.Engine.Compiler.CSharp
             this.Write("\n");
             this.Write("\n");
             
-            #line 10 "/Users/yurikazarov/Git/com.ArmatSoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
+            #line 10 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
  foreach (var import in Configuration.GetImports()) { 
             
             #line default
             #line hidden
             this.Write("using ");
             
-            #line 11 "/Users/yurikazarov/Git/com.ArmatSoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
+            #line 11 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(import));
             
             #line default
             #line hidden
             this.Write(";\n");
             
-            #line 12 "/Users/yurikazarov/Git/com.ArmatSoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
+            #line 12 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
  } 
             
             #line default
             #line hidden
             this.Write("\nnamespace ");
             
-            #line 14 "/Users/yurikazarov/Git/com.ArmatSoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
+            #line 14 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Configuration.GetNamespace()));
             
             #line default
             #line hidden
             this.Write("\n{\n\tpublic class ");
             
-            #line 16 "/Users/yurikazarov/Git/com.ArmatSoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
+            #line 16 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Configuration.GetClassName()));
             
             #line default
             #line hidden
             this.Write(" : IExecutor<");
             
-            #line 16 "/Users/yurikazarov/Git/com.ArmatSoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
+            #line 16 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Configuration.GetSubjectType()));
             
             #line default
             #line hidden
             this.Write(">\n\t{\n\t\tprivate Dictionary<string, dynamic> runtimeValues = new Dictionary<string, dynamic>();\n\n\t\tpublic ");
             
-            #line 20 "/Users/yurikazarov/Git/com.ArmatSoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
+            #line 20 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Configuration.GetSubjectType()));
             
             #line default
             #line hidden
-            this.Write(" Subject { get; set; }\n\n\t\tpublic dynamic Read(string key)\n\t\t{\n\t\t\treturn this.runtimeValues[key];\n\t\t}\n\n\t\tpublic void Save(string key, dynamic value)\n\t\t{\n\t\t\tthis.runtimeValues.Add(key, value);\n\t\t}\n\n\t\tpublic void Execute()\n\t\t{\n");
+            this.Write(" Subject { get; set; }\n\n\t\tpublic dynamic Read(string key)\n\t\t{\n\t\t\treturn this.runtimeValues[key];\n\t\t}\n\n\t\tpublic void Save(string key, dynamic value)\n\t\t{\n\t\t\tthis.runtimeValues.Add(key, value);\n\t\t}\n\n        public IExecutor<");
             
-            #line 34 "/Users/yurikazarov/Git/com.ArmatSoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
+            #line 32 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Configuration.GetSubjectType()));
+            
+            #line default
+            #line hidden
+            this.Write("> Clone()\n        {\n            return (IExecutor<");
+            
+            #line 34 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Configuration.GetSubjectType()));
+            
+            #line default
+            #line hidden
+            this.Write(">) MemberwiseClone();\n        }\n\n\t\tpublic void Execute()\n\t\t{\n");
+            
+            #line 39 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
  foreach (var action in Configuration.GetActions()) { 
             
             #line default
             #line hidden
             this.Write("\t\t\t");
             
-            #line 35 "/Users/yurikazarov/Git/com.ArmatSoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
+            #line 40 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(action.Key));
             
             #line default
             #line hidden
             this.Write("();\n");
             
-            #line 36 "/Users/yurikazarov/Git/com.ArmatSoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
+            #line 41 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
  } 
             
             #line default
             #line hidden
             this.Write("\t\t}\n\t\t\n");
             
-            #line 39 "/Users/yurikazarov/Git/com.ArmatSoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
+            #line 44 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
  foreach (var action in Configuration.GetActions()) { 
             
             #line default
             #line hidden
             this.Write("\t\tprivate void ");
             
-            #line 40 "/Users/yurikazarov/Git/com.ArmatSoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
+            #line 45 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(action.Key));
             
             #line default
             #line hidden
             this.Write("()\n\t\t{\n\t\t\t");
             
-            #line 42 "/Users/yurikazarov/Git/com.ArmatSoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
+            #line 47 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(action.Value));
             
             #line default
             #line hidden
             this.Write("\n\t\t}\n");
             
-            #line 44 "/Users/yurikazarov/Git/com.ArmatSoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
+            #line 49 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
  } 
             
             #line default

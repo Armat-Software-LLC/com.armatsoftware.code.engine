@@ -3,7 +3,7 @@ using ArmatSoftware.Code.Engine.Core;
 
 namespace ArmatSoftware.Code.Engine.Compiler.DI
 {
-    public class DefaultExecutor<T> : IExecutor<T>
+    public class Executor<T> : IExecutor<T>
         where T : class, new()
     {
 
@@ -15,7 +15,7 @@ namespace ArmatSoftware.Code.Engine.Compiler.DI
             set => _executor.Subject = value;
         }
 
-        public DefaultExecutor(ICodeEngineExecutorFactory factory)
+        public Executor(ICodeEngineExecutorFactory factory)
         {
             if (factory == null)
             {
@@ -38,6 +38,11 @@ namespace ArmatSoftware.Code.Engine.Compiler.DI
         public void Execute()
         {
             _executor.Execute();
+        }
+
+        public IExecutor<T> Clone()
+        {
+            return (IExecutor<T>) MemberwiseClone();
         }
     }
 }
