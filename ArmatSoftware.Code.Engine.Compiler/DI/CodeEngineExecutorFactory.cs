@@ -21,6 +21,11 @@ namespace ArmatSoftware.Code.Engine.Compiler.DI
         public IExecutor<T> Provide<T>()
             where T : class, new()
         {
+            if (string.IsNullOrWhiteSpace(_options.CodeEngineNamespace))
+            {
+                throw new ArgumentNullException(nameof(_options.CodeEngineNamespace));
+            }
+            
             var configuration = new CompilerConfiguration<T>(_options.CodeEngineNamespace);
 
             // check cache and return new instance if found
@@ -70,7 +75,7 @@ namespace ArmatSoftware.Code.Engine.Compiler.DI
 }
 
 /// <summary>
-/// IExecutor factory used to create new instances of IExecutor for the supplied
+/// IExecutor factory is used to create new instances of IExecutor for the supplied
 /// subject type. Caching is used for performance.
 /// </summary>
 public interface ICodeEngineExecutorFactory : IDisposable
