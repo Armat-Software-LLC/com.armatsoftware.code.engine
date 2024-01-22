@@ -1,0 +1,6 @@
+@ArmatSoftware.Code.Engine.Tester.WebApi_HostAddress = http://localhost:5214
+
+GET {{ArmatSoftware.Code.Engine.Tester.WebApi_HostAddress}}/codeengine/
+Accept: application/json
+
+###

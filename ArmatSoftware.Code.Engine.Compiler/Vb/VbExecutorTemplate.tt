@@ -27,6 +27,10 @@ Namespace <#=Configuration.GetNamespace()#>
             runtimeValues.Add(key, value)
         End Sub
 
+        Public Function Clone() As IExecutor(Of <#=Configuration.GetSubjectType()#>) Implements IExecutor(Of <#=Configuration.GetSubjectType()#>).Clone
+			Return DirectCast(MemberwiseClone(), IExecutor(Of <#=Configuration.GetSubjectType()#>))
+		End Function
+
 		Public Sub Execute() Implements IExecutor(Of <#=Configuration.GetSubjectType()#>).Execute
 <# foreach (var action in Configuration.GetActions()) { #>
 			<#=action.Key#>()

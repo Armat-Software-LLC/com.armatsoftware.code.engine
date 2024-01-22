@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using ArmatSoftware.Code.Engine.Compiler;
+using ArmatSoftware.Code.Engine.Compiler.Base;
 using ArmatSoftware.Code.Engine.Compiler.CSharp;
 using ArmatSoftware.Code.Engine.Core;
 using NUnit.Framework;

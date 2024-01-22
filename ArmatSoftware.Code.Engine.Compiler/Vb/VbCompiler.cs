@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.Loader;
-using System.Runtime.Remoting;
 using System.Text;
 using ArmatSoftware.Code.Engine.Compiler.Utils;
 using ArmatSoftware.Code.Engine.Core;
@@ -16,7 +15,7 @@ using Microsoft.CodeAnalysis.VisualBasic;
 namespace ArmatSoftware.Code.Engine.Compiler.Vb
 {
 	/// <summary>
-	/// Default implementation for the C# compiler
+	/// Default implementation for the VB compiler
 	/// </summary>
 	/// <typeparam name="S">Subject type</typeparam>
 	public class VbCompiler<S> : ICompiler<S> where S : class
