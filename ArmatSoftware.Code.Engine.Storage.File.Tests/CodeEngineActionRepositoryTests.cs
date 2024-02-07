@@ -53,28 +53,6 @@ public class CodeEngineActionRepositoryTests : CodeEngineActionRepositoryTestBui
     [TestFixture]
     public class CodeEngineActionRepositoryStoreTests : CodeEngineActionRepositoryTestBuilder
     {
-        // TODO: Implement tests for storing actions
-        
-        // [Test]
-        // public void Should_Store_Actions()
-        // {
-        //     var repository = Build();
-        //     var actions = new StoredActions<CustomTestType>();
-        //     Assert.That(() =>
-        //     {
-        //         repository.Store(actions);
-        //     }, Throws.Nothing);
-        // }
-        //
-        // [Test]
-        // public void Should_Not_Store_Null()
-        // {
-        //     var repository = Build();
-        //     Assert.That(() =>
-        //     {
-        //         repository.Store<CustomTestType>(null);
-        //     }, Throws.ArgumentNullException);
-        // }
     }
 
     [TestFixture]
