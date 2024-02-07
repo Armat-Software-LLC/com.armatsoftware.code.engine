@@ -13,7 +13,7 @@ namespace ArmatSoftware.Code.Engine.Compiler
 		/// <summary>
 		/// List of actions to compile
 		/// </summary>
-		IList<IAction<S>> Actions { get; set; }
+		IList<ISubjectAction<S>> Actions { get; set; }
 
 		/// <summary>
 		/// List of imports to add to the template

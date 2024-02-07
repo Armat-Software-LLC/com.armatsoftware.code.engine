@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using ArmatSoftware.Code.Engine.Core;
-using ArmatSoftware.Code.Engine.Compiler;
 
 namespace ArmatSoftware.Code.Engine.Compiler.Base
 {
@@ -19,7 +18,7 @@ namespace ArmatSoftware.Code.Engine.Compiler.Base
 		/// <summary>
 		/// List of actions added in the order of execution
 		/// </summary>
-		public IList<IAction<S>> Actions { get; set; } = new List<IAction<S>>();
+		public IList<ISubjectAction<S>> Actions { get; set; } = new List<ISubjectAction<S>>();
 
 		/// <summary>
 		/// List of referenced types used in the action logic

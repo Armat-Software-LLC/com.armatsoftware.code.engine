@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ArmatSoftware.Code.Engine.Core\ArmatSoftware.Code.Engine.Core.csproj" />
+    <ProjectReference Include="..\ArmatSoftware.Code.Engine.Storage\ArmatSoftware.Code.Engine.Storage.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -16,7 +17,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <LangVersion>10</LangVersion>
+    <LangVersion>12</LangVersion>
   </PropertyGroup>
 
 </Project>

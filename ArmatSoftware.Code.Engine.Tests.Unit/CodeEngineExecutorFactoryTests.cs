@@ -1,8 +1,11 @@
 using System;
+using System.Linq;
 using ArmatSoftware.Code.Engine.Compiler.DI;
 using ArmatSoftware.Code.Engine.Core;
 using ArmatSoftware.Code.Engine.Core.Logging;
 using ArmatSoftware.Code.Engine.Core.Storage;
+using ArmatSoftware.Code.Engine.Storage;
+using ArmatSoftware.Code.Engine.Storage.File;
 using Moq;
 using NUnit.Framework;
 
@@ -78,40 +81,47 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
     {
         protected ICodeEngineExecutorFactory Target { get; private set; }
         
-        protected CompilerRegistration.CodeEngineOptions Options { get; set; }
+        protected CodeEngineRegistration.CodeEngineOptions Options { get; set; }
         
         protected ICodeEngineExecutorCache Cache { get; set; }
         
-        protected Mock<ICodeEngineStorage> StorageMock { get; private set; }
-        protected ICodeEngineStorage Storage { get; set; }
+        protected Mock<IActionProvider> StorageMock { get; private set; }
+        protected IActionProvider Provider { get; set; }
         
         protected Mock<ICodeEngineLogger> LoggerMock { get; private set; }
         protected ICodeEngineLogger Logger { get; set; }
+
+        protected IStoredActions<CodeEngineFactoryTestSubject> Actions { get; set; }
         
         [SetUp]
         public void Setup()
         {
-            StorageMock = new Mock<ICodeEngineStorage>();
-            StorageMock.Setup(x => x.Retrieve(It.Is<Type>(t => t == typeof(CodeEngineFactoryTestSubject)), It.IsAny<Guid>()))
-                .Returns("Subject.Data = \"Hello World\";");
+            Actions = new StoredActions<CodeEngineFactoryTestSubject>();
+            var action = Actions.Add("SimpleAction");
+            action.Update("Subject.Data = \"Hello world!\";", "testauthor", "testcomment");
+            action.Activate(1);
+            
+            StorageMock = new Mock<IActionProvider>();
+            StorageMock.Setup(x => x.Retrieve<CodeEngineFactoryTestSubject>())
+                .Returns(Actions.ToList());
             LoggerMock = new Mock<ICodeEngineLogger>();
             
-            Storage = StorageMock.Object;
+            Provider = StorageMock.Object;
             Logger = LoggerMock.Object;
             Cache = new CodeEngineExecutorCache();
             
-            Options = new CompilerRegistration.CodeEngineOptions
+            Options = new CodeEngineRegistration.CodeEngineOptions
             {
                 CodeEngineNamespace = "ArmatSoftware.Code.Engine.Tests.Unit",
                 CompilerType = CompilerTypeEnum.CSharp,
-                Storage = Storage,
+                Provider = Provider,
                 Logger = Logger
             };
         }
         
         public void Build()
         {
-            Target = new CodeEngineExecutorFactory(Options, Cache);
+            Target = new CodeEngineExecutorFactory(Options, Provider, Cache);
         }
     }
 
@@ -120,7 +130,7 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
         public string Data { get; set; }
     }
 
-    public class CodeEngineFactoryAction : IAction<CodeEngineFactoryTestSubject>
+    public class CodeEngineFactorySubjectAction : ISubjectAction<CodeEngineFactoryTestSubject>
     {
         public string Name
         {
@@ -131,6 +141,12 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
         public string Code
         {
             get => "Subject.Data = \"Hello World\";";
+            set => throw new NotImplementedException();
+        }
+
+        public int Order
+        {
+            get => 0;
             set => throw new NotImplementedException();
         }
     }

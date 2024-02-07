@@ -154,7 +154,7 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
             
             for (var index = 0; index < n; index++)
             {
-                Configuration.Actions.Add(new CompilerPerformanceTestAction<S>
+                Configuration.Actions.Add(new CompilerPerformanceTestSubjectAction<S>
                 {
                     Name = $"Action{index}",
                     Code = $"var result = {Operations[index, 0]} + {Operations[index, 1]};"
@@ -170,7 +170,7 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
 
             Compiler = new CSharpCompiler<S>();
             
-            Configuration.Actions.Add(new CompilerPerformanceTestAction<S>
+            Configuration.Actions.Add(new CompilerPerformanceTestSubjectAction<S>
             {
                 Name = "SingleAction",
                 Code = "Subject.Result = Subject.Operand1 + Subject.Operand2;"
@@ -187,9 +187,11 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
         public int Result { get; set; }
     }
 
-    public class CompilerPerformanceTestAction<S> : IAction<S> where S : CompilerPerformanceTestSubject
+    public class CompilerPerformanceTestSubjectAction<S> : ISubjectAction<S> where S : CompilerPerformanceTestSubject
     {
         public string Name { get; set; }
         public string Code { get; set; }
+        
+        public int Order { get; set; }
     }
 }

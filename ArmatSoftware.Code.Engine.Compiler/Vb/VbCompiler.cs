@@ -121,9 +121,9 @@ namespace ArmatSoftware.Code.Engine.Compiler.Vb
 				throw new ArgumentNullException(nameof(configuration));
 			}
 
-			if (configuration.Actions == null || !configuration.Actions.Any())
+			if (configuration.Actions == null)
 			{
-				throw new ArgumentException("Actions are null or empty", nameof(configuration.Actions));
+				throw new ArgumentException("Actions are null", nameof(configuration.Actions));
 			}
 
 			if (configuration.References == null)

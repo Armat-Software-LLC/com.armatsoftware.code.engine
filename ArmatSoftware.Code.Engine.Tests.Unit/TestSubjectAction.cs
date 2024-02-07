@@ -2,10 +2,12 @@
 
 namespace ArmatSoftware.Code.Engine.Tests.Unit
 {
-	public class TestAction : IAction<TestSubject>
+	public class TestSubjectAction : ISubjectAction<TestSubject>
 	{
 		public string Name { get; set; }
 
 		public string Code { get; set; }
+		
+		public int Order { get; set; }
 	}
 }
