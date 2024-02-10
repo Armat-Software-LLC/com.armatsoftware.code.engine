@@ -5,6 +5,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <InvariantGlobalization>true</InvariantGlobalization>
+        <LangVersion>12</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>

@@ -6,7 +6,7 @@ using NUnit.Framework;
 
 namespace ArmatSoftware.Code.Engine.Tests.Unit
 {
-	[TestFixture]
+	[TestFixture, TestOf(typeof(CSharpCompiler<>))]
 	public class CSharpCompilerTests : CSharpCompilerTestBase<TestSubject>
 	{
 		[SetUp]
@@ -20,7 +20,7 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
 		{
 			Assert.That(() =>
 			{
-				Configuration.Actions.Add(new TestAction { Name = "SimpleOperation", Code = "var t = 3 + 4;" });
+				Configuration.Actions.Add(new TestSubjectAction { Name = "SimpleOperation", Code = "var t = 3 + 4;" });
 
 				var executor = Compiler.Compile(Configuration);
 
@@ -35,7 +35,7 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
 			Assert.That(() =>
 			{
 				var subject = new TestSubject { Id = 1, Data = "data", Date = DateTime.Now };
-				var action = new TestAction { Name = "SimpleOperation", Code = "Subject.Data = \"changed data\";" };
+				var action = new TestSubjectAction { Name = "SimpleOperation", Code = "Subject.Data = \"changed data\";" };
 				
 				Configuration.Actions.Add(action);
 				
@@ -55,7 +55,7 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
 			Assert.That(() =>
 			{
 				var subject = new TestSubject { Id = 1, Data = "data", Date = DateTime.Now };
-				var action = new TestAction { Name = "ReadSubject", Code = "var temp = Subject.Data;" };
+				var action = new TestSubjectAction { Name = "ReadSubject", Code = "var temp = Subject.Data;" };
 
 				Configuration.Actions.Add(action);
 
@@ -71,8 +71,8 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
 		public void Should_Get_And_Set_Runtime_Value()
 		{
 			var subject = new TestSubject { Id = 1, Data = "data", Date = DateTime.Now };
-			var action = new TestAction { Name = "SetValue", Code = "Save(\"key\", \"test value\");" };
-			var action2 = new TestAction { Name = "GetValue", Code = "Subject.Data = Read(\"key\");" };
+			var action = new TestSubjectAction { Name = "SetValue", Code = "Save(\"key\", \"test value\");" };
+			var action2 = new TestSubjectAction { Name = "GetValue", Code = "Subject.Data = Read(\"key\");" };
 
 			Configuration.Actions.Add(action);
 			Configuration.Actions.Add(action2);

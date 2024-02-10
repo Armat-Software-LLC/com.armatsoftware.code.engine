@@ -11,12 +11,7 @@ namespace ArmatSoftware.Code.Engine.Compiler.DI
         public void Cache<T>(IExecutor<T> executor)
             where T : class, new()
         {
-            if (executor == null)
-            {
-                throw new ArgumentNullException(nameof(executor));
-            }
-            
-            _cache[typeof(T)] = executor;
+            _cache[typeof(T)] = executor ?? throw new ArgumentNullException(nameof(executor));
         }
 
         public IExecutor<T> Retrieve<T>()

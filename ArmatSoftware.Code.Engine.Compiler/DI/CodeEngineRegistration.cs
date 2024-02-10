@@ -15,7 +15,7 @@ namespace ArmatSoftware.Code.Engine.Compiler.DI
     /// Initialize the code engine framework within the executing application
     /// and ready it for use.
     /// </summary>
-    public static class CompilerRegistration
+    public static class CodeEngineRegistration
     {
         /// <summary>
         /// Use this method to register the code engine within the executing application.
@@ -35,13 +35,13 @@ namespace ArmatSoftware.Code.Engine.Compiler.DI
                 services.AddScoped<ICodeEngineLogger, CodeEngineFileLogger>();
             }
 
-            if (options.Storage != null)
+            if (options.Provider != null)
             {
-                services.AddScoped<ICodeEngineStorage>(provider => options.Storage);
+                services.AddScoped<IActionProvider>(provider => options.Provider);
             }
             else
             {
-                services.AddScoped<ICodeEngineStorage, CodeEngineFileStorage>();
+                services.AddScoped<IActionProvider, CodeEngineActionProvider>();
             }
             
             RegisterAllHardcodedExecutors(services);
@@ -54,7 +54,7 @@ namespace ArmatSoftware.Code.Engine.Compiler.DI
         /// <param name="services"><c>IServiceCollection</c> for the app builder</param>
         private static void RegisterExecutorFactory(IServiceCollection services)
         {
-            services.AddSingleton<ICodeEngineExecutorFactory, CodeEngineExecutorFactory>();
+            services.AddScoped<ICodeEngineExecutorFactory, CodeEngineExecutorFactory>();
             services.AddSingleton<ICodeEngineExecutorCache, CodeEngineExecutorCache>();
             services.AddScoped(typeof(IExecutor<>), typeof(Executor<>));
         }
@@ -141,8 +141,7 @@ namespace ArmatSoftware.Code.Engine.Compiler.DI
             /// Optionally, provide a storage to use for the code engine.
             /// If none provided, a <c>CodeEngineFileStorage</c> will be used.
             /// </summary>
-            public ICodeEngineStorage Storage { get; set; }
+            public IActionProvider Provider { get; set; }
         }
-        
     }
 }

@@ -11,7 +11,7 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
     /// <summary>
     /// Demonstrating several comparison and benchmarking tests
     /// </summary>
-    [TestFixture]
+    [TestFixture, TestOf(typeof(CSharpCompiler<>))]
     internal class CompilerPerformanceTests : CompilerPerformanceTestBase<CompilerPerformanceTestSubject>
     {
         /// <summary>
@@ -19,7 +19,7 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
         /// Beware of the limit on the number of methods allowed in a class.
         /// </summary>
         /// <param name="n"></param>
-        [Test, Category("performance"), TestOf(typeof(CSharpCompiler<>))]
+        [Test, Category("performance")]
         public void Should_Execute_N_Simple_Operations_In_Under_One_Second([Values(10000)] int n)
         {
             Assert.LessOrEqual(n, MaximumTestOperationsCount);
@@ -39,7 +39,7 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
             }, Throws.Nothing);
         }
         
-        [Test, Category("performance"), TestOf(typeof(CSharpCompiler<>))]
+        [Test, Category("performance")]
         public void Should_Execute_No_Slower_Than_Hardcoded_Expression([Values(100000)] int n)
         {
             Assert.That(() =>
@@ -71,7 +71,7 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
             }, Throws.TypeOf<AssertionException>());
         }
         
-        [Test, Category("performance"), TestOf(typeof(CSharpCompiler<>))]
+        [Test, Category("performance")]
         public void Should_Execute_No_Slower_Than_Hardcoded_Reflection_Expression([Values(10000)] int n)
         {
             Assert.That(() =>
@@ -154,7 +154,7 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
             
             for (var index = 0; index < n; index++)
             {
-                Configuration.Actions.Add(new CompilerPerformanceTestAction<S>
+                Configuration.Actions.Add(new CompilerPerformanceTestSubjectAction<S>
                 {
                     Name = $"Action{index}",
                     Code = $"var result = {Operations[index, 0]} + {Operations[index, 1]};"
@@ -170,7 +170,7 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
 
             Compiler = new CSharpCompiler<S>();
             
-            Configuration.Actions.Add(new CompilerPerformanceTestAction<S>
+            Configuration.Actions.Add(new CompilerPerformanceTestSubjectAction<S>
             {
                 Name = "SingleAction",
                 Code = "Subject.Result = Subject.Operand1 + Subject.Operand2;"
@@ -187,9 +187,11 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
         public int Result { get; set; }
     }
 
-    public class CompilerPerformanceTestAction<S> : IAction<S> where S : CompilerPerformanceTestSubject
+    public class CompilerPerformanceTestSubjectAction<S> : ISubjectAction<S> where S : CompilerPerformanceTestSubject
     {
         public string Name { get; set; }
         public string Code { get; set; }
+        
+        public int Order { get; set; }
     }
 }

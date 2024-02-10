@@ -1,20 +1,27 @@
 using System;
+using System.Linq;
 using ArmatSoftware.Code.Engine.Compiler.Base;
 using ArmatSoftware.Code.Engine.Compiler.CSharp;
 using ArmatSoftware.Code.Engine.Compiler.Vb;
 using ArmatSoftware.Code.Engine.Core;
+using ArmatSoftware.Code.Engine.Core.Storage;
 
 namespace ArmatSoftware.Code.Engine.Compiler.DI
 {
     public class CodeEngineExecutorFactory : ICodeEngineExecutorFactory
     {
-        private readonly CompilerRegistration.CodeEngineOptions _options;
+        private readonly CodeEngineRegistration.CodeEngineOptions _options;
         
         private readonly ICodeEngineExecutorCache _cache;
-            
-        public CodeEngineExecutorFactory(CompilerRegistration.CodeEngineOptions options, ICodeEngineExecutorCache cache)
+        private readonly IActionProvider _actionProvider;
+
+        public CodeEngineExecutorFactory(
+            CodeEngineRegistration.CodeEngineOptions options,
+            IActionProvider actionProvider,
+            ICodeEngineExecutorCache cache)
         {
             _options = options ?? throw new ArgumentNullException(nameof(options));
+            _actionProvider = actionProvider ?? throw new ArgumentNullException(nameof(actionProvider));
             _cache = cache ?? throw new ArgumentNullException(nameof(cache));
         }
         
@@ -35,12 +42,7 @@ namespace ArmatSoftware.Code.Engine.Compiler.DI
                 return cachedExecutor.Clone();
             }
             
-            // add the default actions
-            configuration.Actions.Add(new Action<T>
-            {
-                Name = "UpdateData",
-                Code = _options.Storage.Retrieve(typeof(T), Guid.Empty)
-            });
+            configuration.Actions = _actionProvider.Retrieve<T>().ToList();
             
             // compile new executors and cache them before returning
             switch (_options.CompilerType)
@@ -66,11 +68,13 @@ namespace ArmatSoftware.Code.Engine.Compiler.DI
         }
     }
     
-    public class Action<T> : IAction<T>
+    public class SubjectAction<T> : ISubjectAction<T>
         where T : class, new()
     {
         public string Name { get; set; }
         public string Code { get; set; }
+        
+        public int Order { get; set; }
     }
 }
 
