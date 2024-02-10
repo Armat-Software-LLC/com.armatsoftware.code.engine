@@ -5,7 +5,7 @@ using NUnit.Framework;
 
 namespace ArmatSoftware.Code.Engine.Tests.Unit
 {
-    [TestFixture]
+    [TestFixture, TestOf(typeof(CodeEngineExecutorCache))]
     public class CodeEngineExecutorCacheTests : CodeEngineExecutorCacheTestBuilder
     {
         [Test]

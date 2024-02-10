@@ -1,13 +1,13 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
 
 namespace ArmatSoftware.Code.Engine.Storage.File.Tests;
 
 [TestFixture]
 public class StoredSubjectActionTests
 {
-    public IStoredSubjectAction<TestSubject> Target { get; set; }
+    public StoredSubjectAction<TestSubject> Target { get; set; }
 
     [SetUp]
     public void Initialize()
@@ -15,22 +15,74 @@ public class StoredSubjectActionTests
         Target = new StoredSubjectAction<TestSubject>();
         Target.Name = "Test";
         Target.Order = 1;
+        Target.Revisions = new StoredRevisionList<TestSubject>();
     }
     
     [Test]
-    public void Should_Fail_To_Add_Revision_Object()
+    public void Should_Add_First_Revision()
     {
         Assert.That(() => 
         {
-            Target.Add(new StoredActionRevision<TestSubject>
+            Target.Revisions.Add(new StoredActionRevision<TestSubject>
             {
-                Active = true,
-                Author = "Test",
-                Code = "Test",
-                Comment = "Test",
+                Active = false,
+                Author = "Author 1",
+                Code = "sample code 1",
+                Comment = "sample comment 1",
                 Created = DateTimeOffset.UtcNow,
-                Revision = 1,
-                Hash = "Test"
+                Revision = 1
+            });
+        }, Throws.Nothing);
+    }
+    
+    [Test]
+    public void Should_Add_Two_Revisions()
+    {
+        Assert.That(() => 
+        {
+            Target.Revisions.Add(new StoredActionRevision<TestSubject>
+            {
+                Active = false,
+                Author = "Author 1",
+                Code = "sample code 1",
+                Comment = "sample comment 1",
+                Created = DateTimeOffset.UtcNow,
+                Revision = 1
+            });
+            Target.Revisions.Add(new StoredActionRevision<TestSubject>
+            {
+                Active = false,
+                Author = "Author 2",
+                Code = "sample code 2",
+                Comment = "sample comment 2",
+                Created = DateTimeOffset.UtcNow,
+                Revision = 2
+            });
+        }, Throws.Nothing);
+    }
+    
+    [Test]
+    public void Should_Fail_To_Add_Duplicate_Revisions()
+    {
+        Assert.That(() => 
+        {
+            Target.Revisions.Add(new StoredActionRevision<TestSubject>
+            {
+                Active = false,
+                Author = "Author 1",
+                Code = "sample code 1",
+                Comment = "sample comment 1",
+                Created = DateTimeOffset.UtcNow,
+                Revision = 1
+            });
+            Target.Revisions.Add(new StoredActionRevision<TestSubject>
+            {
+                Active = false,
+                Author = "Author 2",
+                Code = "sample code 2",
+                Comment = "sample comment 2",
+                Created = DateTimeOffset.UtcNow,
+                Revision = 1
             });
         }, Throws.InvalidOperationException);
     }
@@ -40,8 +92,8 @@ public class StoredSubjectActionTests
     {
         Assert.That(() => 
         {
-            Target.Add(null);
-        }, Throws.InvalidOperationException);
+            Target.Revisions.Add(null);
+        }, Throws.ArgumentNullException);
     }
     
     [Test]
@@ -49,7 +101,7 @@ public class StoredSubjectActionTests
     {
         Assert.That(() =>
         {
-            Target.Remove(null);
+            Target.Revisions.Remove(null);
         }, Throws.InvalidOperationException);
     }
         
@@ -58,7 +110,7 @@ public class StoredSubjectActionTests
     {
         Assert.That(() =>
         {
-            Target.Clear();
+            Target.Revisions.Clear();
         }, Throws.InvalidOperationException);
     }
     
@@ -68,7 +120,7 @@ public class StoredSubjectActionTests
         Assert.That(() =>
         {
             Target.Update(null, "valid author", "valid comment");
-        }, Throws.ArgumentException);
+        }, Throws.TypeOf<ValidationException>());
     }
     
     [Test]
@@ -77,7 +129,7 @@ public class StoredSubjectActionTests
         Assert.That(() =>
         {
             Target.Update(string.Empty, "valid author", "valid comment");
-        }, Throws.ArgumentException);
+        }, Throws.TypeOf<ValidationException>());
     }
     
     [Test]
@@ -86,7 +138,7 @@ public class StoredSubjectActionTests
         Assert.That(() =>
         {
             Target.Update(" ", "valid author", "valid comment");
-        }, Throws.ArgumentException);
+        }, Throws.TypeOf<ValidationException>());
     }
     
     [Test]
@@ -95,7 +147,7 @@ public class StoredSubjectActionTests
         Assert.That(() =>
         {
             Target.Update("valid code", null, "valid comment");
-        }, Throws.ArgumentException);
+        }, Throws.TypeOf<ValidationException>());
     }
     
     [Test]
@@ -104,7 +156,7 @@ public class StoredSubjectActionTests
         Assert.That(() =>
         {
             Target.Update("valid code", string.Empty, "valid comment");
-        }, Throws.ArgumentException);
+        }, Throws.TypeOf<ValidationException>());
     }
     
     [Test]
@@ -113,7 +165,7 @@ public class StoredSubjectActionTests
         Assert.That(() =>
         {
             Target.Update("valid code", " ", "valid comment");
-        }, Throws.ArgumentException);
+        }, Throws.TypeOf<ValidationException>());
     }
     
     [Test]
@@ -122,7 +174,7 @@ public class StoredSubjectActionTests
         Assert.That(() =>
         {
             Target.Update("valid code", "valid author", null);
-        }, Throws.ArgumentException);
+        }, Throws.TypeOf<ValidationException>());
     }
     
     [Test]
@@ -131,7 +183,7 @@ public class StoredSubjectActionTests
         Assert.That(() =>
         {
             Target.Update("valid code", "valid author", string.Empty);
-        }, Throws.ArgumentException);
+        }, Throws.TypeOf<ValidationException>());
     }
     
     [Test]
@@ -140,13 +192,13 @@ public class StoredSubjectActionTests
         Assert.That(() =>
         {
             Target.Update("valid code", "valid author", " ");
-        }, Throws.ArgumentException);
+        }, Throws.TypeOf<ValidationException>());
     }
     
     [Test]
     public void Should_Update_Revisions()
     {
         Target.Update("valid code", "valid author", "valid comment");
-        Assert.That(Target.Count, Is.EqualTo(1));
+        Assert.That(Target.Revisions.Count, Is.EqualTo(1));
     }
 }

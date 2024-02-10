@@ -1,65 +1,103 @@
-using System.Collections;
+using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace ArmatSoftware.Code.Engine.Storage.File;
 
-public class StoredActions<T> : IStoredActions<T>
+public class StoredActions<T> : List<StoredSubjectAction<T>>
     where T : class
 {
-    private readonly List<IStoredSubjectAction<T>> _actions = new();
     
-    public IStoredSubjectAction<T> Add(string name)
+    public StoredSubjectAction<T> Add(string name)
     {
-        if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Name cannot be null or empty");
-        
-        if(_actions.Any(i => i.Name == name)) throw new ArgumentException($"Action with name {name} already exists");
-        
-        var order = _actions.OrderByDescending(a => a.Order).FirstOrDefault()?.Order + 1 ?? 1;
+        var order = this.OrderByDescending(a => a.Order).FirstOrDefault()?.Order + 1 ?? 1;
             
         var newAction = new StoredSubjectAction<T>
         {
             Name = name,
-            Order = order
+            Order = order,
+            Revisions = new StoredRevisionList<T>()
         };
         
-        _actions.Add(newAction);
+        Add(newAction); // calling overridden Add method to validate the action
         return newAction;
     }
 
     public void Reorder(string name, int order)
     {
-        var action = _actions.FirstOrDefault(a => a.Name == name) ?? 
+        var action = this.FirstOrDefault(a => a.Name == name) ?? 
                      throw new ArgumentException($"Action with name {name} not found");
+        
+        if (action.Order == order) return;
         
         var directionOfReorder = Math.Sign(order - action.Order);
 
         var shouldBeMoved = directionOfReorder switch
         {
-            -1 => new Func<IStoredSubjectAction<T>, bool>(a =>
-                action.Order > a.Order && a.Order >= order), // action order in decreased (moved up the list)
-            1 => new Func<IStoredSubjectAction<T>, bool>(a =>
-                a.Order == order), // action order in increased (moved down the list)
+            -1 => new Func<StoredSubjectAction<T>, bool>(a =>
+                a.Order >= order && a.Order < action.Order), // action order in decreased (moved up the list)
+            1 => new Func<StoredSubjectAction<T>, bool>(a =>
+                a.Order <= order && a.Order > action.Order), // action order in increased (moved down the list)
         };
             
-        var actionsBetween = _actions.Where(a => shouldBeMoved(a)).ToList();
+        var actionsBetween = this.Where(a => shouldBeMoved(a)).ToList();
         
         foreach (var actionBetween in actionsBetween)
         {
-            actionBetween.Order += directionOfReorder;
+            // have to move the items in the direction opposite to the reorder, thus negation
+            actionBetween.Order += -directionOfReorder;
         }
         
         action.Order = order;
     }
-
-    // clumsy way to prevent ICollection methods from being used
-    public IEnumerator<IStoredSubjectAction<T>> GetEnumerator() => _actions.GetEnumerator();
-    IEnumerator IEnumerable.GetEnumerator() => _actions.GetEnumerator();
-    public void Add(IStoredSubjectAction<T> item) => throw new InvalidOperationException("Use Add(string name, int order) to add actions to a StoredActions<T> object.");
-    public void Clear() => throw new InvalidOperationException("If you think you can easily clear a StoredActions<T> object, you're wrong.");
-    public bool Contains(IStoredSubjectAction<T> item) => _actions.Contains(item);
-    public void CopyTo(IStoredSubjectAction<T>[] array, int arrayIndex) => _actions.CopyTo(array, arrayIndex);
-    public bool Remove(IStoredSubjectAction<T> item) =>
-        throw new InvalidOperationException("Nice try! You can't remove actions from a StoredActions<T> object.");
-    public int Count => _actions.Count;
-    public bool IsReadOnly => ((ICollection<IStoredSubjectAction<T>>)_actions).IsReadOnly;
     
+    // Validation
+
+    private void Validate(StoredSubjectAction<T> newAction)
+    {
+        _ = newAction ?? throw new ArgumentNullException(nameof(newAction));
+
+        var validationResults = new Collection<ValidationResult>();
+        if (!Validator.TryValidateObject(newAction, new ValidationContext(newAction), validationResults, true))
+        {
+            throw new ValidationException($"Revision failed validation: {string.Join(", ", validationResults.Select(r => r.ErrorMessage))}");
+        }
+        
+        if(this.Any(i => i.Name == newAction.Name)) throw new ArgumentException($"Action with name {newAction.Name} already exists");
+    }
+    
+    // List<> overrides
+
+    public void Add(StoredSubjectAction<T> action)
+    {
+        Validate(action);
+        base.Add(action);
+    }
+    
+    public void AddRange(IEnumerable<StoredSubjectAction<T>> collection)
+    {
+        foreach (var action in collection)
+        {
+            Validate(action);
+            base.Add(action);
+        }
+    }
+
+    public void Insert(int index, StoredSubjectAction<T> action)
+    {
+        Validate(action);
+        base.Insert(index, action);
+    }
+    
+    public void InsertRange(int index, IEnumerable<StoredSubjectAction<T>> collection)
+    {
+        foreach (var action in collection)
+        {
+            Validate(action);
+            base.Insert(index, action);
+        }
+    }
+    
+    public void Remove(StoredSubjectAction<T> action) => throw new InvalidOperationException("Cannot remove an action directly from a stored actions");
+    
+    public void Clear() => throw new InvalidOperationException("Cannot clear actions directly from a stored actions");
 }

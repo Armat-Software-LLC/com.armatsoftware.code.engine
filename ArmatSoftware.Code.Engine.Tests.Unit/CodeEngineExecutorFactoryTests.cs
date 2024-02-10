@@ -11,7 +11,7 @@ using NUnit.Framework;
 
 namespace ArmatSoftware.Code.Engine.Tests.Unit
 {
-    [TestFixture]
+    [TestFixture, TestOf(typeof(CodeEngineExecutorFactory))]
     public class CodeEngineExecutorFactoryTests : CodeEngineExecutorFactoryTestBuilder
     {
         [Test]
@@ -91,7 +91,7 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
         protected Mock<ICodeEngineLogger> LoggerMock { get; private set; }
         protected ICodeEngineLogger Logger { get; set; }
 
-        protected IStoredActions<CodeEngineFactoryTestSubject> Actions { get; set; }
+        protected StoredActions<CodeEngineFactoryTestSubject> Actions { get; set; }
         
         [SetUp]
         public void Setup()

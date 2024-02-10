@@ -1,5 +1,6 @@
 using ArmatSoftware.Code.Engine.Compiler.DI;
 using ArmatSoftware.Code.Engine.Logger.File;
+using ArmatSoftware.Code.Engine.Storage.File.DI;
 using ArmatSoftware.Code.Engine.Tester.WebApi;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,13 +24,23 @@ builder.Services.AddControllers()
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
+// Spefy that you are going to use code engine
+// to enable the injection of the code engine implementations
 builder.Services.UseCodeEngine(new()
 {
+    // compiler type dictates in which language your power users
+    // will be writing the custom logic for code engine
     CompilerType = CompilerTypeEnum.CSharp,
+    // specify unique namespace for the code engine no to mix with your code
     CodeEngineNamespace = "com.armatsoftware.code.engine.executors",
+    // specify the custom code provider or don't set to use the default one
     Logger = new CodeEngineFileLogger("./test.log"),
-    // Storage = new CustomCodeStorage()
+    // likewise, optionally, use your own custom provider for the storage
+    // Provider = new CustomCodeProvider()
 });
+
+builder.Services.UseCodeEngineFileStorage();
 
 var app = builder.Build();
 

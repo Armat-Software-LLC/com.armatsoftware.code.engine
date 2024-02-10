@@ -1,3 +1,4 @@
+using ArmatSoftware.Code.Engine.Core;
 using ArmatSoftware.Code.Engine.Core.Logging;
 using Microsoft.Extensions.Configuration;
 
@@ -26,24 +27,20 @@ public class CodeEngineActionRepository : IActionRepository
 
         _fileIOAdapter = new FileIOAdapter(fileStorageRootPath, fileExtension, _logger);
     }
-    
-    public void Store<T>(IStoredActions<T> actions) where T : class
+
+    public IEnumerable<ISubjectAction<T>> GetActions<T>() where T : class
     {
-        _logger.Info("Storing actions");
-        _fileIOAdapter.Write(actions);
+        var storedActions = _fileIOAdapter.Read<T>();
+        return storedActions;
     }
 
-    public IStoredActions<T> Retrieve<T>() where T : class
-    {
-        return _fileIOAdapter.Read<T>();
-    }
-
-    public IStoredSubjectAction<T> AddAction<T>(string name) where T : class
+    public void AddAction<T>(string name, string code, string author, string comment) where T : class
     {
         var actions = _fileIOAdapter.Read<T>();
         var newAction = actions.Add(name);
+        newAction.Update(code, author, comment);
+        newAction.Activate(1);
         _fileIOAdapter.Write(actions);
-        return newAction;
     }
 
     public void UpdateAction<T>(string name, string code, string author, string comment) where T : class
@@ -56,6 +53,16 @@ public class CodeEngineActionRepository : IActionRepository
 
     public void ActivateRevision<T>(string actionName, int revision) where T : class
     {
-        throw new NotImplementedException();
+        var actions = _fileIOAdapter.Read<T>();
+        var action = actions.First(a => a.Name == actionName);
+        action.Activate(revision);
+        _fileIOAdapter.Write(actions);
+    }
+
+    public void ReorderAction<T>(string actionName, int newOrder) where T : class
+    {
+        var actions = _fileIOAdapter.Read<T>();
+        actions.Reorder(actionName, newOrder);
+        _fileIOAdapter.Write(actions);
     }
 }

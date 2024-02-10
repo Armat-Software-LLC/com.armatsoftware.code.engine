@@ -1,31 +1,28 @@
-namespace ArmatSoftware.Code.Engine.Storage;
+using System.Collections.Generic;
+
+namespace ArmatSoftware.Code.Engine.Core;
 
 /// <summary>
-/// Repository streamlines working with stored actions
+/// Repository streamlines management of stored actions.
+/// Use <c>ArmatSoftware.Code.Engine.Storage.File.DI.CodeEngineFileStorageRegistration.UseCodeEngineFileStorage()</c> to register
+/// OOB implementation or provide your own.
 /// </summary>
 public interface IActionRepository
 {
-    /// <summary>
-    /// Store the entire set of actions
-    /// </summary>
-    /// <param name="actions"></param>
-    /// <typeparam name="T"></typeparam>
-    void Store <T>(IStoredActions<T> actions) where T : class;
-    
+   
     /// <summary>
     /// retrieve the entire set of actions
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    IStoredActions<T> Retrieve<T>() where T : class;
+    IEnumerable<ISubjectAction<T>> GetActions<T>() where T : class;
     
     /// <summary>
     /// Add a new action for subject type T
     /// </summary>
     /// <param name="name"></param>
     /// <typeparam name="T"></typeparam>
-    /// <returns></returns>
-    IStoredSubjectAction<T> AddAction<T>(string name) where T : class;
+    void AddAction<T>(string name, string code, string author, string comment) where T : class;
     
     /// <summary>
     /// Update an existing action for subject of type T
@@ -41,5 +38,13 @@ public interface IActionRepository
     /// </summary>
     /// <param name="revision"></param>
     /// <typeparam name="T"></typeparam>
-    void ActivateRevision<T>(string actionName, int revision) where T : class;
+    void ActivateRevision<T>(string name, int revision) where T : class;
+    
+    /// <summary>
+    /// Change the order of execution of the actions
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="newOrder"></param>
+    /// <typeparam name="T"></typeparam>
+    void ReorderAction<T>(string actionName, int newOrder) where T : class;
 }

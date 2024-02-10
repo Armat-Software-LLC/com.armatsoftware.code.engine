@@ -2,11 +2,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ArmatSoftware.Code.Engine.Core\ArmatSoftware.Code.Engine.Core.csproj" />
-    <ProjectReference Include="..\ArmatSoftware.Code.Engine.Storage\ArmatSoftware.Code.Engine.Storage.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="3.1.32" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="NuGet.Build.Packaging" Version="0.2.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

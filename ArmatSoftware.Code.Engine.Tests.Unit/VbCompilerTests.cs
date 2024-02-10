@@ -6,7 +6,7 @@ using NUnit.Framework;
 
 namespace ArmatSoftware.Code.Engine.Tests.Unit
 {
-	[TestFixture]
+	[TestFixture, TestOf(typeof(VbCompiler<>))]
 	public class VbCompilerTests : VbCompilerTestBase<TestSubject>
 	{
 		[SetUp]

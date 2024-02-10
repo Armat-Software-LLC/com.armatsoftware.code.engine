@@ -1,6 +1,5 @@
 using System.Diagnostics;
 using ArmatSoftware.Code.Engine.Core;
-using ArmatSoftware.Code.Engine.Storage.File;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ArmatSoftware.Code.Engine.Tester.WebApi;
@@ -38,18 +37,50 @@ public class CodeEngineController : ControllerBase
     }
     
     [HttpPost, Route("create")]
-    public async Task<IActionResult> Fail([FromBody] string code,  CancellationToken token)
+    public async Task<IActionResult> Create([FromBody] ActionUpdatePostModel codeUpdateModel, IActionRepository repo,  CancellationToken token)
     {
-        Debug.WriteLine("Code: " + code);
+        Debug.WriteLine("Code: " + codeUpdateModel);
 
-        StoredActions<StringOnlySubject> actions = new();
+        repo.AddAction<StringOnlySubject>(codeUpdateModel.ActionName, codeUpdateModel.Code, codeUpdateModel.Author, codeUpdateModel.Comment);
         
-        var action = actions.Add("StringAction");
-        action.Update(code, "author", "comment");
-        action.Activate(1);
+        var result = repo.GetActions<StringOnlySubject>();
         
+        return await Task.FromResult(new OkObjectResult(result));
+    }
+    
+    [HttpPost, Route("update")]
+    public async Task<IActionResult> Update([FromBody] ActionUpdatePostModel codeUpdateModel, IActionRepository repo,  CancellationToken token)
+    {
+        Debug.WriteLine("Code: " + codeUpdateModel);
+
+        repo.UpdateAction<StringOnlySubject>(codeUpdateModel.ActionName, codeUpdateModel.Code, codeUpdateModel.Author, codeUpdateModel.Comment);
+
+        var result = repo.GetActions<StringOnlySubject>();
         
+        return await Task.FromResult(new OkObjectResult(result));
+    }
+    
+    [HttpPost, Route("reorder")]
+    public async Task<IActionResult> Reorder([FromBody] ActionReorderPostModel actionReorderPostModel, IActionRepository repo,  CancellationToken token)
+    {
+        Debug.WriteLine("Code: " + actionReorderPostModel);
+
+        repo.ReorderAction<StringOnlySubject>(actionReorderPostModel.ActionName, actionReorderPostModel.NewOrder);
+
+        var result = repo.GetActions<StringOnlySubject>();
         
-        return await Task.FromResult(new OkResult());
+        return await Task.FromResult(new OkObjectResult(result));
+    }
+    
+    [HttpPost, Route("activate")]
+    public async Task<IActionResult> Activate([FromBody] RevisionActivationPostModel actionActivatePostModel, IActionRepository repo,  CancellationToken token)
+    {
+        Debug.WriteLine("Code: " + actionActivatePostModel);
+
+        repo.ActivateRevision<StringOnlySubject>(actionActivatePostModel.ActionName, actionActivatePostModel.RevisionId);
+
+        var result = repo.GetActions<StringOnlySubject>();
+        
+        return await Task.FromResult(new OkObjectResult(result));
     }
 }

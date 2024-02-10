@@ -1,6 +1,7 @@
 using System.Security;
 using System.Xml.Serialization;
 using ArmatSoftware.Code.Engine.Core.Logging;
+using Newtonsoft.Json;
 
 namespace ArmatSoftware.Code.Engine.Storage.File;
 
@@ -53,7 +54,7 @@ public class FileIOAdapter
 
     }
     
-    public IStoredActions<T> Read<T>()
+    public StoredActions<T> Read<T>()
         where T : class
     {
         var pathInfo = GeneratePath(typeof(T));
@@ -63,24 +64,22 @@ public class FileIOAdapter
             return new StoredActions<T>();
         }
         
-        using (var fileStream = new FileStream(pathInfo.ToString(), FileMode.Open))
-        {
-            _logger.Info($"Reading code file for {typeof(T).FullName} from {pathInfo}.");
-            var serializer = new XmlSerializer(typeof(T));
-            return (IStoredActions<T>)serializer.Deserialize(fileStream);
-        }
+        var content = System.IO.File.ReadAllText(pathInfo.ToString());
+        return JsonConvert.DeserializeObject<StoredActions<T>>(content) ?? new StoredActions<T>();
     }
     
-    public void Write<T>(IStoredActions<T> actions)
+    public void Write<T>(StoredActions<T> actions)
         where T : class
     {
         var pathInfo = GeneratePath(typeof(T));
-        using (var fileStream = new FileStream(pathInfo.ToString(), FileMode.Create))
+        
+        if (!Directory.Exists(pathInfo.DirectoryPath))
         {
-            _logger.Info($"Writing code file for {typeof(T).FullName} to {pathInfo}.");
-            var serializer = new XmlSerializer(typeof(IStoredActions<T>));
-            serializer.Serialize(fileStream, actions);
+            Directory.CreateDirectory(pathInfo.DirectoryPath);
         }
+        
+        var content = JsonConvert.SerializeObject(actions);
+        System.IO.File.WriteAllText(pathInfo.ToString(), content);
     }
     
     private GeneratedPathInfo GeneratePath(Type subjectType)
