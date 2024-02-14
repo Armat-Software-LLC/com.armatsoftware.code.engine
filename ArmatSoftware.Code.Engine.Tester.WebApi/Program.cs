@@ -25,7 +25,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 
-// Spefy that you are going to use code engine
+// Specify that you are going to use code engine
 // to enable the injection of the code engine implementations
 builder.Services.UseCodeEngine(new()
 {
@@ -35,9 +35,11 @@ builder.Services.UseCodeEngine(new()
     // specify unique namespace for the code engine no to mix with your code
     CodeEngineNamespace = "com.armatsoftware.code.engine.executors",
     // specify the custom code provider or don't set to use the default one
-    Logger = new CodeEngineFileLogger("./test.log"),
+    Logger = new CodeEngineFileLogger("/tmp/test.log"),
     // likewise, optionally, use your own custom provider for the storage
     // Provider = new CustomCodeProvider()
+    // set the cache expiration time in minutes
+    CacheExpirationMinutes = 1
 });
 
 builder.Services.UseCodeEngineFileStorage();
