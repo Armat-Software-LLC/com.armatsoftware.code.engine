@@ -8,8 +8,8 @@ namespace ArmatSoftware.Code.Engine.Tester.WebApi;
 [Route("api/[controller]")]
 public class CodeEngineController : ControllerBase
 {
-    [HttpGet, Route("get1")]
-    public async Task<IActionResult> GetTestPayload(IExecutor<StringOnlySubject> executor, CancellationToken token)
+    [HttpGet, Route("execute_default")]
+    public async Task<IActionResult> Execute_Default(IExecutor<StringOnlySubject> executor, CancellationToken token)
     {
         executor.Subject = new StringOnlySubject();
         executor.Execute();
@@ -17,23 +17,31 @@ public class CodeEngineController : ControllerBase
         return await Task.FromResult(new OkObjectResult(executor.Subject.Data));
     }
     
-    [HttpGet, Route("get2")]
-    public async Task<IActionResult> GetTestPayload2(IExecutor<NumericAndStringSubject> executor, CancellationToken token)
+    [HttpGet, Route("execute_with_key")]
+    public async Task<IActionResult> Execute_Key(string key, IExecutorCatalog<StringOnlySubject> catalog, CancellationToken token)
     {
-        executor.Subject = new NumericAndStringSubject();
+        var executor = catalog.ForKey(key);
+        
+        executor.Subject = new StringOnlySubject();
         executor.Execute();
         
-        return await Task.FromResult(new OkObjectResult(executor.Subject.NumericData + " " + executor.Subject.StringData));
+        return await Task.FromResult(new OkObjectResult(executor.Subject.Data));
     }
     
-    [HttpPost, Route("fail")]
-    public async Task<IActionResult> Fail([FromBody] StringOnlySubject subject, IExecutor<NumericAndStringSubject> executor, CancellationToken token)
+    [HttpGet, Route("list")]
+    public async Task<IActionResult> List(IActionRepository repo, CancellationToken token)
     {
-        if (ModelState.TryAddModelError("Subject", "Subject is required"))
-        {
-            Debug.WriteLine("Added fail state to model");
-        }
-        return await Task.FromResult(new OkResult());
+        var result = repo.GetActions<StringOnlySubject>();
+        
+        return await Task.FromResult(new OkObjectResult(result));
+    }
+    
+    [HttpGet, Route("list_with_key")]
+    public async Task<IActionResult> List_Key(string key, IActionRepository repo, CancellationToken token)
+    {
+        var result = repo.GetActions<StringOnlySubject>(key);
+        
+        return await Task.FromResult(new OkObjectResult(result));
     }
     
     [HttpPost, Route("create")]
@@ -41,9 +49,9 @@ public class CodeEngineController : ControllerBase
     {
         Debug.WriteLine("Code: " + codeUpdateModel);
 
-        repo.AddAction<StringOnlySubject>(codeUpdateModel.ActionName, codeUpdateModel.Code, codeUpdateModel.Author, codeUpdateModel.Comment);
+        repo.AddAction<StringOnlySubject>(codeUpdateModel.ActionName, codeUpdateModel.Code, codeUpdateModel.Author, codeUpdateModel.Comment, codeUpdateModel.Key);
         
-        var result = repo.GetActions<StringOnlySubject>();
+        var result = repo.GetActions<StringOnlySubject>(codeUpdateModel.Key);
         
         return await Task.FromResult(new OkObjectResult(result));
     }
@@ -53,9 +61,9 @@ public class CodeEngineController : ControllerBase
     {
         Debug.WriteLine("Code: " + codeUpdateModel);
 
-        repo.UpdateAction<StringOnlySubject>(codeUpdateModel.ActionName, codeUpdateModel.Code, codeUpdateModel.Author, codeUpdateModel.Comment);
+        repo.UpdateAction<StringOnlySubject>(codeUpdateModel.ActionName, codeUpdateModel.Code, codeUpdateModel.Author, codeUpdateModel.Comment, codeUpdateModel.Key);
 
-        var result = repo.GetActions<StringOnlySubject>();
+        var result = repo.GetActions<StringOnlySubject>(codeUpdateModel.Key);
         
         return await Task.FromResult(new OkObjectResult(result));
     }
@@ -65,9 +73,9 @@ public class CodeEngineController : ControllerBase
     {
         Debug.WriteLine("Code: " + actionReorderPostModel);
 
-        repo.ReorderAction<StringOnlySubject>(actionReorderPostModel.ActionName, actionReorderPostModel.NewOrder);
+        repo.ReorderAction<StringOnlySubject>(actionReorderPostModel.ActionName, actionReorderPostModel.NewOrder, actionReorderPostModel.Key);
 
-        var result = repo.GetActions<StringOnlySubject>();
+        var result = repo.GetActions<StringOnlySubject>(actionReorderPostModel.Key);
         
         return await Task.FromResult(new OkObjectResult(result));
     }
@@ -77,9 +85,9 @@ public class CodeEngineController : ControllerBase
     {
         Debug.WriteLine("Code: " + actionActivatePostModel);
 
-        repo.ActivateRevision<StringOnlySubject>(actionActivatePostModel.ActionName, actionActivatePostModel.RevisionId);
+        repo.ActivateRevision<StringOnlySubject>(actionActivatePostModel.ActionName, actionActivatePostModel.RevisionId, actionActivatePostModel.Key);
 
-        var result = repo.GetActions<StringOnlySubject>();
+        var result = repo.GetActions<StringOnlySubject>(actionActivatePostModel.Key);
         
         return await Task.FromResult(new OkObjectResult(result));
     }

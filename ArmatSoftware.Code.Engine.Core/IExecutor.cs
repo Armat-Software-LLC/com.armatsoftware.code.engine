@@ -3,13 +3,13 @@
 	/// <summary>
 	/// Executes one or more actions against the subject
 	/// </summary>
-	/// <typeparam name="S">Subject of type S</typeparam>
-	public interface IExecutor<S> : IExecutionContext where S : class
+	/// <typeparam name="TSubject">Subject of type S</typeparam>
+	public interface IExecutor<TSubject> : IExecutionContext where TSubject : class
 	{
 		/// <summary>
 		/// Subject of the action execution
 		/// </summary>
-		S Subject { get; set; }
+		TSubject Subject { get; set; }
 
 		/// <summary>
 		/// Execute the actions
@@ -21,6 +21,6 @@
 		/// without using singletons or activating new instances
 		/// </summary>
 		/// <returns></returns>
-		IExecutor<S> Clone();
+		IExecutor<TSubject> Clone();
 	}
 }

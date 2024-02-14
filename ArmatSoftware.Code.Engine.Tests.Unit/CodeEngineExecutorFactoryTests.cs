@@ -4,8 +4,9 @@ using ArmatSoftware.Code.Engine.Compiler.DI;
 using ArmatSoftware.Code.Engine.Core;
 using ArmatSoftware.Code.Engine.Core.Logging;
 using ArmatSoftware.Code.Engine.Core.Storage;
-using ArmatSoftware.Code.Engine.Storage;
 using ArmatSoftware.Code.Engine.Storage.File;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Options;
 using Moq;
 using NUnit.Framework;
 
@@ -36,7 +37,7 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
         {
             Assert.That(() =>
             {
-                Options = null;
+                RegistrationOptions = null;
                 Build();
             }, Throws.ArgumentNullException);
         }
@@ -71,7 +72,7 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
             Assert.That(() =>
             {
                 Build();
-                Options.CodeEngineNamespace = null;
+                RegistrationOptions.CodeEngineNamespace = null;
                 Target.Provide<CodeEngineFactoryTestSubject>();
             }, Throws.ArgumentNullException);
         }
@@ -81,7 +82,7 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
     {
         protected ICodeEngineExecutorFactory Target { get; private set; }
         
-        protected CodeEngineRegistration.CodeEngineOptions Options { get; set; }
+        protected CodeEngineOptions RegistrationOptions { get; set; }
         
         protected ICodeEngineExecutorCache Cache { get; set; }
         
@@ -90,6 +91,10 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
         
         protected Mock<ICodeEngineLogger> LoggerMock { get; private set; }
         protected ICodeEngineLogger Logger { get; set; }
+        
+        // protected Mock<IMemoryCache> MemoryCacheMock { get; private set; }
+        
+        protected IMemoryCache MemCache { get; set; }
 
         protected StoredActions<CodeEngineFactoryTestSubject> Actions { get; set; }
         
@@ -102,26 +107,34 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
             action.Activate(1);
             
             StorageMock = new Mock<IActionProvider>();
-            StorageMock.Setup(x => x.Retrieve<CodeEngineFactoryTestSubject>())
+            StorageMock.Setup(x => x.Retrieve<CodeEngineFactoryTestSubject>(It.IsAny<string>()))
                 .Returns(Actions.ToList());
             LoggerMock = new Mock<ICodeEngineLogger>();
+            // MemoryCacheMock = new Mock<IMemoryCache>();
             
             Provider = StorageMock.Object;
             Logger = LoggerMock.Object;
-            Cache = new CodeEngineExecutorCache();
+            // MemoryCache = MemoryCacheMock.Object;
             
-            Options = new CodeEngineRegistration.CodeEngineOptions
+            RegistrationOptions = new CodeEngineOptions
             {
                 CodeEngineNamespace = "ArmatSoftware.Code.Engine.Tests.Unit",
                 CompilerType = CompilerTypeEnum.CSharp,
                 Provider = Provider,
                 Logger = Logger
             };
+            
+            MemCache = new MemoryCache(Options.Create(new MemoryCacheOptions()
+            {
+                ExpirationScanFrequency = TimeSpan.FromMinutes(1)
+            }));
+            
+            Cache = new CodeEngineExecutorCache(MemCache, RegistrationOptions);
         }
         
         public void Build()
         {
-            Target = new CodeEngineExecutorFactory(Options, Provider, Cache);
+            Target = new CodeEngineExecutorFactory(RegistrationOptions, Provider, Cache);
         }
     }
 

@@ -1,44 +1,56 @@
 using System;
-using System.Collections.Generic;
 using ArmatSoftware.Code.Engine.Core;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace ArmatSoftware.Code.Engine.Compiler.DI
 {
-    public class CodeEngineExecutorCache : ICodeEngineExecutorCache
+    public class CodeEngineExecutorCache(IMemoryCache cacheContainer, CodeEngineOptions options)
+        : ICodeEngineExecutorCache
     {
-        private readonly IDictionary<Type, object> _cache = new Dictionary<Type, object>();
+        private const string CacheKeyPrefix = "CodeEngineExecutorCache";
+
+        private readonly IMemoryCache _cache = cacheContainer ?? throw new ArgumentNullException(nameof(cacheContainer));
+        private readonly double _expiration = options.CacheExpirationMinutes;
+
+        // retrieve the cache state from the previous instance into this singleton
+
+        private string GetCacheKey<T>(string key)
+            where T : class
+        {
+            return $"{CacheKeyPrefix}:{typeof(T).FullName}:{key}";
+        }
         
-        public void Cache<T>(IExecutor<T> executor)
+        public void Cache<T>(IExecutor<T> executor, string key = "")
             where T : class, new()
         {
-            _cache[typeof(T)] = executor ?? throw new ArgumentNullException(nameof(executor));
+            var cacheKey = GetCacheKey<T>(key);
+
+            _cache.Set(cacheKey, executor, TimeSpan.FromMinutes(_expiration));
         }
 
-        public IExecutor<T> Retrieve<T>()
+        public IExecutor<T> Retrieve<T>(string key = "")
             where T : class, new()
         {
-            if (_cache.TryGetValue(typeof(T), out var executor))
-            {
-                return (IExecutor<T>) executor;
-            }
-
-            return null;
+            var cacheKey = GetCacheKey<T>(key);
+            
+            return _cache.TryGetValue<IExecutor<T>>(cacheKey, out var executor) ? executor : null;
         }
 
-        public void Clear()
+        public void Clear<T>(string key = "") where T : class, new()
         {
-            _cache.Clear();
+           _cache.Remove(GetCacheKey<T>(key));
         }
     }
 
     public interface ICodeEngineExecutorCache
     {
-        public void Cache<T>(IExecutor<T> executor)
+        void Cache<T>(IExecutor<T> executor, string key = "")
             where T : class, new();
         
-        public IExecutor<T> Retrieve<T>()
+        IExecutor<T> Retrieve<T>(string key = "")
             where T : class, new();
         
-        public void Clear();
+        void Clear<T>(string key = "")
+            where T : class, new();
     }
 }

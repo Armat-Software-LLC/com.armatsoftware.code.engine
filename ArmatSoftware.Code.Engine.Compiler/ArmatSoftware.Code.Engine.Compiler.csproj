@@ -50,6 +50,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic" Version="3.6.0" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
     <PackageReference Include="System.CodeDom" Version="4.7.0" />
     <PackageReference Include="NuGet.Build.Packaging" Version="0.2.2">

@@ -1,3 +1,6 @@
+// Use to toggle cacheability of the factory
+// #define NOCACHE
+
 using System;
 using System.Linq;
 using ArmatSoftware.Code.Engine.Compiler.Base;
@@ -8,24 +11,27 @@ using ArmatSoftware.Code.Engine.Core.Storage;
 
 namespace ArmatSoftware.Code.Engine.Compiler.DI
 {
-    public class CodeEngineExecutorFactory : ICodeEngineExecutorFactory
+    public class CodeEngineExecutorFactory(
+        CodeEngineOptions options,
+        IActionProvider actionProvider,
+        ICodeEngineExecutorCache cache)
+        : ICodeEngineExecutorFactory
     {
-        private readonly CodeEngineRegistration.CodeEngineOptions _options;
+        private readonly CodeEngineOptions _options = options ?? throw new ArgumentNullException(nameof(options));
         
-        private readonly ICodeEngineExecutorCache _cache;
-        private readonly IActionProvider _actionProvider;
+        private readonly ICodeEngineExecutorCache _cache = cache ?? throw new ArgumentNullException(nameof(cache));
+        private readonly IActionProvider _actionProvider = actionProvider ?? throw new ArgumentNullException(nameof(actionProvider));
 
-        public CodeEngineExecutorFactory(
-            CodeEngineRegistration.CodeEngineOptions options,
-            IActionProvider actionProvider,
-            ICodeEngineExecutorCache cache)
-        {
-            _options = options ?? throw new ArgumentNullException(nameof(options));
-            _actionProvider = actionProvider ?? throw new ArgumentNullException(nameof(actionProvider));
-            _cache = cache ?? throw new ArgumentNullException(nameof(cache));
-        }
-        
-        public IExecutor<T> Provide<T>()
+        /// <summary>
+        /// Default factory implementation for the <c>Provide()</c> method.
+        /// Uses caching and registered <c>IActionProvider</c> to retrieve executor instances
+        /// </summary>
+        /// <param name="key"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        public IExecutor<T> Provide<T>(string key = "")
             where T : class, new()
         {
             if (string.IsNullOrWhiteSpace(_options.CodeEngineNamespace))
@@ -35,36 +41,37 @@ namespace ArmatSoftware.Code.Engine.Compiler.DI
             
             var configuration = new CompilerConfiguration<T>(_options.CodeEngineNamespace);
 
+#if !NOCACHE
             // check cache and return new instance if found
-            var cachedExecutor = _cache.Retrieve<T>();
+            var cachedExecutor = _cache.Retrieve<T>(key);
             if (cachedExecutor != null)
             {
                 return cachedExecutor.Clone();
             }
+#endif
             
-            configuration.Actions = _actionProvider.Retrieve<T>().ToList();
+            configuration.Actions = _actionProvider.Retrieve<T>(key).ToList();
             
             // compile new executors and cache them before returning
+
+            IExecutor<T> compiledExecutor;
             switch (_options.CompilerType)
             {
                 case CompilerTypeEnum.CSharp:
                     var cSharpCompiler = new CSharpCompiler<T>();
-                    var cSharpExecutor = cSharpCompiler.Compile(configuration);
-                    _cache.Cache(cSharpExecutor);
-                    return cSharpExecutor.Clone();
+                    compiledExecutor = cSharpCompiler.Compile(configuration);
+                    break;
                 case CompilerTypeEnum.Vb:
                     var vbCompiler = new VbCompiler<T>();
-                    var vbExecutor = vbCompiler.Compile(configuration);
-                    _cache.Cache(vbExecutor);
-                    return vbExecutor.Clone();
+                    compiledExecutor = vbCompiler.Compile(configuration);
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(_options.CompilerType), _options.CompilerType, "Compiler is not found or not implemented");
             }
-        }
-
-        public void Dispose()
-        {
-            _cache.Clear();
+#if !NOCACHE
+            _cache.Cache(compiledExecutor, key);
+#endif
+            return compiledExecutor.Clone();
         }
     }
     
@@ -82,8 +89,15 @@ namespace ArmatSoftware.Code.Engine.Compiler.DI
 /// IExecutor factory is used to create new instances of IExecutor for the supplied
 /// subject type. Caching is used for performance.
 /// </summary>
-public interface ICodeEngineExecutorFactory : IDisposable
+public interface ICodeEngineExecutorFactory
 {
-    IExecutor<T> Provide<T>()
+    /// <summary>
+    /// Provide a new instance of IExecutor for the supplied subject type
+    /// ans key, if one is provided
+    /// </summary>
+    /// <param name="key"></param>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    IExecutor<T> Provide<T>(string key = "")
         where T : class, new();
 }

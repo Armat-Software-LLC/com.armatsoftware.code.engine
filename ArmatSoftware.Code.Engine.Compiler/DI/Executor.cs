@@ -17,10 +17,7 @@ namespace ArmatSoftware.Code.Engine.Compiler.DI
 
         public Executor(ICodeEngineExecutorFactory factory)
         {
-            if (factory == null)
-            {
-                throw new ArgumentNullException(nameof(factory));
-            }
+            _ = factory ?? throw new ArgumentNullException(nameof(factory));
             
             _executor = factory.Provide<T>();
         }

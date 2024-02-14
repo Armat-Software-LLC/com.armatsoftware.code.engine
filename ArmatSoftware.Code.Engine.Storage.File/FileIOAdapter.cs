@@ -54,13 +54,13 @@ public class FileIOAdapter
 
     }
     
-    public StoredActions<T> Read<T>()
+    public StoredActions<T> Read<T>(string key = "")
         where T : class
     {
-        var pathInfo = GeneratePath(typeof(T));
+        var pathInfo = GeneratePath(typeof(T), key);
         if (!System.IO.File.Exists(pathInfo.ToString()))
         {
-            _logger.Info($"Code file for {typeof(T).FullName} does not exist. Returning empty stored actions.");
+            _logger.Info($"Code file for {typeof(T).FullName} and key '{key}' does not exist. Returning empty stored actions.");
             return new StoredActions<T>();
         }
         
@@ -68,10 +68,10 @@ public class FileIOAdapter
         return JsonConvert.DeserializeObject<StoredActions<T>>(content) ?? new StoredActions<T>();
     }
     
-    public void Write<T>(StoredActions<T> actions)
+    public void Write<T>(StoredActions<T> actions, string key = "")
         where T : class
     {
-        var pathInfo = GeneratePath(typeof(T));
+        var pathInfo = GeneratePath(typeof(T), key);
         
         if (!Directory.Exists(pathInfo.DirectoryPath))
         {
@@ -82,14 +82,25 @@ public class FileIOAdapter
         System.IO.File.WriteAllText(pathInfo.ToString(), content);
     }
     
-    private GeneratedPathInfo GeneratePath(Type subjectType)
+    /// <summary>
+    /// Generate unique path for the code file based on the subject type and key
+    /// </summary>
+    /// <param name="subjectType"></param>
+    /// <param name="key"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentNullException"></exception>
+    private GeneratedPathInfo GeneratePath(Type subjectType, string key = "")
     {
         var folderPath = subjectType.FullName?
                              .Replace("+", $"{Path.DirectorySeparatorChar}")
                              .Replace(".", $"{Path.DirectorySeparatorChar}") ?? // contained classes turn into subfolders
                          throw new ArgumentNullException(nameof(subjectType), "Supplied subject type is null");
+        
+        var validKey = key ?? throw new ArgumentNullException(nameof(key), "Supplied key is null!");
 
-        var fileName = $"code.{_fileExtension}";
+        var keyFragment = validKey.Length > 0 ? $".{validKey}" : string.Empty;
+        
+        var fileName = $"code{keyFragment}.{_fileExtension}";
 
         return new GeneratedPathInfo(Path.Join(_storageRootDirectory.FullName, folderPath), fileName);
     }
