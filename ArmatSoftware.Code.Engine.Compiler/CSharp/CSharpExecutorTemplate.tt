@@ -40,6 +40,13 @@ namespace <#=Configuration.GetNamespace()#>
 			<#=action.Key#>();
 <# } #>
 		}
+
+        public <#=Configuration.GetSubjectType()#> Execute(<#=Configuration.GetSubjectType()#> subject)
+        {
+            Subject = subject;
+            Execute();
+            return Subject;
+        }
 		
 <# foreach (var action in Configuration.GetActions()) { #>
 		private void <#=action.Key#>()

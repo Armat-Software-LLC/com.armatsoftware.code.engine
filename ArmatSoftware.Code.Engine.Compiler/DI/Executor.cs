@@ -37,6 +37,13 @@ namespace ArmatSoftware.Code.Engine.Compiler.DI
             _executor.Execute();
         }
 
+        public T Execute(T subject)
+        {
+            Subject = subject;
+            Execute();
+            return Subject;
+        }
+
         public IExecutor<T> Clone()
         {
             return (IExecutor<T>) MemberwiseClone();

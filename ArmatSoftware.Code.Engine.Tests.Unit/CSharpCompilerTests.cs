@@ -40,11 +40,30 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
 				Configuration.Actions.Add(action);
 				
 				var executor = Compiler.Compile(Configuration);
-
-				executor.Subject = subject;
-				executor.Execute();
+				
+				executor.Execute(subject);
 
 				Assert.IsTrue(subject.Data == "changed data");
+
+			}, Throws.Nothing);
+		}
+		
+		[Test]
+		public void Should_Execute_Simplified_Subject_Property_Assignment()
+		{
+			Assert.That(() =>
+			{
+				var subject = new TestSubject { Id = 1, Data = "data", Date = DateTime.Now };
+				var action = new TestSubjectAction { Name = "SimpleOperation", Code = "Subject.Data = \"changed data\";" };
+				
+				Configuration.Actions.Add(action);
+				
+				var executor = Compiler.Compile(Configuration);
+				
+				var result = executor.Execute(subject);
+
+				Assert.IsTrue(result.Data == "changed data");
+				Assert.IsTrue(subject.Equals(result));
 
 			}, Throws.Nothing);
 		}
@@ -61,8 +80,7 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
 
 				var executor = Compiler.Compile(Configuration);
 
-				executor.Subject = subject;
-				executor.Execute();
+				executor.Execute(subject);
 
 			}, Throws.Nothing);
 		}
@@ -79,8 +97,7 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
 
 			var executor = Compiler.Compile(Configuration);
 
-			executor.Subject = subject;
-			executor.Execute();
+			executor.Execute(subject);
 
 			Assert.IsTrue(executor.Subject.Data == "test value");
 		}
