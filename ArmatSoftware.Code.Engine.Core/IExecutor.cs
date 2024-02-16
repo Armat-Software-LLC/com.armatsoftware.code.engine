@@ -12,7 +12,7 @@ namespace ArmatSoftware.Code.Engine.Core
 		/// <summary>
 		/// Subject of the action execution
 		/// </summary>
-		TSubject Subject { get; set; }
+		TSubject Subject { get; set;  }
 
 		/// <summary>
 		/// Execute the actions
@@ -32,7 +32,5 @@ namespace ArmatSoftware.Code.Engine.Core
 		/// </summary>
 		/// <returns></returns>
 		IExecutor<TSubject> Clone();
-
-		ICodeEngineLogger Log { get; set; }
 	}
 }

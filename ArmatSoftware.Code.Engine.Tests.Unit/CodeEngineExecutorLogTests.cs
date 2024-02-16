@@ -76,9 +76,18 @@ public class CodeEngineExecutorLogTestBuilder
     public void Setup()
     {
         Actions = new StoredActions<TestSubject>();
-        var action = Actions.Add("LogAction");
-        action.Update($"Log.Info(\"{InfoMessage}\"); Log.Warning(\"{WarningMessage}\"); Log.Error(\"{ErrorMessage}\");", "testauthor", "testcomment");
-        action.Activate(1);
+        
+        var logInfoAction = Actions.Add("LogInfo");
+        logInfoAction.Update($"Log.Info(\"{InfoMessage}\"); Log = null;", "testauthor", "testcomment");
+        logInfoAction.Activate(1);
+        
+        var logWarningAction = Actions.Add("LogWarning");
+        logWarningAction.Update($"Log.Warning(\"{WarningMessage}\");", "testauthor", "testcomment");
+        logWarningAction.Activate(1);
+        
+        var logErrorAction = Actions.Add("LogError");
+        logErrorAction.Update($"Log.Error(\"{ErrorMessage}\");", "testauthor", "testcomment");
+        logErrorAction.Activate(1);
         
         StorageMock = new Mock<IActionProvider>();
         StorageMock.Setup(x => x.Retrieve<TestSubject>(It.IsAny<string>()))

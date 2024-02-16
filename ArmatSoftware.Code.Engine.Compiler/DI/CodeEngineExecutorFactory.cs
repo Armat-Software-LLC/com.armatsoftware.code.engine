@@ -48,7 +48,7 @@ namespace ArmatSoftware.Code.Engine.Compiler.DI
             var cachedExecutor = _cache.Retrieve<T>(key);
             if (cachedExecutor != null)
             {
-                return InitClone(cachedExecutor);
+                return CloneAndInitialize(cachedExecutor);
             }
 #endif
             
@@ -73,15 +73,15 @@ namespace ArmatSoftware.Code.Engine.Compiler.DI
 #if !NOCACHE
             _cache.Cache(compiledExecutor, key);
 #endif
-            return InitClone(compiledExecutor);
+            return CloneAndInitialize(compiledExecutor);
         }
         
-        private IExecutor<TSubject> InitClone<TSubject>(IExecutor<TSubject> executor)
+        private IExecutor<TSubject> CloneAndInitialize<TSubject>(IExecutor<TSubject> executor)
             where TSubject : class, new()
         {
-            var prepared = executor.Clone();
-            prepared.Log = _logger;
-            return prepared;
+            var clonedExecutor = executor.Clone();
+            // TODO: clonedExecutor.Log = _logger;
+            return clonedExecutor;
         }
     }
 }
