@@ -23,7 +23,7 @@ public class CodeEngineExecutorLogTests : CodeEngineExecutorLogTestBuilder
 
         executor.Execute(new TestSubject());
         
-        Assert.That(InfoLog.Any(x => x == InfoMessage));
+        Assert.That(Logger.InfoLog.Any(x => x == InfoMessage));
     }
     
     [Test]
@@ -33,7 +33,7 @@ public class CodeEngineExecutorLogTests : CodeEngineExecutorLogTestBuilder
         
         executor.Execute(new TestSubject());
         
-        Assert.That(ErrorLog.Any(x => x == ErrorMessage));
+        Assert.That(Logger.ErrorLog.Any(x => x == ErrorMessage));
     }
     
     [Test]
@@ -43,7 +43,7 @@ public class CodeEngineExecutorLogTests : CodeEngineExecutorLogTestBuilder
         
         executor.Execute(new TestSubject());
         
-        Assert.That(WarningLog.Any(x => x == WarningMessage));
+        Assert.That(Logger.WarningLog.Any(x => x == WarningMessage));
     }
 }
 
@@ -64,37 +64,28 @@ public class CodeEngineExecutorLogTestBuilder
     protected IActionProvider Provider { get; set; }
     
     protected Mock<ICodeEngineLogger> LoggerMock { get; private set; }
-    protected ICodeEngineLogger Logger { get; set; }
+    protected CodeEngineExecutorLogTestLogger Logger { get; set; }
     
     protected IMemoryCache MemCache { get; set; }
 
-    protected StoredActions<CodeEngineFactoryTestSubject> Actions { get; set; }
-    
+    protected StoredActions<TestSubject> Actions { get; set; }
     
     protected CodeEngineExecutorFactory Factory { get; set; }
-    
-    protected List<string> InfoLog { get; set; }
-    protected List<string> ErrorLog { get; set; }
-    protected List<string> WarningLog { get; set; }
 
     [SetUp]
     public void Setup()
     {
-        Actions = new StoredActions<CodeEngineFactoryTestSubject>();
+        Actions = new StoredActions<TestSubject>();
         var action = Actions.Add("LogAction");
-        action.Update($"Log.Info(\"{InfoMessage}\");", "testauthor", "testcomment");
+        action.Update($"Log.Info(\"{InfoMessage}\"); Log.Warning(\"{WarningMessage}\"); Log.Error(\"{ErrorMessage}\");", "testauthor", "testcomment");
         action.Activate(1);
         
         StorageMock = new Mock<IActionProvider>();
-        StorageMock.Setup(x => x.Retrieve<CodeEngineFactoryTestSubject>(It.IsAny<string>()))
+        StorageMock.Setup(x => x.Retrieve<TestSubject>(It.IsAny<string>()))
             .Returns(Actions.ToList());
-        LoggerMock = new Mock<ICodeEngineLogger>();
-        LoggerMock.Setup(x => x.Info(It.IsAny<string>())).Callback(() => InfoLog.Add(InfoMessage));
-        LoggerMock.Setup(x => x.Warning(It.IsAny<string>())).Callback(() => WarningLog.Add(WarningMessage));
-        LoggerMock.Setup(x => x.Error(It.IsAny<string>(), It.IsAny<Exception>())).Callback(() => ErrorLog.Add(ErrorMessage));
-        
+
         Provider = StorageMock.Object;
-        Logger = LoggerMock.Object;
+        Logger = new CodeEngineExecutorLogTestLogger();
         
         RegistrationOptions = new CodeEngineOptions
         {
@@ -112,14 +103,32 @@ public class CodeEngineExecutorLogTestBuilder
         Cache = new CodeEngineExecutorCache(MemCache, RegistrationOptions);
         
         Factory = new CodeEngineExecutorFactory(RegistrationOptions, Provider, Cache);
-        
-        InfoLog = new List<string>();
-        ErrorLog = new List<string>();
-        WarningLog = new List<string>();
     }
     
     protected IExecutor<TestSubject> Build()
     {
         return Factory.Provide<TestSubject>();
+    }
+}
+
+public class CodeEngineExecutorLogTestLogger : ICodeEngineLogger
+{
+    public List<string> InfoLog { get; } = new();
+    public List<string> ErrorLog { get; } = new();
+    public List<string> WarningLog { get; } = new();
+    
+    public void Info(string message)
+    {
+        InfoLog.Add(message);
+    }
+
+    public void Warning(string message)
+    {
+        WarningLog.Add(message);
+    }
+
+    public void Error(string message, Exception ex)
+    {
+        ErrorLog.Add(message);
     }
 }
