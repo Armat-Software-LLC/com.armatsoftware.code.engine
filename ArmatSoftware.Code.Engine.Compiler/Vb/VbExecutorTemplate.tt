@@ -36,6 +36,12 @@ Namespace <#=Configuration.GetNamespace()#>
 			<#=action.Key#>()
 <# } #>
 		End Sub
+
+		Public Function Execute(subject As <#=Configuration.GetSubjectType()#>) As <#=Configuration.GetSubjectType()#> Implements IExecutor(Of <#=Configuration.GetSubjectType()#>).Execute
+			Me.Subject = subject
+			Execute()
+			Return Me.Subject
+		End Function
 		
 <# foreach (var action in Configuration.GetActions()) { #>
 

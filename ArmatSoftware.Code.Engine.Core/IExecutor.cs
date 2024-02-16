@@ -1,4 +1,6 @@
-﻿namespace ArmatSoftware.Code.Engine.Core
+﻿using System;
+
+namespace ArmatSoftware.Code.Engine.Core
 {
 	/// <summary>
 	/// Executes one or more actions against the subject
@@ -15,6 +17,13 @@
 		/// Execute the actions
 		/// </summary>
 		void Execute();
+		
+		/// <summary>
+		/// Simplified execution of the actions
+		/// </summary>
+		/// <param name="subject"></param>
+		/// <returns></returns>
+		TSubject Execute(TSubject subject);
 		
 		/// <summary>
 		/// Efficient cloning of the executors allows effective thread safe execution

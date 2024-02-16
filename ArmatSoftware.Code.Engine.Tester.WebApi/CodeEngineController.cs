@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using ArmatSoftware.Code.Engine.Core;
+using ArmatSoftware.Code.Engine.Tester.WebApi.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ArmatSoftware.Code.Engine.Tester.WebApi;
@@ -11,8 +12,7 @@ public class CodeEngineController : ControllerBase
     [HttpGet, Route("execute_default")]
     public async Task<IActionResult> Execute_Default(IExecutor<StringOnlySubject> executor, CancellationToken token)
     {
-        executor.Subject = new StringOnlySubject();
-        executor.Execute();
+        executor.Execute(new StringOnlySubject());
         
         return await Task.FromResult(new OkObjectResult(executor.Subject.Data));
     }
@@ -22,8 +22,7 @@ public class CodeEngineController : ControllerBase
     {
         var executor = catalog.ForKey(key);
         
-        executor.Subject = new StringOnlySubject();
-        executor.Execute();
+        executor.Execute(new StringOnlySubject());
         
         return await Task.FromResult(new OkObjectResult(executor.Subject.Data));
     }
