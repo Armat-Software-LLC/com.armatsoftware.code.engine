@@ -128,30 +128,30 @@ namespace ArmatSoftware.Code.Engine.Compiler.CSharp
             
             #line default
             #line hidden
-            this.Write(" subject)\n        {\n            Subject = subject;\n            Execute();\n            return Subject;\n        }\n\t\t\n");
+            this.Write(" subject)\n        {\n            Subject = subject;\n            Execute();\n            return Subject;\n        }\n\n\t\tpublic ICodeEngineLogger Log { get; set; }\n\t\t\n");
             
-            #line 51 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
+            #line 53 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
  foreach (var action in Configuration.GetActions()) { 
             
             #line default
             #line hidden
             this.Write("\t\tprivate void ");
             
-            #line 52 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
+            #line 54 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(action.Key));
             
             #line default
             #line hidden
             this.Write("()\n\t\t{\n\t\t\t");
             
-            #line 54 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
+            #line 56 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(action.Value));
             
             #line default
             #line hidden
             this.Write("\n\t\t}\n");
             
-            #line 56 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
+            #line 58 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
  } 
             
             #line default

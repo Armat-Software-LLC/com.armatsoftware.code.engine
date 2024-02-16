@@ -1,25 +1,27 @@
 using System;
 using ArmatSoftware.Code.Engine.Core;
+using ArmatSoftware.Code.Engine.Core.Logging;
 
 namespace ArmatSoftware.Code.Engine.Compiler.DI
 {
-    public class Executor<T> : IExecutor<T>
-        where T : class, new()
+    public class Executor<TSubject> : IExecutor<TSubject>
+        where TSubject : class, new()
     {
 
-        private readonly IExecutor<T> _executor;
-        
-        public T Subject
+        private readonly IExecutor<TSubject> _executor;
+        private readonly ICodeEngineLogger _logger;
+
+        public TSubject Subject
         {
             get => _executor.Subject;
             set => _executor.Subject = value;
         }
 
-        public Executor(ICodeEngineExecutorFactory factory)
+        public Executor(ICodeEngineExecutorFactory factory, ICodeEngineLogger logger)
         {
             _ = factory ?? throw new ArgumentNullException(nameof(factory));
-            
-            _executor = factory.Provide<T>();
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _executor = factory.Provide<TSubject>();
         }
         
         public void Save(string key, object value)
@@ -37,16 +39,22 @@ namespace ArmatSoftware.Code.Engine.Compiler.DI
             _executor.Execute();
         }
 
-        public T Execute(T subject)
+        public TSubject Execute(TSubject subject)
         {
             Subject = subject;
             Execute();
             return Subject;
         }
 
-        public IExecutor<T> Clone()
+        public IExecutor<TSubject> Clone()
         {
-            return (IExecutor<T>) MemberwiseClone();
+            return (IExecutor<TSubject>) MemberwiseClone();
+        }
+
+        public ICodeEngineLogger Log
+        {
+            get => _executor.Log;
+            set => _executor.Log = value;
         }
     }
 }

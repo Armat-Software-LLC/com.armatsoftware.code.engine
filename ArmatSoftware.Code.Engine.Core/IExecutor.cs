@@ -1,4 +1,5 @@
 ﻿using System;
+using ArmatSoftware.Code.Engine.Core.Logging;
 
 namespace ArmatSoftware.Code.Engine.Core
 {
@@ -31,5 +32,7 @@ namespace ArmatSoftware.Code.Engine.Core
 		/// </summary>
 		/// <returns></returns>
 		IExecutor<TSubject> Clone();
+
+		ICodeEngineLogger Log { get; set; }
 	}
 }

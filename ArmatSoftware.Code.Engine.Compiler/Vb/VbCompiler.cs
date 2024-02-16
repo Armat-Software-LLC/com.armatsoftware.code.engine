@@ -8,6 +8,7 @@ using System.Runtime.Loader;
 using System.Text;
 using ArmatSoftware.Code.Engine.Compiler.Utils;
 using ArmatSoftware.Code.Engine.Core;
+using ArmatSoftware.Code.Engine.Core.Logging;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Emit;
 using Microsoft.CodeAnalysis.VisualBasic;
@@ -111,6 +112,7 @@ namespace ArmatSoftware.Code.Engine.Compiler.Vb
 			configuration.References.Add(typeof(Dictionary<,>));
 			configuration.References.Add(typeof(S));
 			configuration.References.Add(typeof(IExecutor<>));
+			configuration.References.Add(typeof(ICodeEngineLogger));
 			configuration.References.Add(typeof(DynamicAttribute));
 		}
 

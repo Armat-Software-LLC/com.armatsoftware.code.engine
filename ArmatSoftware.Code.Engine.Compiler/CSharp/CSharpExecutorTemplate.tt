@@ -47,6 +47,8 @@ namespace <#=Configuration.GetNamespace()#>
             Execute();
             return Subject;
         }
+
+		public ICodeEngineLogger Log { get; set; }
 		
 <# foreach (var action in Configuration.GetActions()) { #>
 		private void <#=action.Key#>()

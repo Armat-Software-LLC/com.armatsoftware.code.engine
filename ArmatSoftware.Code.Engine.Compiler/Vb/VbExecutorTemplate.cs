@@ -156,30 +156,37 @@ namespace ArmatSoftware.Code.Engine.Compiler.Vb
             
             #line default
             #line hidden
-            this.Write(").Execute\n\t\t\tMe.Subject = subject\n\t\t\tExecute()\n\t\t\tReturn Me.Subject\n\t\tEnd Function\n\t\t\n");
+            this.Write(").Execute\n\t\t\tMe.Subject = subject\n\t\t\tExecute()\n\t\t\tReturn Me.Subject\n\t\tEnd Function\n\t\t\n\t\tPublic Property Log As ICodeEngineLogger Implements IExecutor(Of ");
             
             #line 46 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Configuration.GetSubjectType()));
+            
+            #line default
+            #line hidden
+            this.Write(").Log\n\n");
+            
+            #line 48 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
  foreach (var action in Configuration.GetActions()) { 
             
             #line default
             #line hidden
             this.Write("\n\t\tPrivate Sub ");
             
-            #line 48 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
+            #line 50 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(action.Key));
             
             #line default
             #line hidden
             this.Write("()\n\t\t\t");
             
-            #line 49 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
+            #line 51 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(action.Value));
             
             #line default
             #line hidden
             this.Write("\n\t\tEnd Sub\n");
             
-            #line 51 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
+            #line 53 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
  } 
             
             #line default
