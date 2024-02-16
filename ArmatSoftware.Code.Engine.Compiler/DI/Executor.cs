@@ -8,38 +8,40 @@ namespace ArmatSoftware.Code.Engine.Compiler.DI
         where TSubject : class, new()
     {
 
-        private readonly IExecutor<TSubject> _compiledExecutor;
+        private readonly IExecutor<TSubject> _executor;
+        private readonly ICodeEngineLogger _logger;
 
         public TSubject Subject
         {
-            get => _compiledExecutor.Subject;
-            set => _compiledExecutor.Subject = value;
+            get => _executor.Subject;
+            set => _executor.Subject = value;
         }
 
-        public Executor(ICodeEngineExecutorFactory factory)
+        public Executor(ICodeEngineExecutorFactory factory, ICodeEngineLogger logger)
         {
             _ = factory ?? throw new ArgumentNullException(nameof(factory));
-            _compiledExecutor = factory.Provide<TSubject>();
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _executor = factory.Provide<TSubject>();
         }
         
         public void Save(string key, object value)
         {
-            _compiledExecutor.Save(key, value);
+            _executor.Save(key, value);
         }
 
         public object Read(string key)
         {
-            return _compiledExecutor.Read(key);
+            return _executor.Read(key);
         }
         
         public void Execute()
         {
-            _compiledExecutor.Execute();
+            _executor.Execute();
         }
 
         public TSubject Execute(TSubject subject)
         {
-            _compiledExecutor.Subject = subject;
+            Subject = subject;
             Execute();
             return Subject;
         }
@@ -49,9 +51,10 @@ namespace ArmatSoftware.Code.Engine.Compiler.DI
             return (IExecutor<TSubject>) MemberwiseClone();
         }
 
-        public void Info(string message)
+        public ICodeEngineLogger Log
         {
-            throw new NotImplementedException();
+            get => _executor.Log;
+            set => _executor.Log = value;
         }
     }
 }

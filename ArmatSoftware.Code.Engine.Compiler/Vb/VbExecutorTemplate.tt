@@ -43,6 +43,8 @@ Namespace <#=Configuration.GetNamespace()#>
 			Return Me.Subject
 		End Function
 		
+		Public Property Log As ICodeEngineLogger Implements IExecutor(Of <#=Configuration.GetSubjectType()#>).Log
+
 <# foreach (var action in Configuration.GetActions()) { #>
 
 		Private Sub <#=action.Key#>()
