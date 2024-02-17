@@ -5,14 +5,14 @@ namespace ArmatSoftware.Code.Engine.Compiler
 	/// <summary>
 	/// Compiler of actions into an executor
 	/// </summary>
-	/// <typeparam name="S">Subject type</typeparam>
-	public interface ICompiler<S> where S : class
+	/// <typeparam name="TSubject">Subject type</typeparam>
+	public interface ICompiler<TSubject> where TSubject: class
 	{
 		/// <summary>
 		/// Compiles configuration containing actions and imports into an IExecutor object
 		/// </summary>
 		/// <param name="configuration">Compiler configuration</param>
 		/// <returns>IExecutor object</returns>
-		IExecutor<S> Compile(ICompilerConfiguration<S> configuration);
+		IFactoryExecutor<TSubject> Compile(ICompilerConfiguration<TSubject> configuration);
 	}
 }

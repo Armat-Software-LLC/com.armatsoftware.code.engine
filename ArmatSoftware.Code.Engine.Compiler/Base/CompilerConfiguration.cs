@@ -8,8 +8,8 @@ namespace ArmatSoftware.Code.Engine.Compiler.Base
 	/// <summary>
 	/// Default implementation of the configuration contract
 	/// </summary>
-	/// <typeparam name="S">Type of subject</typeparam>
-	public class CompilerConfiguration<S> : ICompilerConfiguration<S> where S : class
+	/// <typeparam name="TSubject">Type of subject</typeparam>
+	public class CompilerConfiguration<TSubject> : ICompilerConfiguration<TSubject> where TSubject: class
 	{
 		private readonly string _nameSpace;
 
@@ -18,7 +18,7 @@ namespace ArmatSoftware.Code.Engine.Compiler.Base
 		/// <summary>
 		/// List of actions added in the order of execution
 		/// </summary>
-		public IList<ISubjectAction<S>> Actions { get; set; } = new List<ISubjectAction<S>>();
+		public IList<ISubjectAction<TSubject>> Actions { get; set; } = new List<ISubjectAction<TSubject>>();
 
 		/// <summary>
 		/// List of referenced types used in the action logic
@@ -68,7 +68,7 @@ namespace ArmatSoftware.Code.Engine.Compiler.Base
 
 		public string GetSubjectType()
 		{
-			return typeof(S).Name;
+			return typeof(TSubject).Name;
 		}
 	}
 }

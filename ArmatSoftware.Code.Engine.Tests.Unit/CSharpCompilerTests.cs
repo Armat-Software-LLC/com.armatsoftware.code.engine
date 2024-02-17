@@ -24,9 +24,23 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
 
 				var executor = Compiler.Compile(Configuration);
 
-				executor.Execute();
+				executor.Execute(null);
 
 			}, Throws.Nothing);
+		}
+		
+		[Test]
+		public void Should_Not_Set_Subject()
+		{
+			Assert.That(() =>
+			{
+				Configuration.Actions.Add(new TestSubjectAction { Name = "SimpleOperation", Code = "Subject = null;" });
+
+				var executor = Compiler.Compile(Configuration);
+
+				executor.Execute(new TestSubject());
+
+			}, Throws.InvalidOperationException);
 		}
 
 		[Test]
@@ -103,17 +117,17 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
 		}
 	}
 
-	public class CSharpCompilerTestBase<S> where S : class
+	public class CSharpCompilerTestBase<TSubject> where TSubject: class
 	{
-		public ICompilerConfiguration<S> Configuration { get; set; }
+		public ICompilerConfiguration<TSubject> Configuration { get; set; }
 
-		public ICompiler<S> Compiler { get; set; }
+		public ICompiler<TSubject> Compiler { get; set; }
 
 		public void Build()
 		{
-			Configuration = new CompilerConfiguration<S>("ArmatSoftware.Code.Engine.Tests.Executors");
+			Configuration = new CompilerConfiguration<TSubject>("ArmatSoftware.Code.Engine.Tests.Executors");
 
-			Compiler = new CSharpCompiler<S>();
+			Compiler = new CSharpCompiler<TSubject>();
 		}
 	}
 }

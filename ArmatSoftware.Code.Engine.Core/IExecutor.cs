@@ -1,4 +1,5 @@
 ﻿using System;
+using ArmatSoftware.Code.Engine.Core.Logging;
 
 namespace ArmatSoftware.Code.Engine.Core
 {
@@ -9,14 +10,10 @@ namespace ArmatSoftware.Code.Engine.Core
 	public interface IExecutor<TSubject> : IExecutionContext where TSubject : class
 	{
 		/// <summary>
-		/// Subject of the action execution
+		/// Subject of the action execution.
+		/// Check and use after the execution.
 		/// </summary>
-		TSubject Subject { get; set; }
-
-		/// <summary>
-		/// Execute the actions
-		/// </summary>
-		void Execute();
+		TSubject Subject { get; }
 		
 		/// <summary>
 		/// Simplified execution of the actions
@@ -24,12 +21,10 @@ namespace ArmatSoftware.Code.Engine.Core
 		/// <param name="subject"></param>
 		/// <returns></returns>
 		TSubject Execute(TSubject subject);
-		
+
 		/// <summary>
-		/// Efficient cloning of the executors allows effective thread safe execution
-		/// without using singletons or activating new instances
+		/// Get logger instance
 		/// </summary>
-		/// <returns></returns>
-		IExecutor<TSubject> Clone();
+		ICodeEngineLogger Log { get; }
 	}
 }

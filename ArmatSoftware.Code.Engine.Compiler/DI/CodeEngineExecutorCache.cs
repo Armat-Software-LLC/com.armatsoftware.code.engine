@@ -14,43 +14,43 @@ namespace ArmatSoftware.Code.Engine.Compiler.DI
 
         // retrieve the cache state from the previous instance into this singleton
 
-        private string GetCacheKey<T>(string key)
-            where T : class
+        private string GetCacheKey<TSubject>(string key)
+            where TSubject : class
         {
-            return $"{CacheKeyPrefix}:{typeof(T).FullName}:{key}";
+            return $"{CacheKeyPrefix}:{typeof(TSubject).FullName}:{key}";
         }
         
-        public void Cache<T>(IExecutor<T> executor, string key = "")
-            where T : class, new()
+        public void Cache<TSubject>(IFactoryExecutor<TSubject> executor, string key = "")
+            where TSubject : class, new()
         {
-            var cacheKey = GetCacheKey<T>(key);
+            var cacheKey = GetCacheKey<TSubject>(key);
 
             _cache.Set(cacheKey, executor, TimeSpan.FromMinutes(_expiration));
         }
 
-        public IExecutor<T> Retrieve<T>(string key = "")
-            where T : class, new()
+        public IFactoryExecutor<TSubject> Retrieve<TSubject>(string key = "")
+            where TSubject : class, new()
         {
-            var cacheKey = GetCacheKey<T>(key);
+            var cacheKey = GetCacheKey<TSubject>(key);
             
-            return _cache.TryGetValue<IExecutor<T>>(cacheKey, out var executor) ? executor : null;
+            return _cache.TryGetValue<IFactoryExecutor<TSubject>>(cacheKey, out var executor) ? executor : null;
         }
 
-        public void Clear<T>(string key = "") where T : class, new()
+        public void Clear<TSubject>(string key = "") where TSubject : class, new()
         {
-           _cache.Remove(GetCacheKey<T>(key));
+           _cache.Remove(GetCacheKey<TSubject>(key));
         }
     }
 
     public interface ICodeEngineExecutorCache
     {
-        void Cache<T>(IExecutor<T> executor, string key = "")
-            where T : class, new();
+        void Cache<TSubject>(IFactoryExecutor<TSubject> executor, string key = "")
+            where TSubject : class, new();
         
-        IExecutor<T> Retrieve<T>(string key = "")
-            where T : class, new();
+        IFactoryExecutor<TSubject> Retrieve<TSubject>(string key = "")
+            where TSubject : class, new();
         
-        void Clear<T>(string key = "")
-            where T : class, new();
+        void Clear<TSubject>(string key = "")
+            where TSubject : class, new();
     }
 }

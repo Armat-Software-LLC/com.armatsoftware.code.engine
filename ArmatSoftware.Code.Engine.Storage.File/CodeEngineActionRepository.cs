@@ -28,40 +28,40 @@ public class CodeEngineActionRepository : IActionRepository
         _fileIOAdapter = new FileIOAdapter(fileStorageRootPath, fileExtension, _logger);
     }
 
-    public IEnumerable<ISubjectAction<T>> GetActions<T>(string key = "") where T : class
+    public IEnumerable<ISubjectAction<TSubject>> GetActions<TSubject>(string key = "") where TSubject : class
     {
-        var storedActions = _fileIOAdapter.Read<T>(key);
+        var storedActions = _fileIOAdapter.Read<TSubject>(key);
         return storedActions;
     }
 
-    public void AddAction<T>(string name, string code, string author, string comment, string key = "") where T : class
+    public void AddAction<TSubject>(string name, string code, string author, string comment, string key = "") where TSubject : class
     {
-        var actions = _fileIOAdapter.Read<T>(key);
+        var actions = _fileIOAdapter.Read<TSubject>(key);
         var newAction = actions.Add(name);
         newAction.Update(code, author, comment);
         newAction.Activate(1);
         _fileIOAdapter.Write(actions, key);
     }
 
-    public void UpdateAction<T>(string name, string code, string author, string comment, string key = "") where T : class
+    public void UpdateAction<TSubject>(string name, string code, string author, string comment, string key = "") where TSubject : class
     {
-        var actions = _fileIOAdapter.Read<T>(key);
+        var actions = _fileIOAdapter.Read<TSubject>(key);
         var action = actions.First(a => a.Name == name);
         action.Update(code, author, comment);
         _fileIOAdapter.Write(actions, key);
     }
 
-    public void ActivateRevision<T>(string actionName, int revision, string key = "") where T : class
+    public void ActivateRevision<TSubject>(string actionName, int revision, string key = "") where TSubject : class
     {
-        var actions = _fileIOAdapter.Read<T>(key);
+        var actions = _fileIOAdapter.Read<TSubject>(key);
         var action = actions.First(a => a.Name == actionName);
         action.Activate(revision);
         _fileIOAdapter.Write(actions, key);
     }
 
-    public void ReorderAction<T>(string actionName, int newOrder, string key = "") where T : class
+    public void ReorderAction<TSubject>(string actionName, int newOrder, string key = "") where TSubject : class
     {
-        var actions = _fileIOAdapter.Read<T>(key);
+        var actions = _fileIOAdapter.Read<TSubject>(key);
         actions.Reorder(actionName, newOrder);
         _fileIOAdapter.Write(actions, key);
     }

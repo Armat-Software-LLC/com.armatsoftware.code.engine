@@ -3,7 +3,7 @@
 /// <summary>
 /// Action that is taken against the subject
 /// </summary>
-/// <typeparam name="S">Subject of type S</typeparam>
-public interface ISubjectAction<S> : IExecutableAction where S : class
+/// <typeparam name="TSubject">Subject of type S</typeparam>
+public interface ISubjectAction<TSubject> : IExecutableAction where TSubject: class
 { }
 

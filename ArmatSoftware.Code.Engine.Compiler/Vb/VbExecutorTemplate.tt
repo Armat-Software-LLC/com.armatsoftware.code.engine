@@ -13,34 +13,48 @@ Imports <#=import#>
 
 Namespace <#=Configuration.GetNamespace()#>
 	Public Class <#=Configuration.GetClassName()#>
-		Implements IExecutor(Of <#=Configuration.GetSubjectType()#>)
+		Implements IFactoryExecutor(Of <#=Configuration.GetSubjectType()#>)
 	
-		Private runtimeValues As Dictionary(Of String, Object) = new Dictionary(Of String, Object)
+		Private _runtimeValues As Dictionary(Of String, Object) = new Dictionary(Of String, Object)
+	    Private _logger As ICodeEngineLogger
+	    Private _subject As <#=Configuration.GetSubjectType()#>
+		
+		Public Readonly Property Subject As <#=Configuration.GetSubjectType()#> Implements IExecutor(Of <#=Configuration.GetSubjectType()#>).Subject
+    		Get
+            	Return _subject
+        	End Get
+    	End Property
 
-		Public Property Subject As <#=Configuration.GetSubjectType()#> Implements IExecutor(Of <#=Configuration.GetSubjectType()#>).Subject
+		Public ReadOnly Property Log As ICodeEngineLogger Implements IExecutor(Of <#=Configuration.GetSubjectType()#>).Log
+	        Get
+	            Return _logger
+	        End Get
+	    End Property
 
         Public Function Read(key As String) As Object Implements IExecutionContext.Read
-            Return runtimeValues(key)
+            Return _runtimeValues(key)
         End Function
         
         Public Sub Save(key As String, value As Object) Implements IExecutionContext.Save
-            runtimeValues.Add(key, value)
+            _runtimeValues.Add(key, value)
         End Sub
 
-        Public Function Clone() As IExecutor(Of <#=Configuration.GetSubjectType()#>) Implements IExecutor(Of <#=Configuration.GetSubjectType()#>).Clone
-			Return DirectCast(MemberwiseClone(), IExecutor(Of <#=Configuration.GetSubjectType()#>))
+    	Public Function Clone() As IFactoryExecutor(Of <#=Configuration.GetSubjectType()#>) Implements IFactoryExecutor(Of <#=Configuration.GetSubjectType()#>).Clone
+			Return DirectCast(MemberwiseClone(), IFactoryExecutor(Of <#=Configuration.GetSubjectType()#>))
 		End Function
 
-		Public Sub Execute() Implements IExecutor(Of <#=Configuration.GetSubjectType()#>).Execute
+	    Public Sub SetLogger(logger As ICodeEngineLogger) Implements IFactoryExecutor(Of <#=Configuration.GetSubjectType()#>).SetLogger
+	        _logger = logger
+	    End Sub
+
+		Public Function Execute(subject As <#=Configuration.GetSubjectType()#>) As <#=Configuration.GetSubjectType()#> Implements IExecutor(Of <#=Configuration.GetSubjectType()#>).Execute
+			_subject = subject
+
 <# foreach (var action in Configuration.GetActions()) { #>
 			<#=action.Key#>()
 <# } #>
-		End Sub
 
-		Public Function Execute(subject As <#=Configuration.GetSubjectType()#>) As <#=Configuration.GetSubjectType()#> Implements IExecutor(Of <#=Configuration.GetSubjectType()#>).Execute
-			Me.Subject = subject
-			Execute()
-			Return Me.Subject
+			Return _subject
 		End Function
 		
 <# foreach (var action in Configuration.GetActions()) { #>

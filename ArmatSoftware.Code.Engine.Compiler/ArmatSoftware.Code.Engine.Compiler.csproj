@@ -20,7 +20,6 @@
     <NoStdLib>true</NoStdLib>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="CSharp\" />
     <Folder Include="Base\" />
   </ItemGroup>
   <ItemGroup>

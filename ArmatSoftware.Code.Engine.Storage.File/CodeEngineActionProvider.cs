@@ -29,18 +29,18 @@ public class CodeEngineActionProvider : IActionProvider
         _fileIOAdapter = new FileIOAdapter(fileStorageRootPath, fileExtension, _logger);
     }
 
-    public IEnumerable<ISubjectAction<T>> Retrieve<T>(string key = "") where T : class
+    public IEnumerable<ISubjectAction<TSubject>> Retrieve<TSubject>(string key = "") where TSubject : class
     {
-        _logger.Info($"Retrieving stored actions for subject type {typeof(T).FullName} and key '{key}'.");
+        _logger.Info($"Retrieving stored actions for subject type {typeof(TSubject).FullName} and key '{key}'.");
         
         // Try to retrieve stored actions for the given key
-        var storedActions = _fileIOAdapter.Read<T>(key);
+        var storedActions = _fileIOAdapter.Read<TSubject>(key);
         
         // If no stored actions are found for the given key, try to retrieve default actions
         if (!storedActions.Any() && !string.IsNullOrEmpty(key))
         {
-            _logger.Info($"No stored actions found for {typeof(T).FullName} and key '{key}'. Trying to retrieve default actions");
-            storedActions = _fileIOAdapter.Read<T>();
+            _logger.Info($"No stored actions found for {typeof(TSubject).FullName} and key '{key}'. Trying to retrieve default actions");
+            storedActions = _fileIOAdapter.Read<TSubject>();
         }
         
         return storedActions;

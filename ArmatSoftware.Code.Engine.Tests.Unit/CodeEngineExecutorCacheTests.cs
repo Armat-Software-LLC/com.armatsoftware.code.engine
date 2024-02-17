@@ -122,15 +122,15 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
     {
         protected ICodeEngineExecutorCache Target { get; set; }
             
-        private Mock<IExecutor<TestExecutorCacheSubject>> ExecutorMock { get; set; }
-        protected IExecutor<TestExecutorCacheSubject> Executor { get; set; }
+        private Mock<IFactoryExecutor<TestExecutorCacheSubject>> ExecutorMock { get; set; }
+        protected IFactoryExecutor<TestExecutorCacheSubject> Executor { get; set; }
         
         protected IMemoryCache MemCache { get; set; }
 
         [SetUp]
         public void Init()
         {
-            ExecutorMock = new Mock<IExecutor<TestExecutorCacheSubject>>();
+            ExecutorMock = new Mock<IFactoryExecutor<TestExecutorCacheSubject>>();
         }
             
         protected void Build()

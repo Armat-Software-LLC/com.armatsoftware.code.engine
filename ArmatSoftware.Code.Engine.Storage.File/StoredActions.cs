@@ -3,19 +3,19 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ArmatSoftware.Code.Engine.Storage.File;
 
-public class StoredActions<T> : List<StoredSubjectAction<T>>
-    where T : class
+public class StoredActions<TSubject> : List<StoredSubjectAction<TSubject>>
+    where TSubject : class
 {
     
-    public StoredSubjectAction<T> Add(string name)
+    public StoredSubjectAction<TSubject> Add(string name)
     {
         var order = this.OrderByDescending(a => a.Order).FirstOrDefault()?.Order + 1 ?? 1;
             
-        var newAction = new StoredSubjectAction<T>
+        var newAction = new StoredSubjectAction<TSubject>
         {
             Name = name,
             Order = order,
-            Revisions = new StoredRevisionList<T>()
+            Revisions = new StoredRevisionList<TSubject>()
         };
         
         Add(newAction); // calling overridden Add method to validate the action
@@ -33,9 +33,9 @@ public class StoredActions<T> : List<StoredSubjectAction<T>>
 
         var shouldBeMoved = directionOfReorder switch
         {
-            -1 => new Func<StoredSubjectAction<T>, bool>(a =>
+            -1 => new Func<StoredSubjectAction<TSubject>, bool>(a =>
                 a.Order >= order && a.Order < action.Order), // action order in decreased (moved up the list)
-            1 => new Func<StoredSubjectAction<T>, bool>(a =>
+            1 => new Func<StoredSubjectAction<TSubject>, bool>(a =>
                 a.Order <= order && a.Order > action.Order), // action order in increased (moved down the list)
         };
             
@@ -52,7 +52,7 @@ public class StoredActions<T> : List<StoredSubjectAction<T>>
     
     // Validation
 
-    private void Validate(StoredSubjectAction<T> newAction)
+    private void Validate(StoredSubjectAction<TSubject> newAction)
     {
         _ = newAction ?? throw new ArgumentNullException(nameof(newAction));
 
@@ -67,13 +67,13 @@ public class StoredActions<T> : List<StoredSubjectAction<T>>
     
     // List<> overrides
 
-    public void Add(StoredSubjectAction<T> action)
+    public void Add(StoredSubjectAction<TSubject> action)
     {
         Validate(action);
         base.Add(action);
     }
     
-    public void AddRange(IEnumerable<StoredSubjectAction<T>> collection)
+    public void AddRange(IEnumerable<StoredSubjectAction<TSubject>> collection)
     {
         foreach (var action in collection)
         {
@@ -82,13 +82,13 @@ public class StoredActions<T> : List<StoredSubjectAction<T>>
         }
     }
 
-    public void Insert(int index, StoredSubjectAction<T> action)
+    public void Insert(int index, StoredSubjectAction<TSubject> action)
     {
         Validate(action);
         base.Insert(index, action);
     }
     
-    public void InsertRange(int index, IEnumerable<StoredSubjectAction<T>> collection)
+    public void InsertRange(int index, IEnumerable<StoredSubjectAction<TSubject>> collection)
     {
         foreach (var action in collection)
         {
@@ -97,7 +97,7 @@ public class StoredActions<T> : List<StoredSubjectAction<T>>
         }
     }
     
-    public void Remove(StoredSubjectAction<T> action) => throw new InvalidOperationException("Cannot remove an action directly from a stored actions");
+    public void Remove(StoredSubjectAction<TSubject> action) => throw new InvalidOperationException("Cannot remove an action directly from a stored actions");
     
     public void Clear() => throw new InvalidOperationException("Cannot clear actions directly from a stored actions");
 }

@@ -7,8 +7,8 @@ using ArmatSoftware.Code.Engine.Core;
 
 namespace ArmatSoftware.Code.Engine.Storage.File;
 
-public class StoredSubjectAction<T> : ISubjectAction<T>
-    where T : class
+public class StoredSubjectAction<TSubject> : ISubjectAction<TSubject>
+    where TSubject : class
 {
     
     [Required]
@@ -22,11 +22,11 @@ public class StoredSubjectAction<T> : ISubjectAction<T>
     public int Order { get; set; }
     
     [Required]
-    public StoredRevisionList<T> Revisions { get; set; }
+    public StoredRevisionList<TSubject> Revisions { get; set; }
     
     public void Update(string code, string author, string comment)
     {
-        var newRevision = new StoredActionRevision<T>
+        var newRevision = new StoredActionRevision<TSubject>
         {
             Revision = Revisions.OrderByDescending(r => r.Revision).FirstOrDefault()?.Revision + 1 ?? 1,
             Active = false,
