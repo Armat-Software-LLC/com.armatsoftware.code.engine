@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -27,7 +28,7 @@ namespace ArmatSoftware.Code.Engine.Compiler.Vb
 		/// </summary>
 		/// <param name="configuration">Compiler configuration</param>
 		/// <returns>Executor object</returns>
-		public IExecutor<S> Compile(ICompilerConfiguration<S> configuration)
+		public IFactoryExecutor<S> Compile(ICompilerConfiguration<S> configuration)
 		{
 			ValidateConfiguration(configuration);
 
@@ -36,6 +37,8 @@ namespace ArmatSoftware.Code.Engine.Compiler.Vb
 			// generate code
 			var codeGenerator = new VbExecutorTemplate(configuration);
 			var code = codeGenerator.TransformText();
+			
+			Debug.WriteLine(code);
 			
 			var typeName = Names.GenerateFullTypeName(configuration);
 
@@ -64,7 +67,7 @@ namespace ArmatSoftware.Code.Engine.Compiler.Vb
 			var executorInstanceHandle = Activator.CreateInstance(assembly.FullName, typeName) ??
 			                             throw new ApplicationException($"Could not instantiate {typeName}");
 
-			return (IExecutor<S>)executorInstanceHandle.Unwrap();
+			return (IFactoryExecutor<S>)executorInstanceHandle.Unwrap();
 		}
 
 		/// <summary>

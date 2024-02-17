@@ -20,7 +20,7 @@ namespace ArmatSoftware.Code.Engine.Compiler.DI
             return $"{CacheKeyPrefix}:{typeof(T).FullName}:{key}";
         }
         
-        public void Cache<T>(IExecutor<T> executor, string key = "")
+        public void Cache<T>(IFactoryExecutor<T> executor, string key = "")
             where T : class, new()
         {
             var cacheKey = GetCacheKey<T>(key);
@@ -28,12 +28,12 @@ namespace ArmatSoftware.Code.Engine.Compiler.DI
             _cache.Set(cacheKey, executor, TimeSpan.FromMinutes(_expiration));
         }
 
-        public IExecutor<T> Retrieve<T>(string key = "")
+        public IFactoryExecutor<T> Retrieve<T>(string key = "")
             where T : class, new()
         {
             var cacheKey = GetCacheKey<T>(key);
             
-            return _cache.TryGetValue<IExecutor<T>>(cacheKey, out var executor) ? executor : null;
+            return _cache.TryGetValue<IFactoryExecutor<T>>(cacheKey, out var executor) ? executor : null;
         }
 
         public void Clear<T>(string key = "") where T : class, new()
@@ -44,10 +44,10 @@ namespace ArmatSoftware.Code.Engine.Compiler.DI
 
     public interface ICodeEngineExecutorCache
     {
-        void Cache<T>(IExecutor<T> executor, string key = "")
+        void Cache<T>(IFactoryExecutor<T> executor, string key = "")
             where T : class, new();
         
-        IExecutor<T> Retrieve<T>(string key = "")
+        IFactoryExecutor<T> Retrieve<T>(string key = "")
             where T : class, new();
         
         void Clear<T>(string key = "")

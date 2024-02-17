@@ -24,7 +24,7 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
 
 				var executor = Compiler.Compile(Configuration);
 
-				executor.Execute();
+				executor.Execute(null);
 
 			}, Throws.Nothing);
 		}

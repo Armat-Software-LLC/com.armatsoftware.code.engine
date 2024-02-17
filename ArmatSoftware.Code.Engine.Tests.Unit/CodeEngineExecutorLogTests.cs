@@ -19,7 +19,7 @@ public class CodeEngineExecutorLogTests : CodeEngineExecutorLogTestBuilder
     [Test]
     public void Should_Log_Info_Message()
     {
-        var executor = Build();
+        var executor = BuildLogActions(LogActions);
 
         executor.Execute(new TestSubject());
         
@@ -29,7 +29,7 @@ public class CodeEngineExecutorLogTests : CodeEngineExecutorLogTestBuilder
     [Test]
     public void Should_Log_Error_Message()
     {
-        var executor = Build();
+        var executor = BuildLogActions(LogActions);
         
         executor.Execute(new TestSubject());
         
@@ -39,11 +39,23 @@ public class CodeEngineExecutorLogTests : CodeEngineExecutorLogTestBuilder
     [Test]
     public void Should_Log_Warning_Message()
     {
-        var executor = Build();
+        var executor = BuildLogActions(LogActions);
         
         executor.Execute(new TestSubject());
         
         Assert.That(Logger.WarningLog.Any(x => x == WarningMessage));
+    }
+    
+    [Test]
+    public void Should_Not_Set_Log()
+    {
+        Assert.That(() =>
+        {
+            var executor = BuildLogActions(SetLogNullActions);
+        
+            executor.Execute(new TestSubject());
+
+        }, Throws.InvalidOperationException);
     }
 }
 
@@ -54,8 +66,6 @@ public class CodeEngineExecutorLogTestBuilder
     protected const string ErrorMessage = "error message";
     protected const string WarningMessage = "warning message";
     
-    protected ICodeEngineExecutorFactory Target { get; private set; }
-    
     protected CodeEngineOptions RegistrationOptions { get; set; }
     
     protected ICodeEngineExecutorCache Cache { get; set; }
@@ -63,26 +73,46 @@ public class CodeEngineExecutorLogTestBuilder
     protected Mock<IActionProvider> StorageMock { get; private set; }
     protected IActionProvider Provider { get; set; }
     
-    protected Mock<ICodeEngineLogger> LoggerMock { get; private set; }
     protected CodeEngineExecutorLogTestLogger Logger { get; set; }
     
     protected IMemoryCache MemCache { get; set; }
 
-    protected StoredActions<TestSubject> Actions { get; set; }
+    protected StoredActions<TestSubject> LogActions { get; set; }
+    
+    protected StoredActions<TestSubject> SetLogNullActions { get; set; }
     
     protected CodeEngineExecutorFactory Factory { get; set; }
 
     [SetUp]
     public void Setup()
     {
-        Actions = new StoredActions<TestSubject>();
-        var action = Actions.Add("LogAction");
-        action.Update($"Log.Info(\"{InfoMessage}\"); Log.Warning(\"{WarningMessage}\"); Log.Error(\"{ErrorMessage}\");", "testauthor", "testcomment");
-        action.Activate(1);
+        LogActions = new StoredActions<TestSubject>();
         
+        var logInfoAction = LogActions.Add("LogInfo");
+        logInfoAction.Update($"Log.Info(\"{InfoMessage}\");", "testauthor", "testcomment");
+        logInfoAction.Activate(1);
+        
+        var logWarningAction = LogActions.Add("LogWarning");
+        logWarningAction.Update($"Log.Warning(\"{WarningMessage}\");", "testauthor", "testcomment");
+        logWarningAction.Activate(1);
+        
+        var logErrorAction = LogActions.Add("LogError");
+        logErrorAction.Update($"Log.Error(\"{ErrorMessage}\");", "testauthor", "testcomment");
+        logErrorAction.Activate(1);
+
+        SetLogNullActions = new StoredActions<TestSubject>();
+        
+        var setLogNullAction = SetLogNullActions.Add("SetLogNull");
+        setLogNullAction.Update($"Log = null;", "testauthor", "testcomment");
+        setLogNullAction.Activate(1);
+        
+    }
+    
+    protected IExecutor<TestSubject> BuildLogActions(StoredActions<TestSubject> actions)
+    {
         StorageMock = new Mock<IActionProvider>();
         StorageMock.Setup(x => x.Retrieve<TestSubject>(It.IsAny<string>()))
-            .Returns(Actions.ToList());
+            .Returns(actions.ToList());
 
         Provider = StorageMock.Object;
         Logger = new CodeEngineExecutorLogTestLogger();
@@ -103,10 +133,7 @@ public class CodeEngineExecutorLogTestBuilder
         Cache = new CodeEngineExecutorCache(MemCache, RegistrationOptions);
         
         Factory = new CodeEngineExecutorFactory(RegistrationOptions, Provider, Cache);
-    }
-    
-    protected IExecutor<TestSubject> Build()
-    {
+        
         return Factory.Provide<TestSubject>();
     }
 }

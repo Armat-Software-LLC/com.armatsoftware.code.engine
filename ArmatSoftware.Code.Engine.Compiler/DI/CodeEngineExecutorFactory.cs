@@ -33,7 +33,7 @@ namespace ArmatSoftware.Code.Engine.Compiler.DI
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
-        public IExecutor<T> Provide<T>(string key = "")
+        public IFactoryExecutor<T> Provide<T>(string key = "")
             where T : class, new()
         {
             if (string.IsNullOrWhiteSpace(_options.CodeEngineNamespace))
@@ -48,7 +48,7 @@ namespace ArmatSoftware.Code.Engine.Compiler.DI
             var cachedExecutor = _cache.Retrieve<T>(key);
             if (cachedExecutor != null)
             {
-                return InitClone(cachedExecutor);
+                return ManufactureClone(cachedExecutor);
             }
 #endif
             
@@ -56,7 +56,7 @@ namespace ArmatSoftware.Code.Engine.Compiler.DI
             
             // compile new executors and cache them before returning
 
-            IExecutor<T> compiledExecutor;
+            IFactoryExecutor<T> compiledExecutor;
             switch (_options.CompilerType)
             {
                 case CompilerTypeEnum.CSharp:
@@ -73,14 +73,14 @@ namespace ArmatSoftware.Code.Engine.Compiler.DI
 #if !NOCACHE
             _cache.Cache(compiledExecutor, key);
 #endif
-            return InitClone(compiledExecutor);
+            return ManufactureClone(compiledExecutor);
         }
         
-        private IExecutor<TSubject> InitClone<TSubject>(IExecutor<TSubject> executor)
+        private IFactoryExecutor<TSubject> ManufactureClone<TSubject>(IFactoryExecutor<TSubject> executor)
             where TSubject : class, new()
         {
             var prepared = executor.Clone();
-            prepared.Log = _logger;
+            prepared.SetLogger(_logger);
             return prepared;
         }
     }
@@ -99,6 +99,6 @@ public interface ICodeEngineExecutorFactory
     /// <param name="key"></param>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    IExecutor<T> Provide<T>(string key = "")
+    IFactoryExecutor<T> Provide<T>(string key = "")
         where T : class, new();
 }

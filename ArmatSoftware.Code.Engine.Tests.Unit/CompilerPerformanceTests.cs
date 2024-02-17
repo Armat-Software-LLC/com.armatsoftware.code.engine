@@ -30,7 +30,7 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
 
                 var stopwatch = new Stopwatch();
                 stopwatch.Start();
-                TestSubject.Execute();
+                TestSubject.Execute(null);
                 stopwatch.Stop();
                 
                 Console.WriteLine($"Executed {n} operations in {stopwatch.ElapsedTicks} ticks");
@@ -56,14 +56,14 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
                 }
                 stopwatch.Stop();
 
-                TestSubject.Subject = new CompilerPerformanceTestSubject();
+                var subject = new CompilerPerformanceTestSubject();
                 var stopwatch1 = new Stopwatch();
                 stopwatch1.Start();
                 for (var idx = 0; idx < n; idx++)
                 {
-                    TestSubject.Subject.Operand1 = Operations[idx, 0];
-                    TestSubject.Subject.Operand2 = Operations[idx, 1];
-                    TestSubject.Execute();
+                    subject.Operand1 = Operations[idx, 0];
+                    subject.Operand2 = Operations[idx, 1];
+                    TestSubject.Execute(subject);
                 }
                 stopwatch1.Stop();
                 
@@ -104,14 +104,14 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
                 timer1.Stop();
                 Console.WriteLine($"Reflection segment completed in {timer1.ElapsedTicks}");
 
-                TestSubject.Subject = new CompilerPerformanceTestSubject();
+                var subject = new CompilerPerformanceTestSubject();
                 var timer2 = new Stopwatch();
                 timer2.Start();
                 for (var idx = 0; idx < n; idx++)
                 {
-                    TestSubject.Subject.Operand1 = Operations[idx, 0];
-                    TestSubject.Subject.Operand2 = Operations[idx, 1];
-                    TestSubject.Execute();
+                    subject.Operand1 = Operations[idx, 0];
+                    subject.Operand2 = Operations[idx, 1];
+                    TestSubject.Execute(subject);
                 }
                 timer2.Stop();
                 Console.WriteLine($"Compiler segment completed in {timer2.ElapsedTicks}");

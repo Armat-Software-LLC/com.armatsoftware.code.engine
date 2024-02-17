@@ -13,6 +13,6 @@ namespace ArmatSoftware.Code.Engine.Compiler
 		/// </summary>
 		/// <param name="configuration">Compiler configuration</param>
 		/// <returns>IExecutor object</returns>
-		IExecutor<S> Compile(ICompilerConfiguration<S> configuration);
+		IFactoryExecutor<S> Compile(ICompilerConfiguration<S> configuration);
 	}
 }

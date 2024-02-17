@@ -27,7 +27,7 @@ namespace ArmatSoftware.Code.Engine.Compiler.CSharp
 		/// </summary>
 		/// <param name="configuration">Compiler configuration</param>
 		/// <returns>Executor object</returns>
-		public IExecutor<S> Compile(ICompilerConfiguration<S> configuration)
+		public IFactoryExecutor<S> Compile(ICompilerConfiguration<S> configuration)
 		{
 			ValidateConfiguration(configuration);
 
@@ -64,7 +64,7 @@ namespace ArmatSoftware.Code.Engine.Compiler.CSharp
 			var executorInstanceHandle = Activator.CreateInstance(assembly.FullName, typeName) ?? 
 			                             throw new ApplicationException($"Could not instantiate {typeName}");
 
-			return (IExecutor<S>)executorInstanceHandle.Unwrap();
+			return (IFactoryExecutor<S>)executorInstanceHandle.Unwrap();
 		}
 
 		/// <summary>

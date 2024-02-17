@@ -13,42 +13,49 @@ using <#=import#>;
 
 namespace <#=Configuration.GetNamespace()#>
 {
-	public class <#=Configuration.GetClassName()#> : IExecutor<<#=Configuration.GetSubjectType()#>>
+	public class <#=Configuration.GetClassName()#> : IFactoryExecutor<<#=Configuration.GetSubjectType()#>>
 	{
-		private Dictionary<string, dynamic> runtimeValues = new Dictionary<string, dynamic>();
+		private Dictionary<string, dynamic> _runtimeValues = new Dictionary<string, dynamic>();
 
-		public <#=Configuration.GetSubjectType()#> Subject { get; set; }
+		private <#=Configuration.GetSubjectType()#> _subject;
+
+		private ICodeEngineLogger _logger;
+
+
+		public <#=Configuration.GetSubjectType()#> Subject => _subject;
+
+		public ICodeEngineLogger Log => _logger;
 
 		public dynamic Read(string key)
 		{
-			return this.runtimeValues[key];
+			return this._runtimeValues[key];
 		}
 
 		public void Save(string key, dynamic value)
 		{
-			this.runtimeValues.Add(key, value);
+			this._runtimeValues.Add(key, value);
 		}
 
-        public IExecutor<<#=Configuration.GetSubjectType()#>> Clone()
+        public IFactoryExecutor<<#=Configuration.GetSubjectType()#>> Clone()
         {
-            return (IExecutor<<#=Configuration.GetSubjectType()#>>) MemberwiseClone();
+            return (IFactoryExecutor<<#=Configuration.GetSubjectType()#>>) MemberwiseClone();
         }
-
-		public void Execute()
-		{
-<# foreach (var action in Configuration.GetActions()) { #>
-			<#=action.Key#>();
-<# } #>
-		}
 
         public <#=Configuration.GetSubjectType()#> Execute(<#=Configuration.GetSubjectType()#> subject)
         {
-            Subject = subject;
-            Execute();
+            _subject = subject;
+            
+<# foreach (var action in Configuration.GetActions()) { #>
+			<#=action.Key#>();
+<# } #>
+
             return Subject;
         }
 
-		public ICodeEngineLogger Log { get; set; }
+	    public void SetLogger(ICodeEngineLogger logger)
+	    {
+	        _logger = logger;
+	    }
 		
 <# foreach (var action in Configuration.GetActions()) { #>
 		private void <#=action.Key#>()

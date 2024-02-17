@@ -24,9 +24,23 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
 
 				var executor = Compiler.Compile(Configuration);
 
-				executor.Execute();
+				executor.Execute(null);
 
 			}, Throws.Nothing);
+		}
+		
+		[Test]
+		public void Should_Not_Set_Subject()
+		{
+			Assert.That(() =>
+			{
+				Configuration.Actions.Add(new TestSubjectAction { Name = "SimpleOperation", Code = "Subject = null;" });
+
+				var executor = Compiler.Compile(Configuration);
+
+				executor.Execute(new TestSubject());
+
+			}, Throws.InvalidOperationException);
 		}
 
 		[Test]
