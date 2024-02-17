@@ -33,7 +33,7 @@ namespace ArmatSoftware.Code.Engine.Compiler.DI
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
-        public IFactoryExecutor<TSubject> Provide<TSubject>(string key = "")
+        public IExecutor<TSubject> Provide<TSubject>(string key = "")
             where TSubject : class, new()
         {
             if (string.IsNullOrWhiteSpace(_options.CodeEngineNamespace))
@@ -76,12 +76,11 @@ namespace ArmatSoftware.Code.Engine.Compiler.DI
             return ManufactureClone(compiledExecutor);
         }
         
-        private IFactoryExecutor<TSubject> ManufactureClone<TSubject>(IFactoryExecutor<TSubject> executor)
+        private IExecutor<TSubject> ManufactureClone<TSubject>(IFactoryExecutor<TSubject> executor)
             where TSubject : class, new()
         {
-            var prepared = executor.Clone();
-            prepared.SetLogger(_logger);
-            return prepared;
+            executor.SetLogger(_logger);
+            return executor.Clone();
         }
     }
 }
@@ -99,6 +98,6 @@ public interface ICodeEngineExecutorFactory
     /// <param name="key"></param>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    IFactoryExecutor<TSubject> Provide<TSubject>(string key = "")
+    IExecutor<TSubject> Provide<TSubject>(string key = "")
         where TSubject : class, new();
 }

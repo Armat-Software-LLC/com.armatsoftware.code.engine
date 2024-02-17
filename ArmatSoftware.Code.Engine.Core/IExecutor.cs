@@ -1,5 +1,4 @@
-﻿using System;
-using ArmatSoftware.Code.Engine.Core.Logging;
+﻿using ArmatSoftware.Code.Engine.Core.Logging;
 
 namespace ArmatSoftware.Code.Engine.Core
 {
@@ -26,5 +25,12 @@ namespace ArmatSoftware.Code.Engine.Core
 		/// Get logger instance
 		/// </summary>
 		ICodeEngineLogger Log { get; }
+		
+		/// <summary>
+		/// Efficient cloning of the executors allows effective thread safe execution
+		/// without using singletons or activating new instances
+		/// </summary>
+		/// <returns></returns>
+		IExecutor<TSubject> Clone();
 	}
 }

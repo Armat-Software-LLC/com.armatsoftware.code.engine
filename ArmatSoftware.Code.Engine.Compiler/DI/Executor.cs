@@ -8,32 +8,34 @@ namespace ArmatSoftware.Code.Engine.Compiler.DI
         where TSubject : class, new()
     {
 
-        private readonly IFactoryExecutor<TSubject> _factoryExecutor;
+        private readonly IExecutor<TSubject> _executor;
 
-        public TSubject Subject => _factoryExecutor.Subject;
+        public TSubject Subject => _executor.Subject;
 
         public Executor(ICodeEngineExecutorFactory factory)
         {
             _ = factory ?? throw new ArgumentNullException(nameof(factory));
-            _factoryExecutor = factory.Provide<TSubject>();
+            _executor = factory.Provide<TSubject>();
         }
-        
+
         public void Save(string key, object value)
         {
-            _factoryExecutor.Save(key, value);
+            _executor.Save(key, value);
         }
 
         public object Read(string key)
         {
-            return _factoryExecutor.Read(key);
+            return _executor.Read(key);
         }
 
         public TSubject Execute(TSubject subject)
         {
-            _factoryExecutor.Execute(subject);
-            return _factoryExecutor.Subject;
+            return _executor.Execute(subject);
         }
 
-        public ICodeEngineLogger Log => _factoryExecutor.Log;
+        public ICodeEngineLogger Log => _executor.Log;
+
+        public IExecutor<TSubject> Clone() => _executor.Clone();
+        
     }
 }

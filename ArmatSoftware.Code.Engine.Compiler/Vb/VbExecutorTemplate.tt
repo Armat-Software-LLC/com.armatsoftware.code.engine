@@ -39,8 +39,8 @@ Namespace <#=Configuration.GetNamespace()#>
             _runtimeValues.Add(key, value)
         End Sub
 
-    	Public Function Clone() As IFactoryExecutor(Of <#=Configuration.GetSubjectType()#>) Implements IFactoryExecutor(Of <#=Configuration.GetSubjectType()#>).Clone
-			Return DirectCast(MemberwiseClone(), IFactoryExecutor(Of <#=Configuration.GetSubjectType()#>))
+    	Public Function Clone() As IExecutor(Of <#=Configuration.GetSubjectType()#>) Implements IExecutor(Of <#=Configuration.GetSubjectType()#>).Clone
+			Return DirectCast(MemberwiseClone(), IExecutor(Of <#=Configuration.GetSubjectType()#>))
 		End Function
 
 	    Public Sub SetLogger(logger As ICodeEngineLogger) Implements IFactoryExecutor(Of <#=Configuration.GetSubjectType()#>).SetLogger
