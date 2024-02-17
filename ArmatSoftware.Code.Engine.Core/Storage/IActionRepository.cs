@@ -15,14 +15,14 @@ public interface IActionRepository
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    IEnumerable<ISubjectAction<T>> GetActions<T>(string key = "") where T : class;
+    IEnumerable<ISubjectAction<TSubject>> GetActions<TSubject>(string key = "") where TSubject : class;
     
     /// <summary>
     /// Add a new action for subject type T
     /// </summary>
     /// <param name="name"></param>
     /// <typeparam name="T"></typeparam>
-    void AddAction<T>(string name, string code, string author, string comment, string key = "") where T : class;
+    void AddAction<TSubject>(string name, string code, string author, string comment, string key = "") where TSubject : class;
     
     /// <summary>
     /// Update an existing action for subject of type T
@@ -31,14 +31,14 @@ public interface IActionRepository
     /// <param name="author"></param>
     /// <param name="comment"></param>
     /// <typeparam name="T"></typeparam>
-    void UpdateAction<T>(string name, string code, string author, string comment, string key = "") where T : class;
+    void UpdateAction<TSubject>(string name, string code, string author, string comment, string key = "") where TSubject : class;
     
     /// <summary>
     /// Activate a specific revision on the named action for subject of type T
     /// </summary>
     /// <param name="revision"></param>
     /// <typeparam name="T"></typeparam>
-    void ActivateRevision<T>(string name, int revision, string key = "") where T : class;
+    void ActivateRevision<TSubject>(string name, int revision, string key = "") where TSubject : class;
     
     /// <summary>
     /// Change the order of execution of the actions
@@ -46,5 +46,5 @@ public interface IActionRepository
     /// <param name="name"></param>
     /// <param name="newOrder"></param>
     /// <typeparam name="T"></typeparam>
-    void ReorderAction<T>(string actionName, int newOrder, string key = "") where T : class;
+    void ReorderAction<TSubject>(string actionName, int newOrder, string key = "") where TSubject : class;
 }

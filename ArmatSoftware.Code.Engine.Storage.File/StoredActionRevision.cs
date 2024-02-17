@@ -2,8 +2,8 @@
 
 namespace ArmatSoftware.Code.Engine.Storage.File;
 
-public record StoredActionRevision<T>
-    where T : class
+public record StoredActionRevision<TSubject>
+    where TSubject : class
 {
     [Required]
     [Range(0, int.MaxValue)]

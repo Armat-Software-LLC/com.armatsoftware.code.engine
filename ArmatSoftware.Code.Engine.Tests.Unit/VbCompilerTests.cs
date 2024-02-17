@@ -104,17 +104,17 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
 		}
 	}
 
-	public class VbCompilerTestBase<S> where S : class
+	public class VbCompilerTestBase<TSubject> where TSubject: class
 	{
-		public ICompilerConfiguration<S> Configuration { get; set; }
+		public ICompilerConfiguration<TSubject> Configuration { get; set; }
 
-		public ICompiler<S> Compiler { get; set; }
+		public ICompiler<TSubject> Compiler { get; set; }
 
 		public void Build()
 		{
-			Configuration = new CompilerConfiguration<S>("ArmatSoftware.Code.Engine.Tests.Executors");
+			Configuration = new CompilerConfiguration<TSubject>("ArmatSoftware.Code.Engine.Tests.Executors");
 			
-			Compiler = new VbCompiler<S>();
+			Compiler = new VbCompiler<TSubject>();
 		}
 	}
 }

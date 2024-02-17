@@ -33,38 +33,38 @@ namespace ArmatSoftware.Code.Engine.Compiler.DI
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
-        public IFactoryExecutor<T> Provide<T>(string key = "")
-            where T : class, new()
+        public IFactoryExecutor<TSubject> Provide<TSubject>(string key = "")
+            where TSubject : class, new()
         {
             if (string.IsNullOrWhiteSpace(_options.CodeEngineNamespace))
             {
                 throw new ArgumentNullException(nameof(_options.CodeEngineNamespace));
             }
             
-            var configuration = new CompilerConfiguration<T>(_options.CodeEngineNamespace);
+            var configuration = new CompilerConfiguration<TSubject>(_options.CodeEngineNamespace);
 
 #if !NOCACHE
             // check cache and return new instance if found
-            var cachedExecutor = _cache.Retrieve<T>(key);
+            var cachedExecutor = _cache.Retrieve<TSubject>(key);
             if (cachedExecutor != null)
             {
                 return ManufactureClone(cachedExecutor);
             }
 #endif
             
-            configuration.Actions = _actionProvider.Retrieve<T>(key).ToList();
+            configuration.Actions = _actionProvider.Retrieve<TSubject>(key).ToList();
             
             // compile new executors and cache them before returning
 
-            IFactoryExecutor<T> compiledExecutor;
+            IFactoryExecutor<TSubject> compiledExecutor;
             switch (_options.CompilerType)
             {
                 case CompilerTypeEnum.CSharp:
-                    var cSharpCompiler = new CSharpCompiler<T>();
+                    var cSharpCompiler = new CSharpCompiler<TSubject>();
                     compiledExecutor = cSharpCompiler.Compile(configuration);
                     break;
                 case CompilerTypeEnum.Vb:
-                    var vbCompiler = new VbCompiler<T>();
+                    var vbCompiler = new VbCompiler<TSubject>();
                     compiledExecutor = vbCompiler.Compile(configuration);
                     break;
                 default:
@@ -99,6 +99,6 @@ public interface ICodeEngineExecutorFactory
     /// <param name="key"></param>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    IFactoryExecutor<T> Provide<T>(string key = "")
-        where T : class, new();
+    IFactoryExecutor<TSubject> Provide<TSubject>(string key = "")
+        where TSubject : class, new();
 }

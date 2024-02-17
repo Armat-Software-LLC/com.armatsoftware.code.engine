@@ -5,12 +5,12 @@ using System.Text;
 
 namespace ArmatSoftware.Code.Engine.Storage.File;
 
-public class StoredRevisionList<T> : List<StoredActionRevision<T>>
-    where T : class
+public class StoredRevisionList<TSubject> : List<StoredActionRevision<TSubject>>
+    where TSubject : class
 {
     private const string UtcDateSerializationFormat = "yyyy-MM-ddTHH:mm:ss.fffZ";
     
-    void Validate(StoredActionRevision<T> revision)
+    void Validate(StoredActionRevision<TSubject> revision)
     {
         _ = revision ?? throw new ArgumentNullException(nameof(revision));
         
@@ -39,18 +39,18 @@ public class StoredRevisionList<T> : List<StoredActionRevision<T>>
     
     // hidden methods
 
-    public void Add(StoredActionRevision<T> revision)
+    public void Add(StoredActionRevision<TSubject> revision)
     {
         Validate(revision);
         TamperProof(revision);
         base.Add(revision);
     }
     
-    public void Remove(StoredActionRevision<T> revision) => throw new InvalidOperationException("Cannot remove a revision directly from a stored subject action");
+    public void Remove(StoredActionRevision<TSubject> revision) => throw new InvalidOperationException("Cannot remove a revision directly from a stored subject action");
     
     public void Clear() => throw new InvalidOperationException("Cannot clear revisions directly from a stored subject action");
 
-    public new void AddRange(IEnumerable<StoredActionRevision<T>> collection)
+    public new void AddRange(IEnumerable<StoredActionRevision<TSubject>> collection)
     {
         foreach (var revision in collection)
         {
@@ -60,14 +60,14 @@ public class StoredRevisionList<T> : List<StoredActionRevision<T>>
         }
     }
 
-    public void Insert(int index, StoredActionRevision<T> revision)
+    public void Insert(int index, StoredActionRevision<TSubject> revision)
     {
         Validate(revision);
         TamperProof(revision);
         base.Insert(index, revision);
     }
 
-    public void InsertRange(int index, IEnumerable<StoredActionRevision<T>> collection)
+    public void InsertRange(int index, IEnumerable<StoredActionRevision<TSubject>> collection)
     {
         foreach (var revision in collection)
         {
@@ -79,12 +79,12 @@ public class StoredRevisionList<T> : List<StoredActionRevision<T>>
     
     public void RemoveAt(int index) => throw new InvalidOperationException("Cannot remove a revision directly from a stored subject action");
     
-    public void RemoveAll(Predicate<StoredActionRevision<T>> match) => throw new InvalidOperationException("Cannot remove a revision directly from a stored subject action");
+    public void RemoveAll(Predicate<StoredActionRevision<TSubject>> match) => throw new InvalidOperationException("Cannot remove a revision directly from a stored subject action");
 
     
     // utility
     
-    string Base64Hash(StoredActionRevision<T> revision)
+    string Base64Hash(StoredActionRevision<TSubject> revision)
     {
         var salt = revision.Created.ToString(UtcDateSerializationFormat);
         using (var hmac = new HMACSHA256(Encoding.UTF8.GetBytes(salt)))
@@ -96,7 +96,7 @@ public class StoredRevisionList<T> : List<StoredActionRevision<T>>
         }
     }
     
-    void TamperProof(StoredActionRevision<T> revision)
+    void TamperProof(StoredActionRevision<TSubject> revision)
     {
         if (string.IsNullOrWhiteSpace(revision.Hash)) revision.Hash = Base64Hash(revision);
         if (revision.Hash != Base64Hash(revision)) throw new InvalidOperationException("Revision has been tampered with");

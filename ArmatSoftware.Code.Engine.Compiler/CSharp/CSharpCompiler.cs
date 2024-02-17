@@ -18,8 +18,8 @@ namespace ArmatSoftware.Code.Engine.Compiler.CSharp
 	/// <summary>
 	/// Default implementation for the C# compiler
 	/// </summary>
-	/// <typeparam name="S">Subject type</typeparam>
-	public class CSharpCompiler<S> : ICompiler<S> where S : class
+	/// <typeparam name="TSubject">Subject type</typeparam>
+	public class CSharpCompiler<TSubject> : ICompiler<TSubject> where TSubject: class
 	{
 		/// <summary>
 		/// Compile the actions using C# compiler.
@@ -27,7 +27,7 @@ namespace ArmatSoftware.Code.Engine.Compiler.CSharp
 		/// </summary>
 		/// <param name="configuration">Compiler configuration</param>
 		/// <returns>Executor object</returns>
-		public IFactoryExecutor<S> Compile(ICompilerConfiguration<S> configuration)
+		public IFactoryExecutor<TSubject> Compile(ICompilerConfiguration<TSubject> configuration)
 		{
 			ValidateConfiguration(configuration);
 
@@ -64,7 +64,7 @@ namespace ArmatSoftware.Code.Engine.Compiler.CSharp
 			var executorInstanceHandle = Activator.CreateInstance(assembly.FullName, typeName) ?? 
 			                             throw new ApplicationException($"Could not instantiate {typeName}");
 
-			return (IFactoryExecutor<S>)executorInstanceHandle.Unwrap();
+			return (IFactoryExecutor<TSubject>)executorInstanceHandle.Unwrap();
 		}
 
 		/// <summary>
@@ -72,7 +72,7 @@ namespace ArmatSoftware.Code.Engine.Compiler.CSharp
 		/// </summary>
 		/// <param name="configuration"></param>
 		/// <returns></returns>
-		private static IEnumerable<MetadataReference> GenerateRequiredReferences(ICompilerConfiguration<S> configuration)
+		private static IEnumerable<MetadataReference> GenerateRequiredReferences(ICompilerConfiguration<TSubject> configuration)
 		{
 			var references = new List<MetadataReference>();
 
@@ -107,16 +107,16 @@ namespace ArmatSoftware.Code.Engine.Compiler.CSharp
 		/// Add template specific type references
 		/// </summary>
 		/// <param name="configuration"></param>
-		private static void AddTemplateReferences(ICompilerConfiguration<S> configuration)
+		private static void AddTemplateReferences(ICompilerConfiguration<TSubject> configuration)
 		{
 			configuration.References.Add(typeof(Dictionary<,>));
-			configuration.References.Add(typeof(S));
+			configuration.References.Add(typeof(TSubject));
 			configuration.References.Add(typeof(IExecutor<>));
 			configuration.References.Add(typeof(ICodeEngineLogger));
 			configuration.References.Add(typeof(DynamicAttribute));
 		}
 
-		private static void ValidateConfiguration(ICompilerConfiguration<S> configuration)
+		private static void ValidateConfiguration(ICompilerConfiguration<TSubject> configuration)
 		{
 			if (configuration == null)
 			{

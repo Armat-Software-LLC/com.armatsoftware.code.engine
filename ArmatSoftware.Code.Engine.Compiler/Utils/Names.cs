@@ -9,7 +9,7 @@ namespace ArmatSoftware.Code.Engine.Compiler.Utils
             return $"Assembly{Guid.NewGuid().ToString().Replace("-", string.Empty)}";
         }
 
-        public static string GenerateFullTypeName<S>(ICompilerConfiguration<S> configuration) where S : class
+        public static string GenerateFullTypeName<TSubject>(ICompilerConfiguration<TSubject> configuration) where TSubject: class
         {
             return $"{configuration.GetNamespace()}.{configuration.GetClassName()}";
         }

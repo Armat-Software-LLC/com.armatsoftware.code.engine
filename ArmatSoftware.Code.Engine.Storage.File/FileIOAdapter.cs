@@ -54,24 +54,24 @@ public class FileIOAdapter
 
     }
     
-    public StoredActions<T> Read<T>(string key = "")
-        where T : class
+    public StoredActions<TSubject> Read<TSubject>(string key = "")
+        where TSubject : class
     {
-        var pathInfo = GeneratePath(typeof(T), key);
+        var pathInfo = GeneratePath(typeof(TSubject), key);
         if (!System.IO.File.Exists(pathInfo.ToString()))
         {
-            _logger.Info($"Code file for {typeof(T).FullName} and key '{key}' does not exist. Returning empty stored actions.");
-            return new StoredActions<T>();
+            _logger.Info($"Code file for {typeof(TSubject).FullName} and key '{key}' does not exist. Returning empty stored actions.");
+            return new StoredActions<TSubject>();
         }
         
         var content = System.IO.File.ReadAllText(pathInfo.ToString());
-        return JsonConvert.DeserializeObject<StoredActions<T>>(content) ?? new StoredActions<T>();
+        return JsonConvert.DeserializeObject<StoredActions<TSubject>>(content) ?? new StoredActions<TSubject>();
     }
     
-    public void Write<T>(StoredActions<T> actions, string key = "")
-        where T : class
+    public void Write<TSubject>(StoredActions<TSubject> actions, string key = "")
+        where TSubject : class
     {
-        var pathInfo = GeneratePath(typeof(T), key);
+        var pathInfo = GeneratePath(typeof(TSubject), key);
         
         if (!Directory.Exists(pathInfo.DirectoryPath))
         {

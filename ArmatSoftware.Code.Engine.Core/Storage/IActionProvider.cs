@@ -8,7 +8,7 @@ namespace ArmatSoftware.Code.Engine.Core.Storage
     /// </summary>
     public interface IActionProvider
     {
-        public IEnumerable<ISubjectAction<T>> Retrieve<T>(string key = "")
-            where T : class;
+        public IEnumerable<ISubjectAction<TSubject>> Retrieve<TSubject>(string key = "")
+            where TSubject : class;
     }
 }

@@ -121,13 +121,13 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
         }
     }
 
-    internal class CompilerPerformanceTestBase<S> where S : CompilerPerformanceTestSubject
+    internal class CompilerPerformanceTestBase<TSubject> where TSubject: CompilerPerformanceTestSubject
     {
         public const int MaximumTestOperationsCount = 1000000;
 
-        protected IExecutor<S> TestSubject { get; set; }
-        protected ICompilerConfiguration<S> Configuration { get; set; }
-        protected ICompiler<S> Compiler { get; set; }
+        protected IExecutor<TSubject> TestSubject { get; set; }
+        protected ICompilerConfiguration<TSubject> Configuration { get; set; }
+        protected ICompiler<TSubject> Compiler { get; set; }
         protected static int[,] Operations { get; set; }
 
         [OneTimeSetUp]
@@ -148,13 +148,13 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
         
         public void BuildMultiActionTestSubject(int n)
         {
-            Configuration = new CompilerConfiguration<S>("ArmatSoftware.Code.Engine.Tests.Performance");
+            Configuration = new CompilerConfiguration<TSubject>("ArmatSoftware.Code.Engine.Tests.Performance");
 
-            Compiler = new CSharpCompiler<S>();
+            Compiler = new CSharpCompiler<TSubject>();
             
             for (var index = 0; index < n; index++)
             {
-                Configuration.Actions.Add(new CompilerPerformanceTestSubjectAction<S>
+                Configuration.Actions.Add(new CompilerPerformanceTestSubjectAction<TSubject>
                 {
                     Name = $"Action{index}",
                     Code = $"var result = {Operations[index, 0]} + {Operations[index, 1]};"
@@ -166,11 +166,11 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
         
         public void BuildSingleActionTestSubject()
         {
-            Configuration = new CompilerConfiguration<S>("ArmatSoftware.Code.Engine.Tests.Performance");
+            Configuration = new CompilerConfiguration<TSubject>("ArmatSoftware.Code.Engine.Tests.Performance");
 
-            Compiler = new CSharpCompiler<S>();
+            Compiler = new CSharpCompiler<TSubject>();
             
-            Configuration.Actions.Add(new CompilerPerformanceTestSubjectAction<S>
+            Configuration.Actions.Add(new CompilerPerformanceTestSubjectAction<TSubject>
             {
                 Name = "SingleAction",
                 Code = "Subject.Result = Subject.Operand1 + Subject.Operand2;"
@@ -187,7 +187,7 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
         public int Result { get; set; }
     }
 
-    public class CompilerPerformanceTestSubjectAction<S> : ISubjectAction<S> where S : CompilerPerformanceTestSubject
+    public class CompilerPerformanceTestSubjectAction<TSubject> : ISubjectAction<TSubject> where TSubject: CompilerPerformanceTestSubject
     {
         public string Name { get; set; }
         public string Code { get; set; }

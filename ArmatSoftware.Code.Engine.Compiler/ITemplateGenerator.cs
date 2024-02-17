@@ -1,7 +1,7 @@
 ﻿namespace ArmatSoftware.Code.Engine.Compiler
 {
-	public interface ITemplateGenerator<S> where S : class
+	public interface ITemplateGenerator<TSubject> where TSubject: class
 	{
-		string Generate(ICompilerConfiguration<S> configuration);
+		string Generate(ICompilerConfiguration<TSubject> configuration);
 	}
 }

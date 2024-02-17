@@ -117,17 +117,17 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
 		}
 	}
 
-	public class CSharpCompilerTestBase<S> where S : class
+	public class CSharpCompilerTestBase<TSubject> where TSubject: class
 	{
-		public ICompilerConfiguration<S> Configuration { get; set; }
+		public ICompilerConfiguration<TSubject> Configuration { get; set; }
 
-		public ICompiler<S> Compiler { get; set; }
+		public ICompiler<TSubject> Compiler { get; set; }
 
 		public void Build()
 		{
-			Configuration = new CompilerConfiguration<S>("ArmatSoftware.Code.Engine.Tests.Executors");
+			Configuration = new CompilerConfiguration<TSubject>("ArmatSoftware.Code.Engine.Tests.Executors");
 
-			Compiler = new CSharpCompiler<S>();
+			Compiler = new CSharpCompiler<TSubject>();
 		}
 	}
 }
