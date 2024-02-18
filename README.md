@@ -9,24 +9,24 @@
 
 # Code Engine
 
-Code Engine is a simple, yet powerful, code execution engine. It is designed to be used in applications, where you want to empower your business users to maintain fragments of the application logic in a secure and controlled environment.
+Code Engine is a simple, yet powerful, code execution engine. It is designed to be used in applications, where you want to empower your business users to maintain fragments of the application logic in a secure and controlled environment, offer the level of flexibility and maintainability that is not possible with the compiled and deployed code, and to do so without sacrificing the performance and security of the application.
 
 # Why Code Engine?
 
-Code Engine allows a simple integration of code execution in your web application. It is designed to be secure and easy to use. It is also designed to be easily extendable, so you can add your own implementations to it.
+Code Engine allows composition, testing,and integration of custom code execution in your web application. It is designed to be secure and easy to use. It is also designed to be easily extendable, so you can add your own implementations to it.
 
-For brand new products, adding Code Engine is as easy as adding the NuGet package to your solution, adding some initialization code, injecting specific "executors" throughout your application, and either providing hard-coded logic for their implementation or handing the responsibility to maintain that custom logic to your business users.
+For brand new products, adding Code Engine is as easy as adding the NuGet package to your solution, adding some initialization code, injecting specific "executors" throughout your application, and either providing hard-coded logic for their implementation or handing the responsibility to maintain that custom logic to your power users.
 
-For existing products, you can use Code Engine to replace some of the existing logic with a more flexible and maintainable solution. It is easy to incorporate into ane existing application because it works with the existing dependency injection framework in ASP.NET Core.
+For existing products, you can use Code Engine to replace some of the existing logic with a more flexible and maintainable solution. It is easy to incorporate into an existing application because it works with the existing dependency injection framework in ASP.NET Core.
 
-Code Engine is as close to the performance of the compiled and deployed code as it gets. It is designed to be fast and efficient, to be used in a multi-threaded environment.
+Code Engine performance is as close to that of the compiled and deployed code as it gets. It is designed to be fast and efficient, to be used in environments with heavy load and high performance demands.
 
 # How to use it?
 
-1. Start with an existing solution or brand new
-2. Look up Nuget packages for "armatsoftware.code.engine"
-3. Add the main package `com.armatsoftware.code.engine`
-4. Add supplemental packages, if needed. Ex: `com.armatsoftware.code.engine.storage.file`
+1. Start with an existing solution or brand new.
+2. Look up NuGet packages for "armatsoftware.code.engine".
+3. Add the main package `com.armatsoftware.code.engine` to your solution.
+4. Add supplemental packages, if needed. Ex: `com.armatsoftware.code.engine.storage.file`.
 5. Initialize Code Engine. Ex:
     ``` c#
     builder.Services.UseCodeEngine(new CodeEngineOptions()
@@ -39,54 +39,71 @@ Code Engine is as close to the performance of the compiled and deployed code as 
    ```
 6. Inject and use `IExecutor<T>` as needed. Ex:
     ``` c#
-    public class SimpleService
-    {
-        public string SaySomething(IExecutor<SubjectModel> messageGenerator, SubjectModel model)
-        {
-            messageGenerator.Subject = model;
-            messageGenerator.Execute();
-            return model.Message;
-        }
-    }
+      public class SimpleService
+      {
+          private readonly IExecutorCatalog<SubjectModel> _messageGenerators;
+          private readonly IExecutor<SubjectModel> _defaultGenerator;
+
+          public SimpleService(
+              IExecutorCatalog<SubjectModel> messageGenerators, 
+              IExecutor<SubjectModel> defaultGenerator)
+          {
+              _messageGenerators = messageGenerators;
+              _defaultGenerator = defaultGenerator;
+          }
+       
+          public SubjectModel SaySomething(string? about)
+          {
+              if (string.IsNullOrWhiteSpace(about))
+              {
+                  return _defaultGenerator.Execute(new SubjectModel());
+              }
+           
+              var executor = _messageGenerators.ForKey(about);
+              return executor.Execute(new SubjectModel());
+          }
+      }
     ```
 
 # Versions
 - 1.x.x - essential contracts and base implementation for injection, compilation and execution of the custom logic, including initialization method and implementations for the file storage and file logger
 - 2.x.x - added keyed executor lookup and rafactored file storage
-
+- 3.x.x (current) - refactored and improved initialization and ability to log from custom code
 
 # What's in this version?
 
-The major update of this version is the addition of the "keyed" resolution of specific `IExecutor<T>` instances for the same subject type. This means that in a multi-tenant or multi-user application certain portion of application logic may be maintained by and used by specific users or tenants only. Please note that the existing direct resolution of `IExecutor<T>` is also available and hasn't changed.
+The major update of this version is the ability to log information from within custom code. This is done by using available within executors `Log {get;}' property offering three categories of messages to log (Info, Warning, Error). The messages are logged using the logger provided during the initialization of the Code Engine.
+
+Another major update is the simplified interface of the `IExecutor<T>`. Now, the `Execute()` method is able to take in the subject model object and returns the same object, updated according to custom code. This allows for a more natural and fluent use of the executor. Method `Execute()` is also able to take in the key of the executor to be used, if the executor catalog is available. is no longer available, as it is no longer needed. Property `Subject` is now read-only and reflects the updates applied by `Execute()`.
 
 ``` c#
-// direct injection of executor
-public IActionResult Subject([FromServices] IExecutor<SubjectModel> executor)
-{
-    var model = new SubjectModel();
-    executor.Subject = model;
-    executor.Execute();
-    return View(new SubjectModel() { Data = model.Data });
-}
-
-// injection of the catalog and executor selection by key
-public IActionResult Subject([FromServices] IExecutorCatalog<SubjectModel> executors, string key = "")
-{
-    var model = new SubjectModel();
-    var executor = executors.ForKey(key);
-    executor.Subject = model;
-    executor.Execute();
-    return View(new SubjectModel() { Data = model.Data });
-}
+    /// <summary>
+    /// Direct injection of the executor for subject type MessageModel
+    /// </summary>
+    /// <param name="executor"></param>
+    /// <returns></returns>
+    public IActionResult SayHello([FromServices] IExecutor<MessageModel> executor)
+    {
+        return View(new MessageModel() { Message = executor.Execute(new MessageModel()).Message });
+    }
+    
+    /// <summary>
+    /// Injection of the executor catalog for subject type MessageModel.
+    /// Lookup by key.
+    /// </summary>
+    /// <param name="key">Specific key to look up necessary IExecutor type</param>
+    /// <param name="catalog">Catalog of IExecutor options to pick from using key</param>
+    /// <returns></returns>
+    public IActionResult SayHelloWithKey(string key, [FromServices] IExecutorCatalog<MessageModel> catalog)
+    {
+        var executor = catalog.ForKey(key);
+        return View(new MessageModel() { Message = executor.Execute(new MessageModel()).Message });
+    }
 ```
 
 # What's next?
 
-I am looking at a number of improvements:
-
-- Visibility into the action execution: logging, metrics, etc.
-- Traceability of the action execution: tracing, etc.
-- User-friendly editor for the actions: development, testing, etc.
+- I realize that the next big update should be within the usability area and the best starting point there is to offer a way to quickly compose the actions. I am looking at options of creating a simple web-based UI to allow for the composition of the custom logic.
 
 
 # Links
