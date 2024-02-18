@@ -22,11 +22,10 @@
     <IsPackable>true</IsPackable>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageId>com.armatsoftware.code.engine.storage.file</PackageId>
-    <Version>9.9.9</Version>
-<!--    <Version>$([System.DateTime]::Now.ToString(`yyyyM.dH.m`))</Version>-->
+    <Version>$([System.DateTime]::Now.ToString(`yyyyM.d.Hm`))</Version>
     <Title>Armat Software Code Engine File Storage</Title>
     <Authors>Yuri Kazarov</Authors>
-    <Description>simple file storage implementation</Description>
+    <Description>Local package for testing and demonstrations</Description>
   </PropertyGroup>
 
 </Project>

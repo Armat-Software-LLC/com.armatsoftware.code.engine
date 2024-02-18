@@ -49,7 +49,7 @@ namespace <#=Configuration.GetNamespace()#>
 			<#=action.Key#>();
 <# } #>
 
-            return Subject;
+            return _subject;
         }
 
 	    public void SetLogger(ICodeEngineLogger logger)

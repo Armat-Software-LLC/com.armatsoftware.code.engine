@@ -135,7 +135,7 @@ namespace ArmatSoftware.Code.Engine.Compiler.CSharp
             
             #line default
             #line hidden
-            this.Write("\n            return Subject;\n        }\n\n\t    public void SetLogger(ICodeEngineLogger logger)\n\t    {\n\t        _logger = logger;\n\t    }\n\t\t\n");
+            this.Write("\n            return _subject;\n        }\n\n\t    public void SetLogger(ICodeEngineLogger logger)\n\t    {\n\t        _logger = logger;\n\t    }\n\t\t\n");
             
             #line 60 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
  foreach (var action in Configuration.GetActions()) { 

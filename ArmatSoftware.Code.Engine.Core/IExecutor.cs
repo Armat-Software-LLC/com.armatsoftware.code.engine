@@ -5,7 +5,7 @@ namespace ArmatSoftware.Code.Engine.Core
 	/// <summary>
 	/// Executes one or more actions against the subject
 	/// </summary>
-	/// <typeparam name="TSubject">Subject of type S</typeparam>
+	/// <typeparam name="TSubject">Subject type</typeparam>
 	public interface IExecutor<TSubject> : IExecutionContext where TSubject : class
 	{
 		/// <summary>
