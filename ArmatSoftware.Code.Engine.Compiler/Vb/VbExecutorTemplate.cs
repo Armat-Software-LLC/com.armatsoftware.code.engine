@@ -100,21 +100,21 @@ namespace ArmatSoftware.Code.Engine.Compiler.Vb
             
             #line default
             #line hidden
-            this.Write(").Log\n\t        Get\n\t            Return _logger\n\t        End Get\n\t    End Property\n\n        Public Function Read(key As String) As Object Implements IExecutionContext.Read\n            Return _runtimeValues(key)\n        End Function\n        \n        Public Sub Save(key As String, value As Object) Implements IExecutionContext.Save\n            _runtimeValues.Add(key, value)\n        End Sub\n\n    \tPublic Function Clone() As IFactoryExecutor(Of ");
+            this.Write(").Log\n\t        Get\n\t            Return _logger\n\t        End Get\n\t    End Property\n\n        Public Function Read(key As String) As Object Implements IExecutionContext.Read\n            Return _runtimeValues(key)\n        End Function\n        \n        Public Sub Save(key As String, value As Object) Implements IExecutionContext.Save\n            _runtimeValues.Add(key, value)\n        End Sub\n\n    \tPublic Function Clone() As IExecutor(Of ");
             
             #line 42 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Configuration.GetSubjectType()));
             
             #line default
             #line hidden
-            this.Write(") Implements IFactoryExecutor(Of ");
+            this.Write(") Implements IExecutor(Of ");
             
             #line 42 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Configuration.GetSubjectType()));
             
             #line default
             #line hidden
-            this.Write(").Clone\n\t\t\tReturn DirectCast(MemberwiseClone(), IFactoryExecutor(Of ");
+            this.Write(").Clone\n\t\t\tReturn DirectCast(MemberwiseClone(), IExecutor(Of ");
             
             #line 43 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Configuration.GetSubjectType()));

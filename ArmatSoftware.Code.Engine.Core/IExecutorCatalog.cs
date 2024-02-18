@@ -1,7 +1,7 @@
 namespace ArmatSoftware.Code.Engine.Core;
 
 /// <summary>
-/// Indexed executor interface for the code engine framework.
+/// Executor catalog for lookup by key.
 /// </summary>
 /// <typeparam name="TSubject">Subject type</typeparam>
 public interface IExecutorCatalog<TSubject>

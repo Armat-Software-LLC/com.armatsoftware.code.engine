@@ -19,6 +19,13 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <LangVersion>12</LangVersion>
+    <IsPackable>true</IsPackable>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageId>com.armatsoftware.code.engine.storage.file</PackageId>
+    <Version>$([System.DateTime]::Now.ToString(`yyyyM.d.Hm`))</Version>
+    <Title>Armat Software Code Engine File Storage</Title>
+    <Authors>Yuri Kazarov</Authors>
+    <Description>Local package for testing and demonstrations</Description>
   </PropertyGroup>
 
 </Project>

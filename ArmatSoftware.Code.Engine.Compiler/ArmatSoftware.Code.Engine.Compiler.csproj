@@ -5,13 +5,14 @@
     <IsPackable>true</IsPackable>
     <PackageId>com.armatsoftware.code.engine</PackageId>
     <Authors>Yuri Kazarov</Authors>
-    <Description>No description</Description>
+    <Description>Local package for testing and demonstrations</Description>
     <LangVersion>12</LangVersion>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Version>$([System.DateTime]::Now.ToString(`yyyyM.d.Hm`))</Version>
+    <Title>Armat Software Code Engine</Title>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <WarningLevel></WarningLevel>
     <WarningLevel></WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">

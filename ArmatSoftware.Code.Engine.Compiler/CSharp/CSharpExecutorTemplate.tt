@@ -36,9 +36,9 @@ namespace <#=Configuration.GetNamespace()#>
 			this._runtimeValues.Add(key, value);
 		}
 
-        public IFactoryExecutor<<#=Configuration.GetSubjectType()#>> Clone()
+        public IExecutor<<#=Configuration.GetSubjectType()#>> Clone()
         {
-            return (IFactoryExecutor<<#=Configuration.GetSubjectType()#>>) MemberwiseClone();
+            return (IExecutor<<#=Configuration.GetSubjectType()#>>) MemberwiseClone();
         }
 
         public <#=Configuration.GetSubjectType()#> Execute(<#=Configuration.GetSubjectType()#> subject)
@@ -49,7 +49,7 @@ namespace <#=Configuration.GetNamespace()#>
 			<#=action.Key#>();
 <# } #>
 
-            return Subject;
+            return _subject;
         }
 
 	    public void SetLogger(ICodeEngineLogger logger)
