@@ -28,7 +28,7 @@ Code Engine performance is as close to that of the compiled and deployed code as
 
 **Subject Action** (`ISubjectAction`) - a special object that contains information and instruction in form of one of the available language syntaxes (C# or VB.NET) that represents the custom logic to be executed against **Subject**. It is the object that is being stored and maintained via an implementation of `IActionRepository` and used via an implementation of `IActionProvider`.
 
-**Executor** (`IExecutor<T>`) - the contract whose dynamically generated implementation is injected into the host application and used to execute the custom logic against the **Subjec**.
+**Executor** (`IExecutor<T>`) - the contract whose dynamically generated implementation is injected into the host application and used to execute the custom logic against the **Subject**.
 
 **Executor Catalog** (`IExecutorCatalog<T>`) - the contract injected into the host application and used to look up a specific executor for a **Subject** type using a key. This is useful when there are multiple executors for the same **Subject** type and the host application needs to pick the right one based on some criteria.
 
