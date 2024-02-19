@@ -1,11 +1,12 @@
 # Table of Contents
 1. [Code Engine](#code-engine)
 2. [Why Code Engine](#why-code-engine)
-3. [How to use it?](#how-to-use-it)
-4. [Versions](#versions)
-5. [What's in this version?](#whats-in-this-version)
-6. [What's next?](#whats-next)
-7. [Links](#links)
+3. [Terminology](#terminology)
+4. [How to use it?](#how-to-use-it)
+5. [Versions](#versions)
+6. [What's in this version?](#whats-in-this-version)
+7. [What's next?](#whats-next)
+8. [Links](#links)
 
 # Code Engine
 
@@ -20,6 +21,16 @@ For brand new products, adding Code Engine is as easy as adding the NuGet packag
 For existing products, you can use Code Engine to replace some of the existing logic with a more flexible and maintainable solution. It is easy to incorporate into an existing application because it works with the existing dependency injection framework in ASP.NET Core.
 
 Code Engine performance is as close to that of the compiled and deployed code as it gets. It is designed to be fast and efficient, to be used in environments with heavy load and high performance demands.
+
+# Terminology
+
+**Subject** - the object that is being processed by the custom logic. It is the object that is being passed to and returned from the `Execute()` method of the `IExecutor<T>`. This is an arbitrary type, defined and used by the host application. This object can either be the target of the intended updates or contain other public properties that are target of the custom logic. It can be as shallow or as complex as the host application developer needs it to be.
+
+**Subject Action** (`ISubjectAction`) - a special object that contains information and instruction in form of one of the available language syntaxes (C# or VB.NET) that represents the custom logic to be executed against **Subject**. It is the object that is being stored and maintained via an implementation of `IActionRepository` and used via an implementation of `IActionProvider`.
+
+**Executor** (`IExecutor<T>`) - the contract whose dynamically generated implementation is injected into the host application and used to execute the custom logic against the **Subjec**.
+
+**Executor Catalog** (`IExecutorCatalog<T>`) - the contract injected into the host application and used to look up a specific executor for a **Subject** type using a key. This is useful when there are multiple executors for the same **Subject** type and the host application needs to pick the right one based on some criteria.
 
 # How to use it?
 
