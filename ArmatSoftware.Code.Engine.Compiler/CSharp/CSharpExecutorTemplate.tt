@@ -48,7 +48,15 @@ namespace <#=Configuration.GetNamespace()#>
 <# foreach (var action in Configuration.GetActions()) { #>
 			<#=action.Key#>();
 <# } #>
-
+			
+<#
+   if (Configuration.EnableModelValidation())
+   {
+#>
+			ObjectValidator.Validate(_subject);			
+<#
+   }
+#>
             return _subject;
         }
 

@@ -36,5 +36,11 @@ namespace ArmatSoftware.Code.Engine.Compiler
 		/// </summary>
 		/// <returns></returns>
 		string GetSubjectType();
+
+		/// <summary>
+		/// Should the compiler validate the resulting models after execution
+		/// </summary>
+		/// <returns></returns>
+		bool EnableModelValidation();
 	}
 }

@@ -114,6 +114,11 @@ namespace ArmatSoftware.Code.Engine.Compiler.CSharp
 			configuration.References.Add(typeof(IExecutor<>));
 			configuration.References.Add(typeof(ICodeEngineLogger));
 			configuration.References.Add(typeof(DynamicAttribute));
+			
+			if (configuration.EnableModelValidation())
+			{
+				configuration.References.Add(typeof(ObjectValidator));
+			}
 		}
 
 		private static void ValidateConfiguration(ICompilerConfiguration<TSubject> configuration)

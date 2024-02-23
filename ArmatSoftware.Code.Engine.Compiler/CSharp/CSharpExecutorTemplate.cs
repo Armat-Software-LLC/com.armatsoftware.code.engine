@@ -135,30 +135,49 @@ namespace ArmatSoftware.Code.Engine.Compiler.CSharp
             
             #line default
             #line hidden
-            this.Write("\n            return _subject;\n        }\n\n\t    public void SetLogger(ICodeEngineLogger logger)\n\t    {\n\t        _logger = logger;\n\t    }\n\t\t\n");
+            this.Write("\t\t\t\n");
             
-            #line 60 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
+            #line 52 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
+
+   if (Configuration.EnableModelValidation())
+   {
+
+            
+            #line default
+            #line hidden
+            this.Write("\t\t\tObjectValidator.Validate(_subject);\t\t\t\n");
+            
+            #line 57 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
+
+   }
+
+            
+            #line default
+            #line hidden
+            this.Write("            return _subject;\n        }\n\n\t    public void SetLogger(ICodeEngineLogger logger)\n\t    {\n\t        _logger = logger;\n\t    }\n\t\t\n");
+            
+            #line 68 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
  foreach (var action in Configuration.GetActions()) { 
             
             #line default
             #line hidden
             this.Write("\t\tprivate void ");
             
-            #line 61 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
+            #line 69 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(action.Key));
             
             #line default
             #line hidden
             this.Write("()\n\t\t{\n\t\t\t");
             
-            #line 63 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
+            #line 71 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(action.Value));
             
             #line default
             #line hidden
             this.Write("\n\t\t}\n");
             
-            #line 65 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
+            #line 73 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
  } 
             
             #line default

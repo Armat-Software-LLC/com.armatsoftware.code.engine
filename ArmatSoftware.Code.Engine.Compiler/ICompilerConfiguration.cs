@@ -19,5 +19,10 @@ namespace ArmatSoftware.Code.Engine.Compiler
 		/// List of imports to add to the template
 		/// </summary>
 		IList<Type> References { get; set; }
+		
+		/// <summary>
+		/// Should compiler validate models resulting from execution?
+		/// </summary>
+		bool ValidateModelsAfterExecution { get; set; }
 	}
 }
