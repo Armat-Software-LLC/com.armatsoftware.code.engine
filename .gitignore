@@ -361,3 +361,6 @@ test.sh
 *.sln.iml
 *.ipr
 *.iws
+
+# Ignore Mac OS files
+.DS_Store
