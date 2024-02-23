@@ -102,6 +102,18 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
 
 			Assert.IsTrue(executor.Subject.Data == "test value");
 		}
+		
+		[Test]
+		public void Should_Not_Execute_Unforeseen_Operation()
+		{
+			Assert.That(() =>
+			{
+				var testSubjectAction = new TestSubjectAction { Name = "TestHttpClient", Code = "New HttpClient()" };
+				Configuration.Actions.Add(testSubjectAction);
+				var executor = Compiler.Compile(Configuration);
+				executor.Execute(new TestSubject());
+			}, Throws.InvalidOperationException);
+		}
 	}
 
 	public class VbCompilerTestBase<TSubject> where TSubject: class
