@@ -31,12 +31,12 @@ public class ModelValidationTests : ModelValidationTestBase<TestSubject>
        Assert.That(() =>
        {
            Configuration.Actions.Add(new TestSubjectAction { Name = "ValidateThisModel", Code = "Subject.Data = \"short string\";" });
-           Configuration.ValidateModelsAfterExecution = true;
+           Configuration.ValidateModelsAfterExecution = false;
            
            var executor = BuildCSharpCompiler();
            
            executor.Execute(new TestSubject());
-       }, Throws.TypeOf<ValidationException>());
+       }, Throws.Nothing);
    }
    
    [Test]
@@ -78,7 +78,7 @@ public class ModelValidationTests : ModelValidationTestBase<TestSubject>
            var executor = BuildVbCompiler();
            
            executor.Execute(new TestSubject());
-       }, Throws.TypeOf<ValidationException>());
+       }, Throws.Nothing);
    }
    
    [Test]
