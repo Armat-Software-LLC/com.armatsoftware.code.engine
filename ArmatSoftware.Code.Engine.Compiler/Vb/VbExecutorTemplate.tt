@@ -54,6 +54,15 @@ Namespace <#=Configuration.GetNamespace()#>
 			<#=action.Key#>()
 <# } #>
 
+<#
+   if (Configuration.EnableModelValidation())
+   {
+#>
+			ObjectValidator.Validate(_subject)			
+<#
+   }
+#>
+
 			Return _subject
 		End Function
 		

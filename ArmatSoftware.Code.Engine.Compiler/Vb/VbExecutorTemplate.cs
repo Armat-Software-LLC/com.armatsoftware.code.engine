@@ -170,30 +170,49 @@ namespace ArmatSoftware.Code.Engine.Compiler.Vb
             
             #line default
             #line hidden
+            this.Write("\n");
+            
+            #line 57 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
+
+   if (Configuration.EnableModelValidation())
+   {
+
+            
+            #line default
+            #line hidden
+            this.Write("\t\t\tObjectValidator.Validate(_subject)\t\t\t\n");
+            
+            #line 62 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
+
+   }
+
+            
+            #line default
+            #line hidden
             this.Write("\n\t\t\tReturn _subject\n\t\tEnd Function\n\t\t\n");
             
-            #line 60 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
+            #line 69 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
  foreach (var action in Configuration.GetActions()) { 
             
             #line default
             #line hidden
             this.Write("\n\t\tPrivate Sub ");
             
-            #line 62 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
+            #line 71 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(action.Key));
             
             #line default
             #line hidden
             this.Write("()\n\t\t\t");
             
-            #line 63 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
+            #line 72 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(action.Value));
             
             #line default
             #line hidden
             this.Write("\n\t\tEnd Sub\n");
             
-            #line 65 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
+            #line 74 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
  } 
             
             #line default

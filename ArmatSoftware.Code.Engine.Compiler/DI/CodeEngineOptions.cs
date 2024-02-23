@@ -36,4 +36,7 @@ public class CodeEngineOptions
     /// Time in minutes before cached executors expire.
     /// </summary>
     public double CacheExpirationMinutes { get; set; } = 3;
+    
+    
+    public bool ValidateModelsAfterExecution { get; set; } = false;
 }

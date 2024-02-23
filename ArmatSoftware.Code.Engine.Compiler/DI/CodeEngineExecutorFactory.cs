@@ -53,6 +53,8 @@ namespace ArmatSoftware.Code.Engine.Compiler.DI
 #endif
             
             configuration.Actions = _actionProvider.Retrieve<TSubject>(key).ToList();
+
+            configuration.ValidateModelsAfterExecution = _options.ValidateModelsAfterExecution;
             
             // compile new executors and cache them before returning
 

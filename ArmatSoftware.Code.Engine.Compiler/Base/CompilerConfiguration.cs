@@ -24,6 +24,11 @@ namespace ArmatSoftware.Code.Engine.Compiler.Base
 		/// List of referenced types used in the action logic
 		/// </summary>
 		public IList<Type> References { get; set; } = new List<Type>();
+		
+		/// <summary>
+		/// Should the compiler validate models resulting from execution?
+		/// </summary>
+		public bool ValidateModelsAfterExecution { get; set; } = false;
 
 		/// <summary>
 		/// Hidden constructor
@@ -69,6 +74,11 @@ namespace ArmatSoftware.Code.Engine.Compiler.Base
 		public string GetSubjectType()
 		{
 			return typeof(TSubject).Name;
+		}
+
+		public bool EnableModelValidation()
+		{
+			return ValidateModelsAfterExecution;
 		}
 	}
 }
