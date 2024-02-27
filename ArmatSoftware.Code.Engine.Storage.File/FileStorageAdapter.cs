@@ -1,25 +1,37 @@
 using System.Security;
-using System.Xml.Serialization;
 using ArmatSoftware.Code.Engine.Core.Logging;
+using ArmatSoftware.Code.Engine.Storage.Contracts;
 using Newtonsoft.Json;
 
 namespace ArmatSoftware.Code.Engine.Storage.File;
 
-public class FileIOAdapter
+public class FileStorageAdapter : IStorageAdapter
 {
     private readonly DirectoryInfo _storageRootDirectory;
     private readonly string _fileExtension;
     private readonly ICodeEngineLogger _logger;
 
-    public FileIOAdapter(string storageRootPath, string fileExtension, ICodeEngineLogger logger)
+    public FileStorageAdapter(FileStorageOptions options, ICodeEngineLogger logger)
     {
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger), "Supplied logger is null");
+        _ = options ?? throw new ArgumentNullException(nameof(options), "Supplied options are null");
 
-        _fileExtension = fileExtension ?? throw new ArgumentNullException(nameof(fileExtension), "Supplied file extension is null");
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger), "Supplied logger is null");
+        
+        if (string.IsNullOrWhiteSpace(options.StoragePath))
+        {
+            throw new ArgumentNullException("Supplied storage path is empty or null", nameof(options.StoragePath));
+        }
+        
+        if (string.IsNullOrWhiteSpace(options.FileExtension))
+        {
+            throw new ArgumentNullException(nameof(options.FileExtension), "Supplied file extension is empty or null");
+        }
+
+        _fileExtension = options.FileExtension;
         
         try
         {
-            _storageRootDirectory = new DirectoryInfo(storageRootPath);
+            _storageRootDirectory = new DirectoryInfo(options.StoragePath);
 
             if (!_storageRootDirectory.Exists)
             {
@@ -54,34 +66,6 @@ public class FileIOAdapter
 
     }
     
-    public StoredActions<TSubject> Read<TSubject>(string key = "")
-        where TSubject : class
-    {
-        var pathInfo = GeneratePath(typeof(TSubject), key);
-        if (!System.IO.File.Exists(pathInfo.ToString()))
-        {
-            _logger.Info($"Code file for {typeof(TSubject).FullName} and key '{key}' does not exist. Returning empty stored actions.");
-            return new StoredActions<TSubject>();
-        }
-        
-        var content = System.IO.File.ReadAllText(pathInfo.ToString());
-        return JsonConvert.DeserializeObject<StoredActions<TSubject>>(content) ?? new StoredActions<TSubject>();
-    }
-    
-    public void Write<TSubject>(StoredActions<TSubject> actions, string key = "")
-        where TSubject : class
-    {
-        var pathInfo = GeneratePath(typeof(TSubject), key);
-        
-        if (!Directory.Exists(pathInfo.DirectoryPath))
-        {
-            Directory.CreateDirectory(pathInfo.DirectoryPath);
-        }
-        
-        var content = JsonConvert.SerializeObject(actions);
-        System.IO.File.WriteAllText(pathInfo.ToString(), content);
-    }
-    
     /// <summary>
     /// Generate unique path for the code file based on the subject type and key
     /// </summary>
@@ -103,6 +87,41 @@ public class FileIOAdapter
         var fileName = $"code{keyFragment}.{_fileExtension}";
 
         return new GeneratedPathInfo(Path.Join(_storageRootDirectory.FullName, folderPath), fileName);
+    }
+
+    public IStoredSubjectActions<TSubject> Read<TSubject>(string key = "") where TSubject : class
+    {
+        var pathInfo = GeneratePath(typeof(TSubject), key);
+        if (!System.IO.File.Exists(pathInfo.ToString()))
+        {
+            _logger.Info($"Code file for {typeof(TSubject).FullName} and key '{key}' does not exist. Returning empty stored actions.");
+            return new StoredSubjectActions<TSubject>();
+        }
+        
+        var content = System.IO.File.ReadAllText(pathInfo.ToString());
+        
+        var storedActions = JsonConvert.DeserializeObject<StoredSubjectActions<TSubject>>(content);
+        
+        if (storedActions == null)
+        {
+            _logger.Info($"Code file for {typeof(TSubject).FullName} and key '{key}' is empty. Returning empty stored actions.");
+            return new StoredSubjectActions<TSubject>();
+        }
+
+        return storedActions;
+    }
+
+    public void Write<TSubject>(IStoredSubjectActions<TSubject> actions, string key = "") where TSubject : class
+    {
+        var pathInfo = GeneratePath(typeof(TSubject), key);
+        
+        if (!Directory.Exists(pathInfo.DirectoryPath))
+        {
+            Directory.CreateDirectory(pathInfo.DirectoryPath);
+        }
+        
+        var content = JsonConvert.SerializeObject(actions);
+        System.IO.File.WriteAllText(pathInfo.ToString(), content);
     }
 }
 

@@ -1,27 +1,27 @@
 using System.Linq;
 using NUnit.Framework;
 
-namespace ArmatSoftware.Code.Engine.Storage.File.Tests;
+namespace ArmatSoftware.Code.Engine.Storage.Tests;
 
-[TestFixture]
-public class StoredActionsTests
+[TestFixture, TestOf(typeof(StoredSubjectAction<>))]
+public class StoredSubjectActionsTests
 {
-    public StoredActions<TestSubject> Target { get; set; }
+    public StoredSubjectActions<TestSubject> Target { get; set; }
 
     [SetUp]
     public void Initialize()
     {
-        Target = new StoredActions<TestSubject>();
+        Target = new StoredSubjectActions<TestSubject>();
     }
 
     [Test]
     public void Should_Reorder_Up_End_To_Start()
     {
-        Target.Add("Action1");
-        Target.Add("Action2");
-        Target.Add("Action3");
-        Target.Add("Action4");
-        Target.Add("Action5");
+        Target.Create("Action1");
+        Target.Create("Action2");
+        Target.Create("Action3");
+        Target.Create("Action4");
+        Target.Create("Action5");
 
         Target.Reorder("Action5", 1);
 
@@ -35,11 +35,11 @@ public class StoredActionsTests
     [Test]
     public void Should_Reorder_Up_End_To_Middle()
     {
-        Target.Add("Action1");
-        Target.Add("Action2");
-        Target.Add("Action3");
-        Target.Add("Action4");
-        Target.Add("Action5");
+        Target.Create("Action1");
+        Target.Create("Action2");
+        Target.Create("Action3");
+        Target.Create("Action4");
+        Target.Create("Action5");
 
         Target.Reorder("Action5", 3);
 
@@ -53,11 +53,11 @@ public class StoredActionsTests
     [Test]
     public void Should_Reorder_Up_Middle_To_Start()
     {
-        Target.Add("Action1");
-        Target.Add("Action2");
-        Target.Add("Action3");
-        Target.Add("Action4");
-        Target.Add("Action5");
+        Target.Create("Action1");
+        Target.Create("Action2");
+        Target.Create("Action3");
+        Target.Create("Action4");
+        Target.Create("Action5");
 
         Target.Reorder("Action3", 1);
 
@@ -71,11 +71,11 @@ public class StoredActionsTests
     [Test]
     public void Should_Reorder_Up_Middle_To_Before_Start()
     {
-        Target.Add("Action1");
-        Target.Add("Action2");
-        Target.Add("Action3");
-        Target.Add("Action4");
-        Target.Add("Action5");
+        Target.Create("Action1");
+        Target.Create("Action2");
+        Target.Create("Action3");
+        Target.Create("Action4");
+        Target.Create("Action5");
 
         Target.Reorder("Action3", -1);
 
@@ -89,11 +89,11 @@ public class StoredActionsTests
     [Test]
     public void Should_Reorder_Up_End_To_Before_Start()
     {
-        Target.Add("Action1");
-        Target.Add("Action2");
-        Target.Add("Action3");
-        Target.Add("Action4");
-        Target.Add("Action5");
+        Target.Create("Action1");
+        Target.Create("Action2");
+        Target.Create("Action3");
+        Target.Create("Action4");
+        Target.Create("Action5");
 
         Target.Reorder("Action5", -1);
 
@@ -107,11 +107,11 @@ public class StoredActionsTests
     [Test]
     public void Should_Reorder_Down_Start_To_End()
     {
-        Target.Add("Action1");
-        Target.Add("Action2");
-        Target.Add("Action3");
-        Target.Add("Action4");
-        Target.Add("Action5");
+        Target.Create("Action1");
+        Target.Create("Action2");
+        Target.Create("Action3");
+        Target.Create("Action4");
+        Target.Create("Action5");
 
         Target.Reorder("Action1", 5);
 
@@ -125,11 +125,11 @@ public class StoredActionsTests
     [Test]
     public void Should_Reorder_Down_Start_To_Middle()
     {
-        Target.Add("Action1");
-        Target.Add("Action2");
-        Target.Add("Action3");
-        Target.Add("Action4");
-        Target.Add("Action5");
+        Target.Create("Action1");
+        Target.Create("Action2");
+        Target.Create("Action3");
+        Target.Create("Action4");
+        Target.Create("Action5");
 
         Target.Reorder("Action1", 3);
 
@@ -143,11 +143,11 @@ public class StoredActionsTests
     [Test]
     public void Should_Reorder_Down_Middle_To_End()
     {
-        Target.Add("Action1");
-        Target.Add("Action2");
-        Target.Add("Action3");
-        Target.Add("Action4");
-        Target.Add("Action5");
+        Target.Create("Action1");
+        Target.Create("Action2");
+        Target.Create("Action3");
+        Target.Create("Action4");
+        Target.Create("Action5");
 
         Target.Reorder("Action3", 5);
 
@@ -161,11 +161,11 @@ public class StoredActionsTests
     [Test]
     public void Should_Reorder_Down_Middle_To_Outside_End()
     {
-        Target.Add("Action1");
-        Target.Add("Action2");
-        Target.Add("Action3");
-        Target.Add("Action4");
-        Target.Add("Action5");
+        Target.Create("Action1");
+        Target.Create("Action2");
+        Target.Create("Action3");
+        Target.Create("Action4");
+        Target.Create("Action5");
 
         Target.Reorder("Action3", 7);
 
@@ -179,11 +179,11 @@ public class StoredActionsTests
     [Test]
     public void Should_Reorder_Down_Start_To_Outside_End()
     {
-        Target.Add("Action1");
-        Target.Add("Action2");
-        Target.Add("Action3");
-        Target.Add("Action4");
-        Target.Add("Action5");
+        Target.Create("Action1");
+        Target.Create("Action2");
+        Target.Create("Action3");
+        Target.Create("Action4");
+        Target.Create("Action5");
 
         Target.Reorder("Action1", 7);
 

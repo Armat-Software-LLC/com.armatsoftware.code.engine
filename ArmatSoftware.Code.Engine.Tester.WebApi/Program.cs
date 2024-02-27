@@ -1,10 +1,13 @@
 using ArmatSoftware.Code.Engine.Compiler.DI;
 using ArmatSoftware.Code.Engine.Logger.File;
+using ArmatSoftware.Code.Engine.Storage.DI;
+using ArmatSoftware.Code.Engine.Storage.File;
 using ArmatSoftware.Code.Engine.Storage.File.DI;
-using ArmatSoftware.Code.Engine.Tester.WebApi;
 using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var config = builder.Configuration;
 
 // add controllers
 builder.Services.AddControllers()
@@ -37,12 +40,20 @@ builder.Services.UseCodeEngine(new()
     // specify the custom code provider or don't set to use the default one
     Logger = new CodeEngineFileLogger("/tmp/test.log"),
     // likewise, optionally, use your own custom provider for the storage
+    // or use default if none provided
     // Provider = new CustomCodeProvider()
     // set the cache expiration time in minutes
     CacheExpirationMinutes = 1
 });
 
-builder.Services.UseCodeEngineFileStorage();
+// set the default repository and storage
+builder.Services.UseCodeEngineDefaultRepository();
+
+builder.Services.UseCodeEngineDefaultFileStorage(new FileStorageOptions()
+{
+    StoragePath = config["ASCE_FILE_STORAGE_PATH"] ?? throw new ApplicationException("Unable to find ASCE_FILE_STORAGE_PATH in the configuration"),
+    FileExtension = config["ASCE_FILE_STORAGE_EXTENSION"] ?? throw new ApplicationException("Unable to find ASCE_FILE_STORAGE_EXTENSION in the configuration")
+});
 
 var app = builder.Build();
 

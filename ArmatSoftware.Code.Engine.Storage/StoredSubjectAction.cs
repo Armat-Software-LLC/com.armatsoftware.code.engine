@@ -1,13 +1,11 @@
-using System.Collections;
-using System.Collections.ObjectModel;
+using System;
 using System.ComponentModel.DataAnnotations;
-using System.Security.Cryptography;
-using System.Text;
-using ArmatSoftware.Code.Engine.Core;
+using System.Linq;
+using ArmatSoftware.Code.Engine.Storage.Contracts;
 
-namespace ArmatSoftware.Code.Engine.Storage.File;
+namespace ArmatSoftware.Code.Engine.Storage;
 
-public class StoredSubjectAction<TSubject> : ISubjectAction<TSubject>
+public class StoredSubjectAction<TSubject> : IStoredSubjectAction<TSubject>
     where TSubject : class
 {
     
@@ -44,5 +42,5 @@ public class StoredSubjectAction<TSubject> : ISubjectAction<TSubject>
         Revisions.ForEach(r => r.Active = false);
         Revisions.First(r => r.Revision == revision).Active = true;
     }
-
 }
+

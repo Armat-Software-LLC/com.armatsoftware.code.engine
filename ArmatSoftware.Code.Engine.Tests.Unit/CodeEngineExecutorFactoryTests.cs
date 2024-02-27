@@ -4,7 +4,7 @@ using ArmatSoftware.Code.Engine.Compiler.DI;
 using ArmatSoftware.Code.Engine.Core;
 using ArmatSoftware.Code.Engine.Core.Logging;
 using ArmatSoftware.Code.Engine.Core.Storage;
-using ArmatSoftware.Code.Engine.Storage.File;
+using ArmatSoftware.Code.Engine.Storage;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using Moq;
@@ -96,19 +96,19 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
         
         protected IMemoryCache MemCache { get; set; }
 
-        protected StoredActions<CodeEngineFactoryTestSubject> Actions { get; set; }
+        protected StoredSubjectActions<CodeEngineFactoryTestSubject> SubjectActions { get; set; }
         
         [SetUp]
         public void Setup()
         {
-            Actions = new StoredActions<CodeEngineFactoryTestSubject>();
-            var action = Actions.Add("SimpleAction");
+            SubjectActions = new StoredSubjectActions<CodeEngineFactoryTestSubject>();
+            var action = SubjectActions.Create("SimpleAction");
             action.Update("Subject.Data = \"Hello world!\";", "testauthor", "testcomment");
             action.Activate(1);
             
             StorageMock = new Mock<IActionProvider>();
             StorageMock.Setup(x => x.Retrieve<CodeEngineFactoryTestSubject>(It.IsAny<string>()))
-                .Returns(Actions.ToList());
+                .Returns(SubjectActions.ToList());
             LoggerMock = new Mock<ICodeEngineLogger>();
             // MemoryCacheMock = new Mock<IMemoryCache>();
             

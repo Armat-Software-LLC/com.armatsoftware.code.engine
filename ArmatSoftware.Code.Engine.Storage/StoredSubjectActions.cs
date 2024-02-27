@@ -1,13 +1,20 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using ArmatSoftware.Code.Engine.Storage.Contracts;
 
-namespace ArmatSoftware.Code.Engine.Storage.File;
+namespace ArmatSoftware.Code.Engine.Storage;
 
-public class StoredActions<TSubject> : List<StoredSubjectAction<TSubject>>
+public class StoredSubjectActions<TSubject> : IStoredSubjectActions<TSubject>
     where TSubject : class
 {
+    private readonly ICollection<StoredSubjectAction<TSubject>> _storedActions =
+        new List<StoredSubjectAction<TSubject>>();
     
-    public StoredSubjectAction<TSubject> Add(string name)
+    public IStoredSubjectAction<TSubject> Create(string name)
     {
         var order = this.OrderByDescending(a => a.Order).FirstOrDefault()?.Order + 1 ?? 1;
             
@@ -33,9 +40,9 @@ public class StoredActions<TSubject> : List<StoredSubjectAction<TSubject>>
 
         var shouldBeMoved = directionOfReorder switch
         {
-            -1 => new Func<StoredSubjectAction<TSubject>, bool>(a =>
+            -1 => new Func<IStoredSubjectAction<TSubject>, bool>(a =>
                 a.Order >= order && a.Order < action.Order), // action order in decreased (moved up the list)
-            1 => new Func<StoredSubjectAction<TSubject>, bool>(a =>
+            1 => new Func<IStoredSubjectAction<TSubject>, bool>(a =>
                 a.Order <= order && a.Order > action.Order), // action order in increased (moved down the list)
         };
             
@@ -52,7 +59,7 @@ public class StoredActions<TSubject> : List<StoredSubjectAction<TSubject>>
     
     // Validation
 
-    private void Validate(StoredSubjectAction<TSubject> newAction)
+    private void Validate(IStoredSubjectAction<TSubject> newAction)
     {
         _ = newAction ?? throw new ArgumentNullException(nameof(newAction));
 
@@ -70,34 +77,40 @@ public class StoredActions<TSubject> : List<StoredSubjectAction<TSubject>>
     public void Add(StoredSubjectAction<TSubject> action)
     {
         Validate(action);
-        base.Add(action);
-    }
-    
-    public void AddRange(IEnumerable<StoredSubjectAction<TSubject>> collection)
-    {
-        foreach (var action in collection)
-        {
-            Validate(action);
-            base.Add(action);
-        }
+        _storedActions.Add((StoredSubjectAction<TSubject>)action);
     }
 
-    public void Insert(int index, StoredSubjectAction<TSubject> action)
+    public void Clear()
     {
-        Validate(action);
-        base.Insert(index, action);
+        _storedActions.Clear();
     }
-    
-    public void InsertRange(int index, IEnumerable<StoredSubjectAction<TSubject>> collection)
+
+    public bool Contains(StoredSubjectAction<TSubject> item)
     {
-        foreach (var action in collection)
-        {
-            Validate(action);
-            base.Insert(index, action);
-        }
+        return _storedActions.Contains(item);
     }
-    
-    public void Remove(StoredSubjectAction<TSubject> action) => throw new InvalidOperationException("Cannot remove an action directly from a stored actions");
-    
-    public void Clear() => throw new InvalidOperationException("Cannot clear actions directly from a stored actions");
+
+    public void CopyTo(StoredSubjectAction<TSubject>[] array, int arrayIndex)
+    {
+        _storedActions.CopyTo((StoredSubjectAction<TSubject>[])array, arrayIndex);
+    }
+
+    public bool Remove(StoredSubjectAction<TSubject> item)
+    {
+        return _storedActions.Remove((StoredSubjectAction<TSubject>)item);
+    }
+
+    public int Count => _storedActions.Count;
+
+    public bool IsReadOnly => _storedActions.IsReadOnly;
+
+    public IEnumerator<StoredSubjectAction<TSubject>> GetEnumerator()
+    {
+        return _storedActions.GetEnumerator();
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return ((IEnumerable)_storedActions).GetEnumerator();
+    }
 }

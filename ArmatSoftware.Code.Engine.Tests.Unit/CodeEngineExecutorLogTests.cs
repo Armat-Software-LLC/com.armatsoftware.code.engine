@@ -5,7 +5,7 @@ using ArmatSoftware.Code.Engine.Compiler.DI;
 using ArmatSoftware.Code.Engine.Core;
 using ArmatSoftware.Code.Engine.Core.Logging;
 using ArmatSoftware.Code.Engine.Core.Storage;
-using ArmatSoftware.Code.Engine.Storage.File;
+using ArmatSoftware.Code.Engine.Storage;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using Moq;
@@ -19,7 +19,7 @@ public class CodeEngineExecutorLogTests : CodeEngineExecutorLogTestBuilder
     [Test]
     public void Should_Log_Info_Message()
     {
-        var executor = BuildLogActions(LogActions);
+        var executor = BuildLogActions(LogSubjectActions);
 
         executor.Execute(new TestSubject());
         
@@ -29,7 +29,7 @@ public class CodeEngineExecutorLogTests : CodeEngineExecutorLogTestBuilder
     [Test]
     public void Should_Log_Error_Message()
     {
-        var executor = BuildLogActions(LogActions);
+        var executor = BuildLogActions(LogSubjectActions);
         
         executor.Execute(new TestSubject());
         
@@ -39,7 +39,7 @@ public class CodeEngineExecutorLogTests : CodeEngineExecutorLogTestBuilder
     [Test]
     public void Should_Log_Warning_Message()
     {
-        var executor = BuildLogActions(LogActions);
+        var executor = BuildLogActions(LogSubjectActions);
         
         executor.Execute(new TestSubject());
         
@@ -51,7 +51,7 @@ public class CodeEngineExecutorLogTests : CodeEngineExecutorLogTestBuilder
     {
         Assert.That(() =>
         {
-            var executor = BuildLogActions(SetLogNullActions);
+            var executor = BuildLogActions(SetLogNullSubjectActions);
         
             executor.Execute(new TestSubject());
 
@@ -77,42 +77,42 @@ public class CodeEngineExecutorLogTestBuilder
     
     protected IMemoryCache MemCache { get; set; }
 
-    protected StoredActions<TestSubject> LogActions { get; set; }
+    protected StoredSubjectActions<TestSubject> LogSubjectActions { get; set; }
     
-    protected StoredActions<TestSubject> SetLogNullActions { get; set; }
+    protected StoredSubjectActions<TestSubject> SetLogNullSubjectActions { get; set; }
     
     protected CodeEngineExecutorFactory Factory { get; set; }
 
     [SetUp]
     public void Setup()
     {
-        LogActions = new StoredActions<TestSubject>();
+        LogSubjectActions = new StoredSubjectActions<TestSubject>();
         
-        var logInfoAction = LogActions.Add("LogInfo");
+        var logInfoAction = LogSubjectActions.Create("LogInfo");
         logInfoAction.Update($"Log.Info(\"{InfoMessage}\");", "testauthor", "testcomment");
         logInfoAction.Activate(1);
         
-        var logWarningAction = LogActions.Add("LogWarning");
+        var logWarningAction = LogSubjectActions.Create("LogWarning");
         logWarningAction.Update($"Log.Warning(\"{WarningMessage}\");", "testauthor", "testcomment");
         logWarningAction.Activate(1);
         
-        var logErrorAction = LogActions.Add("LogError");
+        var logErrorAction = LogSubjectActions.Create("LogError");
         logErrorAction.Update($"Log.Error(\"{ErrorMessage}\");", "testauthor", "testcomment");
         logErrorAction.Activate(1);
 
-        SetLogNullActions = new StoredActions<TestSubject>();
+        SetLogNullSubjectActions = new StoredSubjectActions<TestSubject>();
         
-        var setLogNullAction = SetLogNullActions.Add("SetLogNull");
+        var setLogNullAction = SetLogNullSubjectActions.Create("SetLogNull");
         setLogNullAction.Update($"Log = null;", "testauthor", "testcomment");
         setLogNullAction.Activate(1);
         
     }
     
-    protected IExecutor<TestSubject> BuildLogActions(StoredActions<TestSubject> actions)
+    protected IExecutor<TestSubject> BuildLogActions(StoredSubjectActions<TestSubject> subjectActions)
     {
         StorageMock = new Mock<IActionProvider>();
         StorageMock.Setup(x => x.Retrieve<TestSubject>(It.IsAny<string>()))
-            .Returns(actions.ToList());
+            .Returns(subjectActions.ToList());
 
         Provider = StorageMock.Object;
         Logger = new CodeEngineExecutorLogTestLogger();

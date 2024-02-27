@@ -17,6 +17,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArmatSoftware.Code.Engine.S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArmatSoftware.Code.Engine.Tester.WebApi", "ArmatSoftware.Code.Engine.Tester.WebApi\ArmatSoftware.Code.Engine.Tester.WebApi.csproj", "{5E733B06-F689-492F-BB90-BF63D9C8BB79}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArmatSoftware.Code.Engine.Storage", "ArmatSoftware.Code.Engine.Storage\ArmatSoftware.Code.Engine.Storage.csproj", "{28DC70D7-F9AE-4773-80F3-34A263DBB42A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArmatSoftware.Code.Engine.Storage.Tests", "ArmatSoftware.Code.Engine.Storage.Tests\ArmatSoftware.Code.Engine.Storage.Tests.csproj", "{BD4C8B0E-FFF2-4ED3-BDB0-13550E5E8718}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,5 +59,13 @@ Global
 		{5E733B06-F689-492F-BB90-BF63D9C8BB79}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5E733B06-F689-492F-BB90-BF63D9C8BB79}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5E733B06-F689-492F-BB90-BF63D9C8BB79}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28DC70D7-F9AE-4773-80F3-34A263DBB42A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28DC70D7-F9AE-4773-80F3-34A263DBB42A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28DC70D7-F9AE-4773-80F3-34A263DBB42A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28DC70D7-F9AE-4773-80F3-34A263DBB42A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD4C8B0E-FFF2-4ED3-BDB0-13550E5E8718}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD4C8B0E-FFF2-4ED3-BDB0-13550E5E8718}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD4C8B0E-FFF2-4ED3-BDB0-13550E5E8718}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD4C8B0E-FFF2-4ED3-BDB0-13550E5E8718}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

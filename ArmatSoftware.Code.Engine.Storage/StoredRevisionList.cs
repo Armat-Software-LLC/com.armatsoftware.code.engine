@@ -1,9 +1,12 @@
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace ArmatSoftware.Code.Engine.Storage.File;
+namespace ArmatSoftware.Code.Engine.Storage;
 
 public class StoredRevisionList<TSubject> : List<StoredActionRevision<TSubject>>
     where TSubject : class
@@ -86,7 +89,7 @@ public class StoredRevisionList<TSubject> : List<StoredActionRevision<TSubject>>
     
     string Base64Hash(StoredActionRevision<TSubject> revision)
     {
-        var salt = revision.Created.ToString(UtcDateSerializationFormat);
+        string salt = revision.Created.ToString(UtcDateSerializationFormat);
         using (var hmac = new HMACSHA256(Encoding.UTF8.GetBytes(salt)))
         {
             byte[] hashBytes =

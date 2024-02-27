@@ -1,9 +1,13 @@
-﻿using ArmatSoftware.Code.Engine.Core;
-using ArmatSoftware.Code.Engine.Core.Logging;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using ArmatSoftware.Code.Engine.Core.Storage;
+using ArmatSoftware.Code.Engine.Core;
+using ArmatSoftware.Code.Engine.Core.Logging;
+using ArmatSoftware.Code.Engine.Storage.Contracts;
 using Microsoft.Extensions.Configuration;
 
-namespace ArmatSoftware.Code.Engine.Storage.File;
+namespace ArmatSoftware.Code.Engine.Storage;
 
 public class CodeEngineActionProvider : IActionProvider
 {
@@ -12,21 +16,18 @@ public class CodeEngineActionProvider : IActionProvider
 
     private readonly IConfiguration _configuration;
     private readonly ICodeEngineLogger _logger;
-    private readonly FileIOAdapter  _fileIOAdapter;
+    private readonly IStorageAdapter  _fileIOAdapter;
     
-    public CodeEngineActionProvider(IConfiguration configuration, ICodeEngineLogger logger)
+    public CodeEngineActionProvider(IConfiguration configuration, ICodeEngineLogger logger, IStorageAdapter storageAdapter)
     {
         _configuration = configuration ??
                          throw new ArgumentNullException(nameof(configuration), "Supplied configuration is null");
         
         _logger = logger ?? throw new ArgumentNullException(nameof(logger), "Supplied logger is null");
-
-        var fileExtension = _configuration[FileStorageExtension] ?? "asce";
-
-        var fileStorageRootPath = _configuration[FileStoragePath] ??
-                                       throw new ApplicationException("File storage path is not configured");
-
-        _fileIOAdapter = new FileIOAdapter(fileStorageRootPath, fileExtension, _logger);
+        
+        _fileIOAdapter =
+            storageAdapter ??
+            throw new ArgumentNullException(nameof(storageAdapter), "Supplied storage adapter is null"); // new FileIOAdapter(fileStorageRootPath, fileExtension, _logger);
     }
 
     public IEnumerable<ISubjectAction<TSubject>> Retrieve<TSubject>(string key = "") where TSubject : class
