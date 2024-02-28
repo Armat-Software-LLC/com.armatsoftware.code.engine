@@ -5,27 +5,14 @@ using ArmatSoftware.Code.Engine.Core.Storage;
 using ArmatSoftware.Code.Engine.Core;
 using ArmatSoftware.Code.Engine.Core.Logging;
 using ArmatSoftware.Code.Engine.Storage.Contracts;
-using Microsoft.Extensions.Configuration;
 
 namespace ArmatSoftware.Code.Engine.Storage;
 
-public class CodeEngineActionRepository : IActionRepository
+public class CodeEngineActionRepository(ICodeEngineLogger logger, IStorageAdapter storageAdapter) : IActionRepository
 {
-    private readonly IConfiguration _configuration;
-    private readonly ICodeEngineLogger _logger;
-    private readonly IStorageAdapter _storageAdapter;
-    
-    public CodeEngineActionRepository(IConfiguration configuration, ICodeEngineLogger logger, IStorageAdapter storageAdapter)
-    {
-        _configuration = configuration ??
-                         throw new ArgumentNullException(nameof(configuration), "Supplied configuration is null");
-        
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger), "Supplied logger is null");
-
-        _storageAdapter =
-            storageAdapter ??
-            throw new ArgumentNullException(nameof(storageAdapter), "Supplied storage adapter is null"); // new FileIOAdapter(fileStorageRootPath, fileExtension, _logger);
-    }
+    private readonly ICodeEngineLogger _logger = logger ?? throw new ArgumentNullException(nameof(logger), "Supplied logger is null");
+    private readonly IStorageAdapter _storageAdapter = storageAdapter ??
+                                                       throw new ArgumentNullException(nameof(storageAdapter), "Supplied storage adapter is null"); // new FileIOAdapter(fileStorageRootPath, fileExtension, _logger);
 
     public IEnumerable<ISubjectAction<TSubject>> GetActions<TSubject>(string key = "") where TSubject : class
     {

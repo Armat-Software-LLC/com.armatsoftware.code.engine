@@ -1,11 +1,9 @@
 using System;
 using System.ComponentModel.DataAnnotations;
-using System.IO;
 using System.Linq;
 using ArmatSoftware.Code.Engine.Core.Logging;
 using ArmatSoftware.Code.Engine.Core.Storage;
 using ArmatSoftware.Code.Engine.Storage.Contracts;
-using Microsoft.Extensions.Configuration;
 using Moq;
 using NUnit.Framework;
 
@@ -23,16 +21,6 @@ public class CodeEngineActionRepositoryTests : CodeEngineActionRepositoryTestBui
             {
                 Build(); 
             }, Throws.Nothing);
-        }
-        
-        [Test]
-        public void Should_Fail_With_Null_Configuration()
-        {
-            Assert.That(() =>
-            {
-                Configuration = null;
-                Build();
-            }, Throws.ArgumentNullException);
         }
         
         [Test]
@@ -399,9 +387,6 @@ public class CodeEngineActionRepositoryTests : CodeEngineActionRepositoryTestBui
 
 public abstract class CodeEngineActionRepositoryTestBuilder
 {
-    protected Mock<IConfigurationRoot> ConfigurationMock { get; private set; }
-    protected IConfigurationRoot Configuration { get; set; }
-    
     protected Mock<ICodeEngineLogger> LoggerMock { get; private set; }
     protected ICodeEngineLogger Logger { get; set; }
     
@@ -413,29 +398,21 @@ public abstract class CodeEngineActionRepositoryTestBuilder
     [SetUp]
     public void Setup()
     {
-        ConfigurationMock = new Mock<IConfigurationRoot>();
         LoggerMock = new Mock<ICodeEngineLogger>();
         StorageAdapterMock = new Mock<IStorageAdapter>();
         
         BuildActions();
-
-        ConfigurationMock.Setup(cm => cm[It.Is<string>(s => s == CodeEngineActionProvider.FileStoragePath)])
-            .Returns(Path.GetTempPath());
-    
-        ConfigurationMock.Setup(cm => cm[It.Is<string>(s => s == CodeEngineActionProvider.FileStorageExtension)])
-            .Returns("test");
         
         StorageAdapterMock.Setup(sa => sa.Read<TestSubject>(It.IsAny<string>()))
             .Returns(StoredActions);
         
-        Configuration = ConfigurationMock.Object;
         Logger = LoggerMock.Object;
         StorageAdapter = StorageAdapterMock.Object;
     }
 
     protected IActionRepository Build()
     {
-        return new CodeEngineActionRepository(Configuration, Logger, StorageAdapter);
+        return new CodeEngineActionRepository(Logger, StorageAdapter);
     }
     
     protected void BuildActions()

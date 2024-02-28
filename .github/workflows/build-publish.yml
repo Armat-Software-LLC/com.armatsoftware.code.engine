@@ -39,6 +39,7 @@ jobs:
           -p:RepositoryUrl="https://github.com/Armat-Software-LLC/com.armatsoftware.code.engine" \
           -p:RepositoryType="git" \
           -p:ReadmeFile="https://raw.githubusercontent.com/Armat-Software-LLC/com.armatsoftware.code.engine/${{ github.ref_name }}/README.md" \
+          -p:Readme="https://raw.githubusercontent.com/Armat-Software-LLC/com.armatsoftware.code.engine/${{ github.ref_name }}/README.md" \
           -p:Authors="${{ github.event.head_commit.author.name }}" \
           -p:Company="Armat Software LLC" \
           -p:Owners="Armat Software LLC" \
@@ -48,7 +49,7 @@ jobs:
           --no-restore
       - name: Dotnet Publish
         run: dotnet nuget push "./nupkgs/com.armatsoftware.code.engine.${{ github.ref_name }}.nupkg" -s https://api.nuget.org/v3/index.json -k ${{ secrets.CODE_ENGINE_PRODUCTION }}
-  build_deploy_file_storage:
+  build_deploy_storage_adapter_file:
     runs-on: ubuntu-latest
     environment: production
     steps:
@@ -78,6 +79,7 @@ jobs:
           -p:RepositoryUrl="https://github.com/Armat-Software-LLC/com.armatsoftware.code.engine" \
           -p:RepositoryType="git" \
           -p:ReadmeFile="https://raw.githubusercontent.com/Armat-Software-LLC/com.armatsoftware.code.engine/${{ github.ref_name }}/README.md" \
+          -p:Readme="https://raw.githubusercontent.com/Armat-Software-LLC/com.armatsoftware.code.engine/${{ github.ref_name }}/README.md" \
           -p:Authors="${{ github.event.head_commit.author.name }}" \
           -p:Company="Armat Software LLC" \
           -p:Owners="Armat Software LLC" \
@@ -87,3 +89,43 @@ jobs:
           --no-restore
       - name: Dotnet Publish
         run: dotnet nuget push "./nupkgs/com.armatsoftware.code.engine.storage.file.${{ github.ref_name }}.nupkg" -s https://api.nuget.org/v3/index.json -k ${{ secrets.CODE_ENGINE_PRODUCTION }}
+  build_deploy_storage:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 3.1.x
+      - name: Restore Dependencies
+        run: dotnet restore
+      - name: Dotnet Build
+        run: |
+          dotnet build "./ArmatSoftware.Code.Engine.Storage/ArmatSoftware.Code.Engine.Storage.csproj" \
+          --configuration Release \
+          -p:Version="${{ github.ref_name }}" \
+          -p:PackageId="com.armatsoftware.code.engine.storage" \
+          -p:Description="Default storage implementation to maintain action data integrity" \
+          -p:PackageVersion="${{ github.ref_name }}" \
+          -p:PackageIconUrl="https://raw.githubusercontent.com/Armat-Software-LLC/com.armatsoftware.code.engine/${{ github.ref_name }}/ArmatSoftware.Code.Engine.Compiler/assets/logo-web-notext-code.png?raw=true" \
+          -p:PackageIcon="assets/logo-web-notext-code.png" \
+          -p:IconUrl="https://raw.githubusercontent.com/Armat-Software-LLC/com.armatsoftware.code.engine/${{ github.ref_name }}/ArmatSoftware.Code.Engine.Compiler/assets/logo-web-notext-code.png?raw=true" \
+          -p:PackageLicenseExpression="MIT" \
+          -p:PackageProjectUrl="https://github.com/Armat-Software-LLC/com.armatsoftware.code.engine" \
+          -p:ProjectUrl="https://github.com/Armat-Software-LLC/com.armatsoftware.code.engine" \
+          -p:Licenses="https://raw.githubusercontent.com/Armat-Software-LLC/com.armatsoftware.code.engine/${{ github.ref_name }}/LICENSE.md" \
+          -p:LicenseUrl="https://raw.githubusercontent.com/Armat-Software-LLC/com.armatsoftware.code.engine/${{ github.ref_name }}/LICENSE.md" \
+          -p:RepositoryUrl="https://github.com/Armat-Software-LLC/com.armatsoftware.code.engine" \
+          -p:RepositoryType="git" \
+          -p:ReadmeFile="https://raw.githubusercontent.com/Armat-Software-LLC/com.armatsoftware.code.engine.storage/${{ github.ref_name }}/README.md" \
+          -p:Readme="https://raw.githubusercontent.com/Armat-Software-LLC/com.armatsoftware.code.engine.storage/${{ github.ref_name }}/README.md" \
+          -p:Authors="${{ github.event.head_commit.author.name }}" \
+          -p:Company="Armat Software LLC" \
+          -p:Owners="Armat Software LLC" \
+          -p:RequireLicenseAcceptance="true" \
+          -o ./nupkgs/ \
+          -v m \
+          --no-restore
+      - name: Dotnet Publish
+        run: dotnet nuget push "./nupkgs/com.armatsoftware.code.engine.storage.${{ github.ref_name }}.nupkg" -s https://api.nuget.org/v3/index.json -k ${{ secrets.CODE_ENGINE_PRODUCTION }}
