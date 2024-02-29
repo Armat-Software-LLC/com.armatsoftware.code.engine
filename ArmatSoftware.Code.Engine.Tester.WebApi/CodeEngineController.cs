@@ -29,7 +29,7 @@ public class CodeEngineController : ControllerBase
     }
     
     [HttpGet, Route("list")]
-    public async Task<IActionResult> List(IActionRepository repo, CancellationToken token)
+    public async Task<IActionResult> List(IActionStorage repo, CancellationToken token)
     {
         var result = repo.GetActions<StringOnlySubject>();
         
@@ -37,7 +37,7 @@ public class CodeEngineController : ControllerBase
     }
     
     [HttpGet, Route("list_with_key")]
-    public async Task<IActionResult> List_Key(string key, IActionRepository repo, CancellationToken token)
+    public async Task<IActionResult> List_Key(string key, IActionStorage repo, CancellationToken token)
     {
         var result = repo.GetActions<StringOnlySubject>(key);
         
@@ -45,7 +45,7 @@ public class CodeEngineController : ControllerBase
     }
     
     [HttpPost, Route("create")]
-    public async Task<IActionResult> Create([FromBody] ActionUpdatePostModel codeUpdateModel, IActionRepository repo,  CancellationToken token)
+    public async Task<IActionResult> Create([FromBody] ActionUpdatePostModel codeUpdateModel, IActionStorage repo,  CancellationToken token)
     {
         Debug.WriteLine("Code: " + codeUpdateModel);
 
@@ -57,7 +57,7 @@ public class CodeEngineController : ControllerBase
     }
     
     [HttpPost, Route("update")]
-    public async Task<IActionResult> Update([FromBody] ActionUpdatePostModel codeUpdateModel, IActionRepository repo,  CancellationToken token)
+    public async Task<IActionResult> Update([FromBody] ActionUpdatePostModel codeUpdateModel, IActionStorage repo,  CancellationToken token)
     {
         Debug.WriteLine("Code: " + codeUpdateModel);
 
@@ -69,7 +69,7 @@ public class CodeEngineController : ControllerBase
     }
     
     [HttpPost, Route("reorder")]
-    public async Task<IActionResult> Reorder([FromBody] ActionReorderPostModel actionReorderPostModel, IActionRepository repo,  CancellationToken token)
+    public async Task<IActionResult> Reorder([FromBody] ActionReorderPostModel actionReorderPostModel, IActionStorage repo,  CancellationToken token)
     {
         Debug.WriteLine("Code: " + actionReorderPostModel);
 
@@ -81,7 +81,7 @@ public class CodeEngineController : ControllerBase
     }
     
     [HttpPost, Route("activate")]
-    public async Task<IActionResult> Activate([FromBody] RevisionActivationPostModel actionActivatePostModel, IActionRepository repo,  CancellationToken token)
+    public async Task<IActionResult> Activate([FromBody] RevisionActivationPostModel actionActivatePostModel, IActionStorage repo,  CancellationToken token)
     {
         Debug.WriteLine("Code: " + actionActivatePostModel);
 

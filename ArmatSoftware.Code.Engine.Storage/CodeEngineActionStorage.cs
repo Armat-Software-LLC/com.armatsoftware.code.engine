@@ -8,7 +8,7 @@ using ArmatSoftware.Code.Engine.Storage.Contracts;
 
 namespace ArmatSoftware.Code.Engine.Storage;
 
-public class CodeEngineActionRepository(ICodeEngineLogger logger, IStorageAdapter storageAdapter) : IActionRepository
+public class CodeEngineActionStorage(ICodeEngineLogger logger, IStorageAdapter storageAdapter) : IActionStorage
 {
     private readonly ICodeEngineLogger _logger = logger ?? throw new ArgumentNullException(nameof(logger), "Supplied logger is null");
     private readonly IStorageAdapter _storageAdapter = storageAdapter ??

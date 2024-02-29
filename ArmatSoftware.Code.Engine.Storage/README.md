@@ -43,12 +43,12 @@ With the default storage implementation, you only need to choose between using o
 1. Add the main package `com.armatsoftware.code.engine.storage` to your solution.
 1. Include initialization logic for the default storage implementation. Ex:
     ``` c#
-   builder.Services.UseCodeEngineDefaultRepository();
+   builder.Services.UseCodeEngineStorage();
     ```
-1. Inject the `IActionRepository` and use it as needed. Ex:
+1. Inject the `IActionStorage` and use it as needed. Ex:
     ``` c#
     [HttpPost, Route("update")]
-    public async Task<IActionResult> Update([FromBody] ActionUpdatePostModel codeUpdateModel, IActionRepository repo,  CancellationToken token)
+    public async Task<IActionResult> Update([FromBody] ActionUpdatePostModel codeUpdateModel, IActionStorage repo,  CancellationToken token)
     {
         repo.UpdateAction<StringOnlySubject>(codeUpdateModel.ActionName, codeUpdateModel.Code, codeUpdateModel.Author, codeUpdateModel.Comment, codeUpdateModel.Key);
         var result = repo.GetActions<StringOnlySubject>(codeUpdateModel.Key);

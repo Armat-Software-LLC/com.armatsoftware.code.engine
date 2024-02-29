@@ -38,10 +38,6 @@ namespace ArmatSoftware.Code.Engine.Compiler.DI
             {
                 services.AddScoped<IActionProvider>(provider => options.Provider);
             }
-            else
-            {
-                throw new ArgumentNullException(nameof(options.Provider), "No action provider was supplied in the options");
-            }
             
             RegisterAllHardcodedExecutors(services);
             RegisterExecutorFactory(services);

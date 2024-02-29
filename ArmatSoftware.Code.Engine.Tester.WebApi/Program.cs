@@ -47,9 +47,9 @@ builder.Services.UseCodeEngine(new()
 });
 
 // set the default repository and storage
-builder.Services.UseCodeEngineDefaultRepository();
+builder.Services.UseCodeEngineStorage();
 
-builder.Services.UseCodeEngineDefaultFileStorage(new FileStorageOptions()
+builder.Services.UseCodeEngineFileAdapter(new FileStorageOptions()
 {
     StoragePath = config["ASCE_FILE_STORAGE_PATH"] ?? throw new ApplicationException("Unable to find ASCE_FILE_STORAGE_PATH in the configuration"),
     FileExtension = config["ASCE_FILE_STORAGE_EXTENSION"] ?? throw new ApplicationException("Unable to find ASCE_FILE_STORAGE_EXTENSION in the configuration")

@@ -9,9 +9,9 @@ using NUnit.Framework;
 
 namespace ArmatSoftware.Code.Engine.Storage.Tests;
 
-public class CodeEngineActionRepositoryTests : CodeEngineActionRepositoryTestBuilder
+public class CodeEngineActionStorageTests : CodeEngineActionRepositoryTestBuilder
 {
-    [TestFixture, TestOf(typeof(CodeEngineActionRepository))]
+    [TestFixture, TestOf(typeof(CodeEngineActionStorage))]
     public class CodeEngineActionRepositoryConstructorTests : CodeEngineActionRepositoryTestBuilder
     {
         [Test]
@@ -44,7 +44,7 @@ public class CodeEngineActionRepositoryTests : CodeEngineActionRepositoryTestBui
         }
     }
     
-    [TestFixture, TestOf(typeof(CodeEngineActionRepository))]
+    [TestFixture, TestOf(typeof(CodeEngineActionStorage))]
     public class CodeEngineActionRepositoryGetActionsTests : CodeEngineActionRepositoryTestBuilder
     {
         [Test]
@@ -78,7 +78,7 @@ public class CodeEngineActionRepositoryTests : CodeEngineActionRepositoryTestBui
         }
     }
 
-    [TestFixture, TestOf(typeof(CodeEngineActionRepository))]
+    [TestFixture, TestOf(typeof(CodeEngineActionStorage))]
     public class CodeEngineActionRepositoryAddActionTests : CodeEngineActionRepositoryTestBuilder
     {
         [Test]
@@ -374,12 +374,12 @@ public class CodeEngineActionRepositoryTests : CodeEngineActionRepositoryTestBui
     }
     
     
-    [TestFixture, TestOf(typeof(CodeEngineActionRepository))]
+    [TestFixture, TestOf(typeof(CodeEngineActionStorage))]
     public class CodeEngineActionRepositoryReorderTests : CodeEngineActionRepositoryTestBuilder
     {
     }
     
-    [TestFixture, TestOf(typeof(CodeEngineActionRepository))]
+    [TestFixture, TestOf(typeof(CodeEngineActionStorage))]
     public class CodeEngineActionRepositoryRemoveTests : CodeEngineActionRepositoryTestBuilder
     {
     }
@@ -410,9 +410,9 @@ public abstract class CodeEngineActionRepositoryTestBuilder
         StorageAdapter = StorageAdapterMock.Object;
     }
 
-    protected IActionRepository Build()
+    protected IActionStorage Build()
     {
-        return new CodeEngineActionRepository(Logger, StorageAdapter);
+        return new CodeEngineActionStorage(Logger, StorageAdapter);
     }
     
     protected void BuildActions()

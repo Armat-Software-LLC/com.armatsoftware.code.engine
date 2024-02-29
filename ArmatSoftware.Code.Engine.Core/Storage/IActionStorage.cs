@@ -7,7 +7,7 @@ namespace ArmatSoftware.Code.Engine.Core.Storage;
 /// Use <c>ArmatSoftware.Code.Engine.Storage.File.DI.CodeEngineFileStorageRegistration.UseCodeEngineFileStorage()</c> to register
 /// OOB implementation or provide your own.
 /// </summary>
-public interface IActionRepository
+public interface IActionStorage
 {
    
     /// <summary>
