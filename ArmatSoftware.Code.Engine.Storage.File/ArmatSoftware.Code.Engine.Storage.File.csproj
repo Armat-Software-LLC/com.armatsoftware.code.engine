@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\ArmatSoftware.Code.Engine.Core\ArmatSoftware.Code.Engine.Core.csproj" />
+    <ProjectReference Include="..\ArmatSoftware.Code.Engine.Storage\ArmatSoftware.Code.Engine.Storage.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -2,9 +2,9 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using NUnit.Framework;
 
-namespace ArmatSoftware.Code.Engine.Storage.File.Tests;
+namespace ArmatSoftware.Code.Engine.Storage.Tests;
 
-[TestFixture]
+[TestFixture, TestOf(typeof(StoredSubjectAction<>))]
 public class StoredSubjectActionTests
 {
     public StoredSubjectAction<TestSubject> Target { get; set; }

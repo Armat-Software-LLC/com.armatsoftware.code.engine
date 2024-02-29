@@ -6,7 +6,6 @@ using ArmatSoftware.Code.Engine.Core;
 using ArmatSoftware.Code.Engine.Core.Logging;
 using ArmatSoftware.Code.Engine.Core.Storage;
 using ArmatSoftware.Code.Engine.Logger.File;
-using ArmatSoftware.Code.Engine.Storage.File;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ArmatSoftware.Code.Engine.Compiler.DI
@@ -38,10 +37,6 @@ namespace ArmatSoftware.Code.Engine.Compiler.DI
             if (options.Provider != null)
             {
                 services.AddScoped<IActionProvider>(provider => options.Provider);
-            }
-            else
-            {
-                services.AddScoped<IActionProvider, CodeEngineActionProvider>();
             }
             
             RegisterAllHardcodedExecutors(services);

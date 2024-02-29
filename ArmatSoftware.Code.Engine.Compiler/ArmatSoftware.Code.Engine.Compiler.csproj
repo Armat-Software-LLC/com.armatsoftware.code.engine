@@ -62,7 +62,6 @@
   <ItemGroup>
     <ProjectReference Include="..\ArmatSoftware.Code.Engine.Core\ArmatSoftware.Code.Engine.Core.csproj" />
     <ProjectReference Include="..\ArmatSoftware.Code.Engine.Logger.File\ArmatSoftware.Code.Engine.Logger.File.csproj" />
-    <ProjectReference Include="..\ArmatSoftware.Code.Engine.Storage.File\ArmatSoftware.Code.Engine.Storage.File.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="assets/logo-web-notext-code.png" />

@@ -1,6 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
-namespace ArmatSoftware.Code.Engine.Storage.File;
+namespace ArmatSoftware.Code.Engine.Storage;
 
 public record StoredActionRevision<TSubject>
     where TSubject : class

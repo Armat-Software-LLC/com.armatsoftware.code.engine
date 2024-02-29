@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <IsPackable>true</IsPackable>
+        <PackageId>com.armatsoftware.code.engine.storage</PackageId>
+        <Authors>Yuri Kazarov</Authors>
+        <Description>Local storage package for testing and demonstrations</Description>
+        <LangVersion>12</LangVersion>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <Version>$([System.DateTime]::Now.ToString(`yyyyM.d.Hm`))</Version>
+        <Title>Armat Software Code Engine Storage</Title>
+    </PropertyGroup>
+    
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <LangVersion>12</LangVersion>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\ArmatSoftware.Code.Engine.Core\ArmatSoftware.Code.Engine.Core.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="3.1.32" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
+      <PackageReference Include="NuGet.Build.Packaging" Version="0.2.2">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+    </ItemGroup>
+
+</Project>
