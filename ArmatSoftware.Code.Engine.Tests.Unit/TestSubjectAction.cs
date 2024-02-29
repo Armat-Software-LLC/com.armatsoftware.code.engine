@@ -2,7 +2,8 @@
 
 namespace ArmatSoftware.Code.Engine.Tests.Unit
 {
-	public class TestSubjectAction : ISubjectAction<TestSubject>
+	public class TestSubjectAction<TSubject> : ISubjectAction<TSubject>
+		where TSubject : class
 	{
 		public string Name { get; set; }
 

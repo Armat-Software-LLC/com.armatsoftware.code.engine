@@ -16,7 +16,7 @@ public class ModelValidationTests : ModelValidationTestBase<TestSubject>
    {
        Assert.That(() =>
        {
-           Configuration.Actions.Add(new TestSubjectAction { Name = "ValidateThisModel", Code = "Subject.Data = \"short string\";" });
+           Configuration.Actions.Add(new TestSubjectAction<TestSubject> { Name = "ValidateThisModel", Code = "Subject.Data = \"short string\";" });
            Configuration.ValidateModelsAfterExecution = true;
            
            var executor = BuildCSharpCompiler();
@@ -30,7 +30,7 @@ public class ModelValidationTests : ModelValidationTestBase<TestSubject>
    {
        Assert.That(() =>
        {
-           Configuration.Actions.Add(new TestSubjectAction { Name = "ValidateThisModel", Code = "Subject.Data = \"short string\";" });
+           Configuration.Actions.Add(new TestSubjectAction<TestSubject> { Name = "ValidateThisModel", Code = "Subject.Data = \"short string\";" });
            Configuration.ValidateModelsAfterExecution = false;
            
            var executor = BuildCSharpCompiler();
@@ -44,7 +44,7 @@ public class ModelValidationTests : ModelValidationTestBase<TestSubject>
    {
        Assert.That(() =>
        {
-           Configuration.Actions.Add(new TestSubjectAction { Name = "ValidateThisModel", Code = "Subject.Data = \"long enough string value\"; \r\n Subject.Id = 1;" });
+           Configuration.Actions.Add(new TestSubjectAction<TestSubject> { Name = "ValidateThisModel", Code = "Subject.Data = \"long enough string value\"; \r\n Subject.Id = 1;" });
            Configuration.ValidateModelsAfterExecution = true;
            
            var executor = BuildCSharpCompiler();
@@ -58,7 +58,7 @@ public class ModelValidationTests : ModelValidationTestBase<TestSubject>
    {
        Assert.That(() =>
        {
-           Configuration.Actions.Add(new TestSubjectAction { Name = "ValidateThisModel", Code = "Subject.Data = \"short string\"" });
+           Configuration.Actions.Add(new TestSubjectAction<TestSubject> { Name = "ValidateThisModel", Code = "Subject.Data = \"short string\"" });
            Configuration.ValidateModelsAfterExecution = true;
            
            var executor = BuildVbCompiler();
@@ -72,7 +72,7 @@ public class ModelValidationTests : ModelValidationTestBase<TestSubject>
    {
        Assert.That(() =>
        {
-           Configuration.Actions.Add(new TestSubjectAction { Name = "ValidateThisModel", Code = "Subject.Data = \"short string\"" });
+           Configuration.Actions.Add(new TestSubjectAction<TestSubject> { Name = "ValidateThisModel", Code = "Subject.Data = \"short string\"" });
            Configuration.ValidateModelsAfterExecution = false;
            
            var executor = BuildVbCompiler();
@@ -86,7 +86,7 @@ public class ModelValidationTests : ModelValidationTestBase<TestSubject>
    {
        Assert.That(() =>
        {
-           Configuration.Actions.Add(new TestSubjectAction { Name = "ValidateThisModel", Code = "Subject.Data = \"long enough string value\" \r\n Subject.Id = 1" });
+           Configuration.Actions.Add(new TestSubjectAction<TestSubject> { Name = "ValidateThisModel", Code = "Subject.Data = \"long enough string value\" \r\n Subject.Id = 1" });
            Configuration.ValidateModelsAfterExecution = true;
            
            var executor = BuildVbCompiler();

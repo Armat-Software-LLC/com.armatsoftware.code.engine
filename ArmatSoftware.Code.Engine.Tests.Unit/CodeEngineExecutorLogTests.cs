@@ -5,7 +5,6 @@ using ArmatSoftware.Code.Engine.Compiler.DI;
 using ArmatSoftware.Code.Engine.Core;
 using ArmatSoftware.Code.Engine.Core.Logging;
 using ArmatSoftware.Code.Engine.Core.Storage;
-using ArmatSoftware.Code.Engine.Storage;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using Moq;
@@ -77,38 +76,49 @@ public class CodeEngineExecutorLogTestBuilder
     
     protected IMemoryCache MemCache { get; set; }
 
-    protected StoredSubjectActions<TestSubject> LogSubjectActions { get; set; }
+    protected List<TestSubjectAction<TestSubject>> LogSubjectActions { get; set; }
     
-    protected StoredSubjectActions<TestSubject> SetLogNullSubjectActions { get; set; }
+    protected List<TestSubjectAction<TestSubject>> SetLogNullSubjectActions { get; set; }
     
     protected CodeEngineExecutorFactory Factory { get; set; }
 
     [SetUp]
     public void Setup()
     {
-        LogSubjectActions = new StoredSubjectActions<TestSubject>();
-        
-        var logInfoAction = LogSubjectActions.Create("LogInfo");
-        logInfoAction.Update($"Log.Info(\"{InfoMessage}\");", "testauthor", "testcomment");
-        logInfoAction.Activate(1);
-        
-        var logWarningAction = LogSubjectActions.Create("LogWarning");
-        logWarningAction.Update($"Log.Warning(\"{WarningMessage}\");", "testauthor", "testcomment");
-        logWarningAction.Activate(1);
-        
-        var logErrorAction = LogSubjectActions.Create("LogError");
-        logErrorAction.Update($"Log.Error(\"{ErrorMessage}\");", "testauthor", "testcomment");
-        logErrorAction.Activate(1);
+        LogSubjectActions = new List<TestSubjectAction<TestSubject>>
+        {
+            new TestSubjectAction<TestSubject>()
+            {
+                Name = "LogInfo",
+                Code = $"Log.Info(\"{InfoMessage}\");",
+                Order = 1
+            },
+            new TestSubjectAction<TestSubject>()
+            {
+                Name = "LogWarning",
+                Code = $"Log.Warning(\"{WarningMessage}\");",
+                Order = 2
+            },
+            new TestSubjectAction<TestSubject>()
+            {
+                Name = "LogError",
+                Code = $"Log.Error(\"{ErrorMessage}\");",
+                Order = 3
+            }
+        };
 
-        SetLogNullSubjectActions = new StoredSubjectActions<TestSubject>();
-        
-        var setLogNullAction = SetLogNullSubjectActions.Create("SetLogNull");
-        setLogNullAction.Update($"Log = null;", "testauthor", "testcomment");
-        setLogNullAction.Activate(1);
-        
+        SetLogNullSubjectActions = new List<TestSubjectAction<TestSubject>>
+        {
+            new TestSubjectAction<TestSubject>()
+            {
+                Name = "SetLogNull",
+                Code = "Log = null;",
+                Order = 1
+            }
+        };
     }
     
-    protected IExecutor<TestSubject> BuildLogActions(StoredSubjectActions<TestSubject> subjectActions)
+    protected IExecutor<TestSubject> BuildLogActions(List<TestSubjectAction<TestSubject>> subjectActions)
     {
         StorageMock = new Mock<IActionProvider>();
         StorageMock.Setup(x => x.Retrieve<TestSubject>(It.IsAny<string>()))

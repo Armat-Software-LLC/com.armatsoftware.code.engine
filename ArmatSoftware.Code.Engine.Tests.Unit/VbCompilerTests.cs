@@ -20,7 +20,7 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
 		{
 			Assert.That(() =>
 			{
-				Configuration.Actions.Add(new TestSubjectAction { Name = "SimpleOperation", Code = "Dim t = 3 + 4" });
+				Configuration.Actions.Add(new TestSubjectAction<TestSubject> { Name = "SimpleOperation", Code = "Dim t = 3 + 4" });
 
 				var executor = Compiler.Compile(Configuration);
 
@@ -35,7 +35,7 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
 			Assert.That(() =>
 			{
 				var subject = new TestSubject { Id = 1, Data = "data", Date = DateTime.Now };
-				var action = new TestSubjectAction { Name = "SimpleOperation", Code = "Subject.Data = \"changed data\"" };
+				var action = new TestSubjectAction<TestSubject> { Name = "SimpleOperation", Code = "Subject.Data = \"changed data\"", Order = 1};
 				
 				Configuration.Actions.Add(action);
 				
@@ -54,7 +54,7 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
 			Assert.That(() =>
 			{
 				var subject = new TestSubject { Id = 1, Data = "data", Date = DateTime.Now };
-				var action = new TestSubjectAction { Name = "SimpleOperation", Code = "Subject.Data = \"changed data\"" };
+				var action = new TestSubjectAction<TestSubject> { Name = "SimpleOperation", Code = "Subject.Data = \"changed data\"", Order = 1};
 				
 				Configuration.Actions.Add(action);
 				
@@ -74,7 +74,7 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
 			Assert.That(() =>
 			{
 				var subject = new TestSubject { Id = 1, Data = "data", Date = DateTime.Now };
-				var action = new TestSubjectAction { Name = "ReadSubject", Code = "Dim temp = Subject.Data" };
+				var action = new TestSubjectAction<TestSubject> { Name = "ReadSubject", Code = "Dim temp = Subject.Data" };
 
 				Configuration.Actions.Add(action);
 
@@ -89,9 +89,9 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
 		public void Should_Get_And_Set_Runtime_Value()
 		{
 			var subject = new TestSubject { Id = 1, Data = "data", Date = DateTime.Now };
-			var action = new TestSubjectAction { Name = "SetValue", Code = "Save(\"key\", \"test value\")" };
+			var action = new TestSubjectAction<TestSubject> { Name = "SetValue", Code = "Save(\"key\", \"test value\")" };
 			// difference from the c# syntax for the object to string conversion is due to using object type versus dynamic
-			var action2 = new TestSubjectAction { Name = "GetValue", Code = "Subject.Data = System.Convert.ToString(Read(\"key\"))" };
+			var action2 = new TestSubjectAction<TestSubject> { Name = "GetValue", Code = "Subject.Data = System.Convert.ToString(Read(\"key\"))" };
 
 			Configuration.Actions.Add(action);
 			Configuration.Actions.Add(action2);
@@ -108,7 +108,7 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
 		{
 			Assert.That(() =>
 			{
-				var testSubjectAction = new TestSubjectAction { Name = "TestHttpClient", Code = "New HttpClient()" };
+				var testSubjectAction = new TestSubjectAction<TestSubject> { Name = "TestHttpClient", Code = "New HttpClient()" };
 				Configuration.Actions.Add(testSubjectAction);
 				var executor = Compiler.Compile(Configuration);
 				executor.Execute(new TestSubject());

@@ -6,7 +6,6 @@ using ArmatSoftware.Code.Engine.Core;
 using ArmatSoftware.Code.Engine.Core.Logging;
 using ArmatSoftware.Code.Engine.Core.Storage;
 using ArmatSoftware.Code.Engine.Logger.File;
-using ArmatSoftware.Code.Engine.Storage;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ArmatSoftware.Code.Engine.Compiler.DI
@@ -41,7 +40,7 @@ namespace ArmatSoftware.Code.Engine.Compiler.DI
             }
             else
             {
-                services.AddScoped<IActionProvider, CodeEngineActionProvider>();
+                throw new ArgumentNullException(nameof(options.Provider), "No action provider was supplied in the options");
             }
             
             RegisterAllHardcodedExecutors(services);
