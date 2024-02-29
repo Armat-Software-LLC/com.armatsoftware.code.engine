@@ -26,7 +26,7 @@ namespace ArmatSoftware.Code.Engine.Compiler.Vb
 		{
 			Configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
 
-			if (configuration.GetActions() == null || !configuration.GetActions().Any())
+			if (configuration.GetActions() == null)
 			{
 				throw new ArgumentNullException(nameof(configuration.GetActions));
 			}
