@@ -3,17 +3,13 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace ArmatSoftware.Code.Engine.Storage;
 
-public class StoredRevisionList<TSubject> : List<StoredActionRevision<TSubject>>
+public class StoredRevisionList<TSubject> : List<StoredActionRevision>
     where TSubject : class
 {
-    private const string UtcDateSerializationFormat = "yyyy-MM-ddTHH:mm:ss.fffZ";
-    
-    void Validate(StoredActionRevision<TSubject> revision)
+    void Validate(StoredActionRevision revision)
     {
         _ = revision ?? throw new ArgumentNullException(nameof(revision));
         
@@ -39,69 +35,46 @@ public class StoredRevisionList<TSubject> : List<StoredActionRevision<TSubject>>
         
         if (revision.Active) throw new ArgumentException("Revision cannot be active when created");
     }
-    
-    // hidden methods
 
-    public void Add(StoredActionRevision<TSubject> revision)
+    public void Add(StoredActionRevision revision)
     {
         Validate(revision);
-        TamperProof(revision);
+        revision.TamperProof();
         base.Add(revision);
     }
     
-    public void Remove(StoredActionRevision<TSubject> revision) => throw new InvalidOperationException("Cannot remove a revision directly from a stored subject action");
+    public void Remove(StoredActionRevision revision) => throw new InvalidOperationException("Cannot remove a revision directly from a stored subject action");
     
     public void Clear() => throw new InvalidOperationException("Cannot clear revisions directly from a stored subject action");
 
-    public new void AddRange(IEnumerable<StoredActionRevision<TSubject>> collection)
+    public new void AddRange(IEnumerable<StoredActionRevision> collection)
     {
         foreach (var revision in collection)
         {
             Validate(revision);
-            TamperProof(revision);
+            revision.TamperProof();
             Add(revision);
         }
     }
 
-    public void Insert(int index, StoredActionRevision<TSubject> revision)
+    public void Insert(int index, StoredActionRevision revision)
     {
         Validate(revision);
-        TamperProof(revision);
+        revision.TamperProof();
         base.Insert(index, revision);
     }
 
-    public void InsertRange(int index, IEnumerable<StoredActionRevision<TSubject>> collection)
+    public void InsertRange(int index, IEnumerable<StoredActionRevision> collection)
     {
         foreach (var revision in collection)
         {
             Validate(revision);
-            TamperProof(revision);
+            revision.TamperProof();
             Insert(index++, revision);
         } 
     }
     
     public void RemoveAt(int index) => throw new InvalidOperationException("Cannot remove a revision directly from a stored subject action");
     
-    public void RemoveAll(Predicate<StoredActionRevision<TSubject>> match) => throw new InvalidOperationException("Cannot remove a revision directly from a stored subject action");
-
-    
-    // utility
-    
-    string Base64Hash(StoredActionRevision<TSubject> revision)
-    {
-        string salt = revision.Created.ToString(UtcDateSerializationFormat);
-        using (var hmac = new HMACSHA256(Encoding.UTF8.GetBytes(salt)))
-        {
-            byte[] hashBytes =
-                hmac.ComputeHash(Encoding.UTF8.GetBytes($"{revision.Code}.{revision.Author}.{revision.Comment}"));
-            var base64Hash = Convert.ToBase64String(hashBytes);
-            return base64Hash;
-        }
-    }
-    
-    void TamperProof(StoredActionRevision<TSubject> revision)
-    {
-        if (string.IsNullOrWhiteSpace(revision.Hash)) revision.Hash = Base64Hash(revision);
-        if (revision.Hash != Base64Hash(revision)) throw new InvalidOperationException("Revision has been tampered with");
-    }
+    public void RemoveAll(Predicate<StoredActionRevision> match) => throw new InvalidOperationException("Cannot remove a revision directly from a stored subject action");
 }

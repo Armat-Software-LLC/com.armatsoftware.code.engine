@@ -3,8 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ArmatSoftware.Code.Engine.Storage;
 
-public record StoredActionRevision<TSubject>
-    where TSubject : class
+public record StoredActionRevision
 {
     [Required]
     [Range(0, int.MaxValue)]
@@ -12,7 +11,7 @@ public record StoredActionRevision<TSubject>
     
     [Required]
     public bool Active { get; set; }
-    
+
     [Required]
     [MinLength(10, ErrorMessage = "Make sure your code is at least 10 characters long")]
     public string Code { get; set; }

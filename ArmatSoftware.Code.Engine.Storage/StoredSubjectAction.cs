@@ -12,9 +12,23 @@ public class StoredSubjectAction<TSubject> : IStoredSubjectAction<TSubject>
     [Required]
     [MinLength(3)]
     public string Name { get; set; }
-    
-    public string Code  => Revisions.FirstOrDefault(r => r.Active)?.Code ?? string.Empty;
-    
+
+    public string Code
+    {
+        get
+        {
+            var revision = Revisions.FirstOrDefault(r => r.Active);
+
+            if (revision == null)
+            {
+                return string.Empty;
+            }
+            
+            revision.CheckTamperProof();
+            return revision.Code;
+        }
+    }
+
     [Required]
     [Range(1, int.MaxValue)]
     public int Order { get; set; }
@@ -24,7 +38,7 @@ public class StoredSubjectAction<TSubject> : IStoredSubjectAction<TSubject>
     
     public void Update(string code, string author, string comment)
     {
-        var newRevision = new StoredActionRevision<TSubject>
+        var newRevision = new StoredActionRevision
         {
             Revision = Revisions.OrderByDescending(r => r.Revision).FirstOrDefault()?.Revision + 1 ?? 1,
             Active = false,

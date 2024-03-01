@@ -23,7 +23,7 @@ public class StoredSubjectActionTests
     {
         Assert.That(() => 
         {
-            Target.Revisions.Add(new StoredActionRevision<TestSubject>
+            Target.Revisions.Add(new StoredActionRevision
             {
                 Active = false,
                 Author = "Author 1",
@@ -40,7 +40,7 @@ public class StoredSubjectActionTests
     {
         Assert.That(() => 
         {
-            Target.Revisions.Add(new StoredActionRevision<TestSubject>
+            Target.Revisions.Add(new StoredActionRevision
             {
                 Active = false,
                 Author = "Author 1",
@@ -49,7 +49,7 @@ public class StoredSubjectActionTests
                 Created = DateTimeOffset.UtcNow,
                 Revision = 1
             });
-            Target.Revisions.Add(new StoredActionRevision<TestSubject>
+            Target.Revisions.Add(new StoredActionRevision
             {
                 Active = false,
                 Author = "Author 2",
@@ -66,7 +66,7 @@ public class StoredSubjectActionTests
     {
         Assert.That(() => 
         {
-            Target.Revisions.Add(new StoredActionRevision<TestSubject>
+            Target.Revisions.Add(new StoredActionRevision
             {
                 Active = false,
                 Author = "Author 1",
@@ -75,7 +75,7 @@ public class StoredSubjectActionTests
                 Created = DateTimeOffset.UtcNow,
                 Revision = 1
             });
-            Target.Revisions.Add(new StoredActionRevision<TestSubject>
+            Target.Revisions.Add(new StoredActionRevision
             {
                 Active = false,
                 Author = "Author 2",
@@ -200,5 +200,35 @@ public class StoredSubjectActionTests
     {
         Target.Update("valid code", "valid author", "valid comment");
         Assert.That(Target.Revisions.Count, Is.EqualTo(1));
+    }
+    
+    [Test]
+    public void Should_Tamper_Proof_Invalid_Revisions()
+    {
+        Target.Update("valid code", "valid author", "valid comment");
+        Target.Revisions[0].Hash = "invalid hash";
+        Target.Activate(1);
+        Assert.That(() => _ = Target.Code, Throws.TypeOf<InvalidOperationException>());
+    }
+    
+    [Test]
+    public void Should_Tamper_Proof_Valid_Revisions()
+    {
+        Target.Update("valid code", "valid author", "valid comment");
+        Target.Activate(1);
+        Assert.That(Target.Code, Is.EqualTo("valid code"));
+    }
+    
+    [Test]
+    public void Should_Return_Empty_If_No_Revisions()
+    {
+        Assert.That(Target.Code, Is.EqualTo(string.Empty));
+    }
+    
+    [Test]
+    public void Should_Return_Empty_If_No_Active_Revisions()
+    {
+        Target.Update("valid code", "valid author", "valid comment");
+        Assert.That(Target.Code, Is.EqualTo(string.Empty));
     }
 }
