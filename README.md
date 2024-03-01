@@ -38,15 +38,23 @@ Code Engine performance is as close to that of the compiled and deployed code as
 2. Look up NuGet packages for "armatsoftware.code.engine".
 3. Add the main package `com.armatsoftware.code.engine` to your solution.
 4. Add supplemental packages, if needed. Ex: `com.armatsoftware.code.engine.storage.file`.
-5. Initialize Code Engine. Ex:
+5. Selectively initialize Code Engine, Storage Abstration Layer, File Adapter. Ex:
     ``` c#
-    builder.Services.UseCodeEngine(new CodeEngineOptions()
-    {
-        CodeEngineNamespace = "some.unique.namespace",
-        CompilerType = CompilerTypeEnum.CSharp,
-        Logger = new ConsoleLogger(),
-        Provider = new SimpleActionProvider()
-    });
+      services.UseCodeEngine(new CodeEngineOptions()
+      {
+          CacheExpirationMinutes = 1,
+          CodeEngineNamespace = "codeengineuniquenamespace",
+          CompilerType = CompilerTypeEnum.Vb,
+          Logger = new CustomLogger(),
+      });
+      
+      services.UseCodeEngineStorage();
+      
+      services.UseCodeEngineFileAdapter(new FileStorageOptions()
+      {
+          FileExtension = "code",
+          StoragePath = "/tmp/demo/"
+      });
    ```
 6. Inject and use `IExecutor<T>` as needed. Ex:
     ``` c#
@@ -79,7 +87,8 @@ Code Engine performance is as close to that of the compiled and deployed code as
 # Versions
 - 1.x.x - essential contracts and base implementation for injection, compilation and execution of the custom logic, including initialization method and implementations for the file storage and file logger
 - 2.x.x - added keyed executor lookup and rafactored file storage
-- 3.x.x (current) - refactored and improved initialization and ability to log from custom code
+- 3.x.x - refactored and improved initialization and ability to log from custom code
+- 4.x.x (current) - refactored the storage abstraction from the file storage and added and improved default implementations for storage management and file adapter
 
 # What's in this version?
 

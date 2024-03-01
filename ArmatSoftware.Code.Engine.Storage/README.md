@@ -15,7 +15,7 @@ Code Engine Storage is a storage implementation for the Code Engine. Its primary
 
 ### Data Completeness
 
-Specific subject action model defintiions and their validation ensure completeness of the created actions and their data.
+Specific subject action model defintions and their validation ensure completeness of the created actions and their data.
 
 ### Data Integrity
 
@@ -39,19 +39,30 @@ With the default storage implementation, you only need to choose between using o
 
 1. Start with an existing solution or brand new.
 1. You should already have the main package `com.armatsoftware.code.engine` added to your solution and `UseCodeEngine()` initialization set up.
-1. Look up NuGet packages for "armatsoftware.code.engine.storage".
+1. Look up NuGet packages for `armatsoftware.code.engine.storage`.
 1. Add the main package `com.armatsoftware.code.engine.storage` to your solution.
-1. Include initialization logic for the default storage implementation. Ex:
+1. Include initialization logic for the default storage implementation. Provide your own custom implementation of the storage adapter or use one provided by Code Engine (look on NuGet). Ex:
     ``` c#
    builder.Services.UseCodeEngineStorage();
     ```
-1. Inject the `IActionStorage` and use it as needed. Ex:
+    or
     ``` c#
-    [HttpPost, Route("update")]
-    public async Task<IActionResult> Update([FromBody] ActionUpdatePostModel codeUpdateModel, IActionStorage repo,  CancellationToken token)
-    {
-        repo.UpdateAction<StringOnlySubject>(codeUpdateModel.ActionName, codeUpdateModel.Code, codeUpdateModel.Author, codeUpdateModel.Comment, codeUpdateModel.Key);
-        var result = repo.GetActions<StringOnlySubject>(codeUpdateModel.Key);
-        return await Task.FromResult(new OkObjectResult(result));
-    }
+   builder.Services.UseCodeEngineStorage(new CustomStorageAdapter());
+    ```
+1. Inject the `IActionStorage` and use it as needed to manage the subject actions. Ex:
+    ``` c#
+     [HttpPost, Route("create")]
+     public IEnumerable<ISubjectAction<SimpleSubject>> Create([FromServices] IActionStorage storage, [FromBody] SimpleSubjectUpdateModel updateModel)
+     {
+         storage.AddAction<SimpleSubject>(updateModel.Name, updateModel.Code, updateModel.Author, updateModel.Comment);
+         return storage.GetActions<SimpleSubject>();
+     }
+    ```
+1. Inject `IActionProvider` to retrieve the stored subject actions and use them in your code. Ex:
+    ``` c#
+     [HttpGet, Route("actions")]
+     public string GetActions([FromServices] IActionProvider storage)
+     {
+         return string.Join(", ", storage.Retrieve<SimpleSubject>().Select(x => x.Name));
+     }
     ```
