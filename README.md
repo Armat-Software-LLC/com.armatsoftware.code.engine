@@ -104,7 +104,7 @@ Another major update is the simplified interface of the `IExecutor<T>`. Now, the
     /// <returns></returns>
     public IActionResult SayHello([FromServices] IExecutor<MessageModel> executor)
     {
-        return View(new MessageModel() { Message = executor.Execute(new MessageModel()).Message });
+        return View(executor.Execute(new MessageModel()));
     }
     
     /// <summary>
@@ -117,7 +117,7 @@ Another major update is the simplified interface of the `IExecutor<T>`. Now, the
     public IActionResult SayHelloWithKey(string key, [FromServices] IExecutorCatalog<MessageModel> catalog)
     {
         var executor = catalog.ForKey(key);
-        return View(new MessageModel() { Message = executor.Execute(new MessageModel()).Message });
+        return View(executor.Execute(new MessageModel()));
     }
 ```
 
