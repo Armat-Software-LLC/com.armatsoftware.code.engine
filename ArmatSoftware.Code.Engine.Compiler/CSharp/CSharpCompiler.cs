@@ -12,6 +12,7 @@ using ArmatSoftware.Code.Engine.Core.Logging;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Emit;
+using Microsoft.Extensions.Logging;
 
 namespace ArmatSoftware.Code.Engine.Compiler.CSharp
 {
@@ -114,6 +115,7 @@ namespace ArmatSoftware.Code.Engine.Compiler.CSharp
 			configuration.References.Add(typeof(IExecutor<>));
 			configuration.References.Add(typeof(ICodeEngineLogger));
 			configuration.References.Add(typeof(DynamicAttribute));
+			// configuration.References.Add(typeof(LogLevel));
 			
 			if (configuration.EnableModelValidation())
 			{

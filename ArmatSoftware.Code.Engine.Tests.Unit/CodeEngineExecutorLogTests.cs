@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using ArmatSoftware.Code.Engine.Compiler.DI;
+using ArmatSoftware.Code.Engine.Compiler.Execution;
 using ArmatSoftware.Code.Engine.Core;
 using ArmatSoftware.Code.Engine.Core.Logging;
 using ArmatSoftware.Code.Engine.Core.Storage;
@@ -67,7 +68,7 @@ public class CodeEngineExecutorLogTestBuilder
     
     protected CodeEngineOptions RegistrationOptions { get; set; }
     
-    protected ICodeEngineExecutorCache Cache { get; set; }
+    protected IExecutorCache Cache { get; set; }
     
     protected Mock<IActionProvider> StorageMock { get; private set; }
     protected IActionProvider Provider { get; set; }
@@ -80,7 +81,7 @@ public class CodeEngineExecutorLogTestBuilder
     
     protected List<TestSubjectAction<TestSubject>> SetLogNullSubjectActions { get; set; }
     
-    protected CodeEngineExecutorFactory Factory { get; set; }
+    protected ExecutorFactory Factory { get; set; }
 
     [SetUp]
     public void Setup()
@@ -140,9 +141,9 @@ public class CodeEngineExecutorLogTestBuilder
             ExpirationScanFrequency = TimeSpan.FromMinutes(1)
         }));
         
-        Cache = new CodeEngineExecutorCache(MemCache, RegistrationOptions);
+        Cache = new ExecutorCache(MemCache, RegistrationOptions);
         
-        Factory = new CodeEngineExecutorFactory(RegistrationOptions, Provider, Cache);
+        Factory = new ExecutorFactory(RegistrationOptions, Provider, Cache);
         
         return Factory.Provide<TestSubject>();
     }

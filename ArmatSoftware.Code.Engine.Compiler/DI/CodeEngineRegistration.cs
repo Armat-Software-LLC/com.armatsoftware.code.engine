@@ -2,9 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using ArmatSoftware.Code.Engine.Compiler.Execution;
+using ArmatSoftware.Code.Engine.Compiler.Tracing;
 using ArmatSoftware.Code.Engine.Core;
 using ArmatSoftware.Code.Engine.Core.Logging;
 using ArmatSoftware.Code.Engine.Core.Storage;
+using ArmatSoftware.Code.Engine.Core.Tracing;
 using ArmatSoftware.Code.Engine.Logger.File;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -39,6 +42,15 @@ namespace ArmatSoftware.Code.Engine.Compiler.DI
                 services.AddScoped<IActionProvider>(provider => options.Provider);
             }
             
+            if (options.Tracer != null)
+            {
+                services.AddScoped<ITracer>(provider => options.Tracer);
+            }
+            else
+            {
+                services.AddScoped<ITracer, Tracer>();
+            }
+            
             RegisterAllHardcodedExecutors(services);
             RegisterExecutorFactory(services);
         }
@@ -54,8 +66,8 @@ namespace ArmatSoftware.Code.Engine.Compiler.DI
                 options.ExpirationScanFrequency = TimeSpan.FromMinutes(1);
             });
             
-            services.AddScoped<ICodeEngineExecutorFactory, CodeEngineExecutorFactory>();
-            services.AddSingleton<ICodeEngineExecutorCache, CodeEngineExecutorCache>();
+            services.AddScoped<IExecutorFactory, ExecutorFactory>();
+            services.AddSingleton<IExecutorCache, ExecutorCache>();
             services.AddScoped(typeof(IExecutor<>), typeof(Executor<>));
             services.AddScoped(typeof(IExecutorCatalog<>), typeof(ExecutorCatalog<>));
         }

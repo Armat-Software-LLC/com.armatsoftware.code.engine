@@ -1,5 +1,6 @@
 using System;
 using ArmatSoftware.Code.Engine.Compiler.DI;
+using ArmatSoftware.Code.Engine.Compiler.Execution;
 using ArmatSoftware.Code.Engine.Core;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
@@ -8,8 +9,8 @@ using NUnit.Framework;
 
 namespace ArmatSoftware.Code.Engine.Tests.Unit
 {
-    [TestFixture, TestOf(typeof(CodeEngineExecutorCache))]
-    public class CodeEngineExecutorCacheTests : CodeEngineExecutorCacheTestBuilder
+    [TestFixture, TestOf(typeof(ExecutorCache))]
+    public class ExecutorCacheTests : CodeEngineExecutorCacheTestBuilder
     {
         private const string TestKey = "test_key";
         
@@ -120,7 +121,7 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
     
     public class CodeEngineExecutorCacheTestBuilder
     {
-        protected ICodeEngineExecutorCache Target { get; set; }
+        protected IExecutorCache Target { get; set; }
             
         private Mock<IFactoryExecutor<TestExecutorCacheSubject>> ExecutorMock { get; set; }
         protected IFactoryExecutor<TestExecutorCacheSubject> Executor { get; set; }
@@ -140,7 +141,7 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
                 ExpirationScanFrequency = TimeSpan.FromMinutes(1)
             }));
             Executor = ExecutorMock.Object;
-            Target = new CodeEngineExecutorCache(MemCache, new CodeEngineOptions()
+            Target = new ExecutorCache(MemCache, new CodeEngineOptions()
             {
                 CacheExpirationMinutes = 1
             });

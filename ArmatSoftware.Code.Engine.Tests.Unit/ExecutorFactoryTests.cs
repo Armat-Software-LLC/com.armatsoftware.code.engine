@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using ArmatSoftware.Code.Engine.Compiler.DI;
+using ArmatSoftware.Code.Engine.Compiler.Execution;
 using ArmatSoftware.Code.Engine.Core.Logging;
 using ArmatSoftware.Code.Engine.Core.Storage;
 using Microsoft.Extensions.Caching.Memory;
@@ -11,8 +12,8 @@ using NUnit.Framework;
 
 namespace ArmatSoftware.Code.Engine.Tests.Unit
 {
-    [TestFixture, TestOf(typeof(CodeEngineExecutorFactory))]
-    public class CodeEngineExecutorFactoryTests : CodeEngineExecutorFactoryTestBuilder
+    [TestFixture, TestOf(typeof(ExecutorFactory))]
+    public class ExecutorFactoryTests : CodeEngineExecutorFactoryTestBuilder
     {
         [Test]
         public void Should_Construct()
@@ -79,11 +80,11 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
 
     public class CodeEngineExecutorFactoryTestBuilder
     {
-        protected ICodeEngineExecutorFactory Target { get; private set; }
+        protected IExecutorFactory Target { get; private set; }
         
         protected CodeEngineOptions RegistrationOptions { get; set; }
         
-        protected ICodeEngineExecutorCache Cache { get; set; }
+        protected IExecutorCache Cache { get; set; }
         
         protected Mock<IActionProvider> StorageMock { get; private set; }
         protected IActionProvider Provider { get; set; }
@@ -129,12 +130,12 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
                 ExpirationScanFrequency = TimeSpan.FromMinutes(1)
             }));
             
-            Cache = new CodeEngineExecutorCache(MemCache, RegistrationOptions);
+            Cache = new ExecutorCache(MemCache, RegistrationOptions);
         }
         
         public void Build()
         {
-            Target = new CodeEngineExecutorFactory(RegistrationOptions, Provider, Cache);
+            Target = new ExecutorFactory(RegistrationOptions, Provider, Cache);
         }
     }
 

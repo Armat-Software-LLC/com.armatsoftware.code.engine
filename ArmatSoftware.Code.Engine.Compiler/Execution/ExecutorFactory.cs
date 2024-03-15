@@ -5,22 +5,22 @@ using System;
 using System.Linq;
 using ArmatSoftware.Code.Engine.Compiler.Base;
 using ArmatSoftware.Code.Engine.Compiler.CSharp;
+using ArmatSoftware.Code.Engine.Compiler.DI;
 using ArmatSoftware.Code.Engine.Compiler.Vb;
 using ArmatSoftware.Code.Engine.Core;
 using ArmatSoftware.Code.Engine.Core.Logging;
 using ArmatSoftware.Code.Engine.Core.Storage;
 
-namespace ArmatSoftware.Code.Engine.Compiler.DI
+namespace ArmatSoftware.Code.Engine.Compiler.Execution
 {
-    public class CodeEngineExecutorFactory(
+    public class ExecutorFactory(
         CodeEngineOptions options,
         IActionProvider actionProvider,
-        ICodeEngineExecutorCache cache)
-        : ICodeEngineExecutorFactory
+        IExecutorCache cache)
+        : IExecutorFactory
     {
         private readonly CodeEngineOptions _options = options ?? throw new ArgumentNullException(nameof(options));
-        
-        private readonly ICodeEngineExecutorCache _cache = cache ?? throw new ArgumentNullException(nameof(cache));
+        private readonly IExecutorCache _cache = cache ?? throw new ArgumentNullException(nameof(cache));
         private readonly ICodeEngineLogger _logger = options.Logger ?? throw new ArgumentNullException(nameof(options.Logger));
         private readonly IActionProvider _actionProvider = actionProvider ?? throw new ArgumentNullException(nameof(actionProvider));
 
@@ -91,7 +91,7 @@ namespace ArmatSoftware.Code.Engine.Compiler.DI
 /// IExecutor factory is used to create new instances of IExecutor for the supplied
 /// subject type. Caching is used for performance.
 /// </summary>
-public interface ICodeEngineExecutorFactory
+public interface IExecutorFactory
 {
     /// <summary>
     /// Provide a new instance of IExecutor for the supplied subject type
