@@ -1,6 +1,6 @@
 using System;
 using ArmatSoftware.Code.Engine.Core;
-using ArmatSoftware.Code.Engine.Core.Logging;
+using Microsoft.Extensions.Logging;
 
 namespace ArmatSoftware.Code.Engine.Compiler.Execution;
 
@@ -33,7 +33,7 @@ public class Executor<TSubject> : IExecutor<TSubject>
         return _executor.Execute(subject);
     }
 
-    public ICodeEngineLogger Log => _executor.Log;
+    public ILogger Log => _executor.Log;
 
     public IExecutor<TSubject> Clone() => _executor.Clone();
         

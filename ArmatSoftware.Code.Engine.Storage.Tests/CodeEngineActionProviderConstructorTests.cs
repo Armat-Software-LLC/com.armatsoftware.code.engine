@@ -1,6 +1,6 @@
-using ArmatSoftware.Code.Engine.Core.Logging;
 using ArmatSoftware.Code.Engine.Core.Storage;
 using ArmatSoftware.Code.Engine.Storage.Contracts;
+using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
 
@@ -41,8 +41,8 @@ public class CodeEngineActionProviderConstructorTests : CodeEngineActionProvider
 
 public abstract class CodeEngineActionProviderTestsBuilder
 {
-    protected Mock<ICodeEngineLogger> LoggerMock { get; private set; }
-    protected ICodeEngineLogger Logger { get; set; }
+    protected Mock<ILogger> LoggerMock { get; private set; }
+    protected ILogger Logger { get; set; }
     
     protected Mock<IStorageAdapter> StorageAdapterMock { get; private set; }
     protected IStorageAdapter StorageAdapter { get; set; }
@@ -50,7 +50,7 @@ public abstract class CodeEngineActionProviderTestsBuilder
     [SetUp]
     public void Setup()
     {
-        LoggerMock = new Mock<ICodeEngineLogger>();
+        LoggerMock = new Mock<ILogger>();
         StorageAdapterMock = new Mock<IStorageAdapter>();
         
         Logger = LoggerMock.Object;

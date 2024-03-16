@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using ArmatSoftware.Code.Engine.Compiler.DI;
 using ArmatSoftware.Code.Engine.Compiler.Execution;
-using ArmatSoftware.Code.Engine.Core.Logging;
+using ArmatSoftware.Code.Engine.Compiler.Tracing;
 using ArmatSoftware.Code.Engine.Core.Storage;
+using ArmatSoftware.Code.Engine.Core.Tracing;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
 using NUnit.Framework;
@@ -86,11 +88,13 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
         
         protected IExecutorCache Cache { get; set; }
         
+        protected ITracer Tracer { get; set; }
+        
         protected Mock<IActionProvider> StorageMock { get; private set; }
         protected IActionProvider Provider { get; set; }
         
-        protected Mock<ICodeEngineLogger> LoggerMock { get; private set; }
-        protected ICodeEngineLogger Logger { get; set; }
+        protected Mock<ILogger> LoggerMock { get; private set; }
+        protected ILogger Logger { get; set; }
         
         protected IMemoryCache MemCache { get; set; }
 
@@ -112,7 +116,7 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
             StorageMock = new Mock<IActionProvider>();
             StorageMock.Setup(x => x.Retrieve<CodeEngineFactoryTestSubject>(It.IsAny<string>()))
                 .Returns(SubjectActions.ToList());
-            LoggerMock = new Mock<ICodeEngineLogger>();
+            LoggerMock = new Mock<ILogger>();
             
             Provider = StorageMock.Object;
             Logger = LoggerMock.Object;
@@ -131,11 +135,13 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
             }));
             
             Cache = new ExecutorCache(MemCache, RegistrationOptions);
+
+            Tracer = new Tracer();
         }
         
         public void Build()
         {
-            Target = new ExecutorFactory(RegistrationOptions, Provider, Cache);
+            Target = new ExecutorFactory(RegistrationOptions, Provider, Cache, Tracer);
         }
     }
 

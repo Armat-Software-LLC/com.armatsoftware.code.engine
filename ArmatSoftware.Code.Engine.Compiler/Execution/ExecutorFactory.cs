@@ -8,28 +8,31 @@ using ArmatSoftware.Code.Engine.Compiler.CSharp;
 using ArmatSoftware.Code.Engine.Compiler.DI;
 using ArmatSoftware.Code.Engine.Compiler.Vb;
 using ArmatSoftware.Code.Engine.Core;
-using ArmatSoftware.Code.Engine.Core.Logging;
 using ArmatSoftware.Code.Engine.Core.Storage;
+using ArmatSoftware.Code.Engine.Core.Tracing;
+using Microsoft.Extensions.Logging;
 
 namespace ArmatSoftware.Code.Engine.Compiler.Execution
 {
     public class ExecutorFactory(
         CodeEngineOptions options,
         IActionProvider actionProvider,
-        IExecutorCache cache)
+        IExecutorCache cache,
+        ITracer tracer)
         : IExecutorFactory
     {
         private readonly CodeEngineOptions _options = options ?? throw new ArgumentNullException(nameof(options));
         private readonly IExecutorCache _cache = cache ?? throw new ArgumentNullException(nameof(cache));
-        private readonly ICodeEngineLogger _logger = options.Logger ?? throw new ArgumentNullException(nameof(options.Logger));
+        private readonly ILogger _logger = options.Logger ?? throw new ArgumentNullException(nameof(options.Logger));
         private readonly IActionProvider _actionProvider = actionProvider ?? throw new ArgumentNullException(nameof(actionProvider));
-
+        private readonly ITracer _tracer = tracer ?? throw new ArgumentNullException(nameof(tracer));
+        
         /// <summary>
         /// Default factory implementation for the <c>Provide()</c> method.
         /// Uses caching and registered <c>IActionProvider</c> to retrieve executor instances
         /// </summary>
         /// <param name="key"></param>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TSubject"></typeparam>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
@@ -81,6 +84,7 @@ namespace ArmatSoftware.Code.Engine.Compiler.Execution
         private IExecutor<TSubject> ManufactureClone<TSubject>(IFactoryExecutor<TSubject> executor)
             where TSubject : class, new()
         {
+            //TODO: add tracing context to the executor
             executor.SetLogger(_logger);
             return executor.Clone();
         }

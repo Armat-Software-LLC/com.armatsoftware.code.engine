@@ -5,11 +5,10 @@ using System.Reflection;
 using ArmatSoftware.Code.Engine.Compiler.Execution;
 using ArmatSoftware.Code.Engine.Compiler.Tracing;
 using ArmatSoftware.Code.Engine.Core;
-using ArmatSoftware.Code.Engine.Core.Logging;
 using ArmatSoftware.Code.Engine.Core.Storage;
 using ArmatSoftware.Code.Engine.Core.Tracing;
-using ArmatSoftware.Code.Engine.Logger.File;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace ArmatSoftware.Code.Engine.Compiler.DI
 {
@@ -30,11 +29,18 @@ namespace ArmatSoftware.Code.Engine.Compiler.DI
             
             if (options.Logger != null)
             {
-                services.AddScoped<ICodeEngineLogger>(provider => options.Logger);
+                services.AddScoped<ILogger>(provider => options.Logger);
             }
             else
             {
-                services.AddScoped<ICodeEngineLogger, CodeEngineFileLogger>();
+                var loggerFactory = LoggerFactory.Create(builder =>
+                {
+                    // Add console logging
+                    builder.AddConsole();
+                });
+
+                // Create a logger
+                services.AddScoped<ILogger>(provider => loggerFactory.CreateLogger("console"));
             }
 
             if (options.Provider != null)

@@ -19,12 +19,12 @@ namespace <#=Configuration.GetNamespace()#>
 
 		private <#=Configuration.GetSubjectType()#> _subject;
 
-		private ICodeEngineLogger _logger;
+		private ILogger _logger;
 
 
 		public <#=Configuration.GetSubjectType()#> Subject => _subject;
 
-		public ICodeEngineLogger Log => _logger;
+		public ILogger Log => _logger;
 
 		public dynamic Read(string key)
 		{
@@ -53,14 +53,14 @@ namespace <#=Configuration.GetNamespace()#>
    if (Configuration.EnableModelValidation())
    {
 #>
-			ObjectValidator.Validate(_subject);			
+			ObjectValidator.Validate(_subject);
 <#
    }
 #>
             return _subject;
         }
 
-	    public void SetLogger(ICodeEngineLogger logger)
+	    public void SetLogger(ILogger logger)
 	    {
 	        _logger = logger;
 	    }

@@ -1,5 +1,4 @@
 using ArmatSoftware.Code.Engine.Compiler.DI;
-using ArmatSoftware.Code.Engine.Logger.File;
 using ArmatSoftware.Code.Engine.Storage.DI;
 using ArmatSoftware.Code.Engine.Storage.File;
 using ArmatSoftware.Code.Engine.Storage.File.DI;
@@ -27,7 +26,6 @@ builder.Services.AddControllers()
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-
 // Specify that you are going to use code engine
 // to enable the injection of the code engine implementations
 builder.Services.UseCodeEngine(new()
@@ -38,7 +36,7 @@ builder.Services.UseCodeEngine(new()
     // specify unique namespace for the code engine no to mix with your code
     CodeEngineNamespace = "com.armatsoftware.code.engine.executors",
     // specify the custom code provider or don't set to use the default one
-    Logger = new CodeEngineFileLogger("/tmp/test.log"),
+    // Logger = new CodeEngineFileLogger("/tmp/test.log"),
     // likewise, optionally, use your own custom provider for the storage
     // or use default if none provided
     // Provider = new CustomCodeProvider()

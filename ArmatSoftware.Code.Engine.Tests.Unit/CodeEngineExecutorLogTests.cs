@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using ArmatSoftware.Code.Engine.Compiler.DI;
 using ArmatSoftware.Code.Engine.Compiler.Execution;
+using ArmatSoftware.Code.Engine.Compiler.Tracing;
 using ArmatSoftware.Code.Engine.Core;
-using ArmatSoftware.Code.Engine.Core.Logging;
 using ArmatSoftware.Code.Engine.Core.Storage;
+using ArmatSoftware.Code.Engine.Core.Tracing;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
 using NUnit.Framework;
@@ -70,6 +72,8 @@ public class CodeEngineExecutorLogTestBuilder
     
     protected IExecutorCache Cache { get; set; }
     
+    protected ITracer Tracer { get; set; }
+    
     protected Mock<IActionProvider> StorageMock { get; private set; }
     protected IActionProvider Provider { get; set; }
     
@@ -91,19 +95,19 @@ public class CodeEngineExecutorLogTestBuilder
             new TestSubjectAction<TestSubject>()
             {
                 Name = "LogInfo",
-                Code = $"Log.Info(\"{InfoMessage}\");",
+                Code = $"Log.LogInformation(\"{InfoMessage}\");",
                 Order = 1
             },
             new TestSubjectAction<TestSubject>()
             {
                 Name = "LogWarning",
-                Code = $"Log.Warning(\"{WarningMessage}\");",
+                Code = $"Log.LogWarning(\"{WarningMessage}\");",
                 Order = 2
             },
             new TestSubjectAction<TestSubject>()
             {
                 Name = "LogError",
-                Code = $"Log.Error(\"{ErrorMessage}\");",
+                Code = $"Log.LogError(\"{ErrorMessage}\");",
                 Order = 3
             }
         };
@@ -143,30 +147,45 @@ public class CodeEngineExecutorLogTestBuilder
         
         Cache = new ExecutorCache(MemCache, RegistrationOptions);
         
-        Factory = new ExecutorFactory(RegistrationOptions, Provider, Cache);
+        Tracer = new Tracer();
+        
+        Factory = new ExecutorFactory(RegistrationOptions, Provider, Cache, Tracer);
         
         return Factory.Provide<TestSubject>();
     }
 }
 
-public class CodeEngineExecutorLogTestLogger : ICodeEngineLogger
+public class CodeEngineExecutorLogTestLogger : ILogger
 {
     public List<string> InfoLog { get; } = new();
     public List<string> ErrorLog { get; } = new();
     public List<string> WarningLog { get; } = new();
     
-    public void Info(string message)
+    public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
     {
-        InfoLog.Add(message);
+        switch (logLevel)
+        {
+            case LogLevel.Information:
+                InfoLog.Add(state.ToString());
+                break;
+            case LogLevel.Warning:
+                WarningLog.Add(state.ToString());
+                break;
+            case LogLevel.Error:
+                ErrorLog.Add(state.ToString());
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(logLevel), logLevel, null);
+        }
     }
 
-    public void Warning(string message)
+    public bool IsEnabled(LogLevel logLevel)
     {
-        WarningLog.Add(message);
+        throw new NotImplementedException();
     }
 
-    public void Error(string message, Exception ex)
+    public IDisposable BeginScope<TState>(TState state)
     {
-        ErrorLog.Add(message);
+        throw new NotImplementedException();
     }
 }

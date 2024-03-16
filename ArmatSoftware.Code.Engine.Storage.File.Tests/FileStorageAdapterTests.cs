@@ -1,8 +1,8 @@
 using System;
 using System.IO;
 using System.Linq;
-using ArmatSoftware.Code.Engine.Core.Logging;
 using ArmatSoftware.Code.Engine.Storage.Contracts;
+using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
 
@@ -114,7 +114,7 @@ public class FileStorageAdapterTests
 public class FileStorageAdapterTestBuilder
 {
     protected FileStorageOptions Options {get; private set;}
-    protected ICodeEngineLogger Logger {get; private set;}
+    protected ILogger Logger {get; private set;}
     
     protected IStoredSubjectActions<TestSubject> StoredSubjectActions {get; private set;}
 
@@ -127,7 +127,7 @@ public class FileStorageAdapterTestBuilder
             FileExtension = ".txt"
         };
         
-        Logger = new Mock<ICodeEngineLogger>().Object;
+        Logger = new Mock<ILogger>().Object;
         
         StoredSubjectActions = new StoredSubjectActions<TestSubject>();
         var action = StoredSubjectActions.Create("TestAction");
@@ -140,7 +140,7 @@ public class FileStorageAdapterTestBuilder
         return this;
     }
 
-    public FileStorageAdapterTestBuilder WithLogger(ICodeEngineLogger logger)
+    public FileStorageAdapterTestBuilder WithLogger(ILogger logger)
     {
         Logger = logger;
         return this;

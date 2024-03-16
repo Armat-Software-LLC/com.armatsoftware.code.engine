@@ -72,7 +72,7 @@ namespace ArmatSoftware.Code.Engine.Compiler.Vb
             
             #line default
             #line hidden
-            this.Write(")\n\t\n\t\tPrivate _runtimeValues As Dictionary(Of String, Object) = new Dictionary(Of String, Object)\n\t    Private _logger As ICodeEngineLogger\n\t    Private _subject As ");
+            this.Write(")\n\t\n\t\tPrivate _runtimeValues As Dictionary(Of String, Object) = new Dictionary(Of String, Object)\n\t    Private _logger As ILogger\n\t    Private _subject As ");
             
             #line 20 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Configuration.GetSubjectType()));
@@ -93,7 +93,7 @@ namespace ArmatSoftware.Code.Engine.Compiler.Vb
             
             #line default
             #line hidden
-            this.Write(").Subject\n    \t\tGet\n            \tReturn _subject\n        \tEnd Get\n    \tEnd Property\n\n\t\tPublic ReadOnly Property Log As ICodeEngineLogger Implements IExecutor(Of ");
+            this.Write(").Subject\n    \t\tGet\n            \tReturn _subject\n        \tEnd Get\n    \tEnd Property\n\n\t\tPublic ReadOnly Property Log As ILogger Implements IExecutor(Of ");
             
             #line 28 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Configuration.GetSubjectType()));
@@ -121,7 +121,7 @@ namespace ArmatSoftware.Code.Engine.Compiler.Vb
             
             #line default
             #line hidden
-            this.Write("))\n\t\tEnd Function\n\n\t    Public Sub SetLogger(logger As ICodeEngineLogger) Implements IFactoryExecutor(Of ");
+            this.Write("))\n\t\tEnd Function\n\n\t    Public Sub SetLogger(logger As ILogger) Implements IFactoryExecutor(Of ");
             
             #line 46 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Configuration.GetSubjectType()));

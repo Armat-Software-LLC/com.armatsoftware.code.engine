@@ -8,7 +8,7 @@ public class FileLoggerTestsBase
 {
     protected readonly string LogFilePath = $"{Path.GetTempPath()}/test.log";
     
-    protected ICodeEngineLogger TestSubject { get; set; }
+    protected ILogger TestSubject { get; set; }
     protected TextWriter? LogWriter { get; set; }
     protected Mock<TextWriter> LogWriterMock { get; private set; }
     protected FileStream? LogStream { get; set; }
