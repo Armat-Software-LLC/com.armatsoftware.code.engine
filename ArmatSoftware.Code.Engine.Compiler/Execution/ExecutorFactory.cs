@@ -8,6 +8,7 @@ using ArmatSoftware.Code.Engine.Compiler.CSharp;
 using ArmatSoftware.Code.Engine.Compiler.DI;
 using ArmatSoftware.Code.Engine.Compiler.Vb;
 using ArmatSoftware.Code.Engine.Core;
+using ArmatSoftware.Code.Engine.Core.Logging;
 using ArmatSoftware.Code.Engine.Core.Storage;
 using ArmatSoftware.Code.Engine.Core.Tracing;
 using Microsoft.Extensions.Logging;
@@ -44,6 +45,14 @@ namespace ArmatSoftware.Code.Engine.Compiler.Execution
                 throw new ArgumentNullException(nameof(_options.CodeEngineNamespace));
             }
             
+            var logContext = new LogContext
+            {
+                ExecutorKey = key,
+                ExecutorInstanceId = Guid.NewGuid().ToString(),
+                SubjectType = typeof(TSubject).FullName,
+                CorrelationId = _tracer.CorrelationId
+            };
+            
             var configuration = new CompilerConfiguration<TSubject>(_options.CodeEngineNamespace);
 
 #if !NOCACHE
@@ -51,7 +60,7 @@ namespace ArmatSoftware.Code.Engine.Compiler.Execution
             var cachedExecutor = _cache.Retrieve<TSubject>(key);
             if (cachedExecutor != null)
             {
-                return ManufactureClone(cachedExecutor);
+                return ManufactureClone(cachedExecutor, logContext);
             }
 #endif
             
@@ -78,14 +87,14 @@ namespace ArmatSoftware.Code.Engine.Compiler.Execution
 #if !NOCACHE
             _cache.Cache(compiledExecutor, key);
 #endif
-            return ManufactureClone(compiledExecutor);
+            return ManufactureClone(compiledExecutor, logContext);
         }
         
-        private IExecutor<TSubject> ManufactureClone<TSubject>(IFactoryExecutor<TSubject> executor)
+        private IExecutor<TSubject> ManufactureClone<TSubject>(IFactoryExecutor<TSubject> executor, LogContext context)
             where TSubject : class, new()
         {
             //TODO: add tracing context to the executor
-            executor.SetLogger(_logger);
+            executor.SetLogger(_logger, context);
             return executor.Clone();
         }
     }

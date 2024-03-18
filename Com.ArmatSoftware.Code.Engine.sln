@@ -7,10 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArmatSoftware.Code.Engine.C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArmatSoftware.Code.Engine.Tests.Unit", "ArmatSoftware.Code.Engine.Tests.Unit\ArmatSoftware.Code.Engine.Tests.Unit.csproj", "{0242EA6B-8A9F-4B01-9BEC-22A1AA19CB1D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArmatSoftware.Code.Engine.Logger.File", "ArmatSoftware.Code.Engine.Logger.File\ArmatSoftware.Code.Engine.Logger.File.csproj", "{5BCC2151-89FE-469C-9395-CB6D2A5F762A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArmatSoftware.Code.Engine.Logger.File.Tests", "ArmatSoftware.Code.Engine.Logger.File.Tests\ArmatSoftware.Code.Engine.Logger.File.Tests.csproj", "{3372BAA9-8EED-4F4F-B9BB-7FA8AE310171}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArmatSoftware.Code.Engine.Storage.File", "ArmatSoftware.Code.Engine.Storage.File\ArmatSoftware.Code.Engine.Storage.File.csproj", "{0BA821A9-1F70-42DE-A194-9C605CF1D280}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArmatSoftware.Code.Engine.Storage.File.Tests", "ArmatSoftware.Code.Engine.Storage.File.Tests\ArmatSoftware.Code.Engine.Storage.File.Tests.csproj", "{5EE8BCE9-D524-4E88-8AEB-06BFA7D6DC34}"
@@ -39,14 +35,6 @@ Global
 		{0242EA6B-8A9F-4B01-9BEC-22A1AA19CB1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0242EA6B-8A9F-4B01-9BEC-22A1AA19CB1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0242EA6B-8A9F-4B01-9BEC-22A1AA19CB1D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5BCC2151-89FE-469C-9395-CB6D2A5F762A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5BCC2151-89FE-469C-9395-CB6D2A5F762A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5BCC2151-89FE-469C-9395-CB6D2A5F762A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5BCC2151-89FE-469C-9395-CB6D2A5F762A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3372BAA9-8EED-4F4F-B9BB-7FA8AE310171}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3372BAA9-8EED-4F4F-B9BB-7FA8AE310171}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3372BAA9-8EED-4F4F-B9BB-7FA8AE310171}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3372BAA9-8EED-4F4F-B9BB-7FA8AE310171}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0BA821A9-1F70-42DE-A194-9C605CF1D280}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0BA821A9-1F70-42DE-A194-9C605CF1D280}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0BA821A9-1F70-42DE-A194-9C605CF1D280}.Release|Any CPU.ActiveCfg = Release|Any CPU

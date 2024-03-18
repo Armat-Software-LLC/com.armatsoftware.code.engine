@@ -1,13 +1,16 @@
 using System;
 using ArmatSoftware.Code.Engine.Compiler;
 using ArmatSoftware.Code.Engine.Compiler.Base;
+using ArmatSoftware.Code.Engine.Compiler.DI;
+using ArmatSoftware.Code.Engine.Compiler.Execution;
 using ArmatSoftware.Code.Engine.Compiler.Vb;
+using ArmatSoftware.Code.Engine.Core;
 using NUnit.Framework;
 
 namespace ArmatSoftware.Code.Engine.Tests.Unit
 {
 	[TestFixture, TestOf(typeof(VbCompiler<>))]
-	public class VbCompilerTests : VbCompilerTestBase<TestSubject>
+	internal class VbCompilerTests : VbCompilerTestBase<TestSubject>
 	{
 		[SetUp]
 		public void Setup()
@@ -20,10 +23,12 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
 		{
 			Assert.That(() =>
 			{
-				Configuration.Actions.Add(new TestSubjectAction<TestSubject> { Name = "SimpleOperation", Code = "Dim t = 3 + 4" });
 
-				var executor = Compiler.Compile(Configuration);
-
+				var executor = BuildAndCompile(new ISubjectAction<TestSubject>[]
+				{
+					new TestSubjectAction<TestSubject> { Name = "SimpleOperation", Code = "Dim t = 3 + 4" }
+				});
+				
 				executor.Execute(null);
 
 			}, Throws.Nothing);
@@ -35,11 +40,10 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
 			Assert.That(() =>
 			{
 				var subject = new TestSubject { Id = 1, Data = "data", Date = DateTime.Now };
-				var action = new TestSubjectAction<TestSubject> { Name = "SimpleOperation", Code = "Subject.Data = \"changed data\"", Order = 1};
-				
-				Configuration.Actions.Add(action);
-				
-				var executor = Compiler.Compile(Configuration);
+				var executor = BuildAndCompile(new ISubjectAction<TestSubject>[]
+				{
+					new TestSubjectAction<TestSubject> { Name = "SimpleOperation", Code = "Subject.Data = \"changed data\"", Order = 1}
+				});
 				
 				executor.Execute(subject);
 
@@ -54,11 +58,10 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
 			Assert.That(() =>
 			{
 				var subject = new TestSubject { Id = 1, Data = "data", Date = DateTime.Now };
-				var action = new TestSubjectAction<TestSubject> { Name = "SimpleOperation", Code = "Subject.Data = \"changed data\"", Order = 1};
-				
-				Configuration.Actions.Add(action);
-				
-				var executor = Compiler.Compile(Configuration);
+				var executor = BuildAndCompile(new ISubjectAction<TestSubject>[]
+				{
+					new TestSubjectAction<TestSubject> { Name = "SimpleOperation", Code = "Subject.Data = \"changed data\"", Order = 1}
+				});
 				
 				var result = executor.Execute(subject);
 
@@ -74,11 +77,10 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
 			Assert.That(() =>
 			{
 				var subject = new TestSubject { Id = 1, Data = "data", Date = DateTime.Now };
-				var action = new TestSubjectAction<TestSubject> { Name = "ReadSubject", Code = "Dim temp = Subject.Data" };
-
-				Configuration.Actions.Add(action);
-
-				var executor = Compiler.Compile(Configuration);
+				var executor = BuildAndCompile(new ISubjectAction<TestSubject>[]
+				{
+					new TestSubjectAction<TestSubject> { Name = "ReadSubject", Code = "Dim temp = Subject.Data" }
+				});
 
 				executor.Execute(subject);
 
@@ -90,13 +92,11 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
 		{
 			var subject = new TestSubject { Id = 1, Data = "data", Date = DateTime.Now };
 			var action = new TestSubjectAction<TestSubject> { Name = "SetValue", Code = "Save(\"key\", \"test value\")" };
-			// difference from the c# syntax for the object to string conversion is due to using object type versus dynamic
 			var action2 = new TestSubjectAction<TestSubject> { Name = "GetValue", Code = "Subject.Data = System.Convert.ToString(Read(\"key\"))" };
-
-			Configuration.Actions.Add(action);
-			Configuration.Actions.Add(action2);
-
-			var executor = Compiler.Compile(Configuration);
+			var executor = BuildAndCompile(new ISubjectAction<TestSubject>[]
+			{
+				action, action2
+			});
 
 			executor.Execute(subject);
 
@@ -109,24 +109,22 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
 			Assert.That(() =>
 			{
 				var testSubjectAction = new TestSubjectAction<TestSubject> { Name = "TestHttpClient", Code = "New HttpClient()" };
-				Configuration.Actions.Add(testSubjectAction);
-				var executor = Compiler.Compile(Configuration);
+				var executor = BuildAndCompile(new ISubjectAction<TestSubject>[]
+				{
+					new TestSubjectAction<TestSubject> { Name = "TestHttpClient", Code = "New HttpClient()" }
+				});
 				executor.Execute(new TestSubject());
 			}, Throws.InvalidOperationException);
 		}
 	}
 
-	public class VbCompilerTestBase<TSubject> where TSubject: class
+	internal class VbCompilerTestBase<TSubject> : ExecutorBuilderBase<TSubject>
+		where TSubject: class, new()
 	{
-		public ICompilerConfiguration<TSubject> Configuration { get; set; }
-
-		public ICompiler<TSubject> Compiler { get; set; }
-
 		public void Build()
 		{
-			Configuration = new CompilerConfiguration<TSubject>("ArmatSoftware.Code.Engine.Tests.Executors");
-			
-			Compiler = new VbCompiler<TSubject>();
+			Init();
+			RegistrationOptions.CompilerType = CompilerTypeEnum.Vb;
 		}
 	}
 }

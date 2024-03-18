@@ -1,8 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
-using ArmatSoftware.Code.Engine.Compiler;
-using ArmatSoftware.Code.Engine.Compiler.Base;
 using ArmatSoftware.Code.Engine.Compiler.CSharp;
+using ArmatSoftware.Code.Engine.Compiler.DI;
 using ArmatSoftware.Code.Engine.Core;
 using NUnit.Framework;
 
@@ -14,6 +14,12 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
     [TestFixture, TestOf(typeof(CSharpCompiler<>))]
     internal class CompilerPerformanceTests : CompilerPerformanceTestBase<CompilerPerformanceTestSubject>
     {
+        [SetUp]
+        public void Init()
+        {
+            base.Init();
+        }
+        
         /// <summary>
         /// Running <paramref name="n"/> actions (functions) within a single executor.
         /// Beware of the limit on the number of methods allowed in a class.
@@ -26,6 +32,7 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
             
             Assert.That(() =>
             {
+                RegistrationOptions.CompilerType = CompilerTypeEnum.CSharp;
                 BuildMultiActionTestSubject(n);
 
                 var stopwatch = new Stopwatch();
@@ -44,6 +51,7 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
         {
             Assert.That(() =>
             {
+                RegistrationOptions.CompilerType = CompilerTypeEnum.CSharp;
                 BuildSingleActionTestSubject();
 
                 var stopwatch = new Stopwatch();
@@ -76,6 +84,7 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
         {
             Assert.That(() =>
             {
+                RegistrationOptions.CompilerType = CompilerTypeEnum.CSharp;
                 BuildSingleActionTestSubject();
 
                 var testSubjects = new CompilerPerformanceTestSubject[n];
@@ -119,15 +128,45 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
                 Assert.LessOrEqual(timer2.ElapsedTicks, timer1.ElapsedTicks, $"Execution of {Operations.GetLength(0)} test actions took longer than expected");
             }, Throws.Nothing);
         }
+        
+        private void BuildMultiActionTestSubject(int n)
+        {
+            var actions = new List<CompilerPerformanceTestSubjectAction>();
+            for (var index = 0; index < n; index++)
+            {
+                actions.Add(new CompilerPerformanceTestSubjectAction
+                {
+                    Name = $"Action{index}",
+                    Code = $"var result = {Operations[index, 0]} + {Operations[index, 1]};"
+                });
+            }
+            
+            TestSubject = BuildAndCompile(actions);
+        }
+        
+        private void BuildSingleActionTestSubject()
+        {
+            var actions = new List<CompilerPerformanceTestSubjectAction>();
+            actions.Add(new CompilerPerformanceTestSubjectAction
+                {
+                    Name = "SingleAction",
+                    Code = "Subject.Result = Subject.Operand1 + Subject.Operand2;",
+                    Order = 1
+                });
+
+            TestSubject = BuildAndCompile(actions);
+        }
+
     }
 
-    internal class CompilerPerformanceTestBase<TSubject> where TSubject: CompilerPerformanceTestSubject
+    internal class CompilerPerformanceTestBase<TSubject> : ExecutorBuilderBase<TSubject>
+        where TSubject: class, new()
     {
         public const int MaximumTestOperationsCount = 1000000;
 
         protected IExecutor<TSubject> TestSubject { get; set; }
-        protected ICompilerConfiguration<TSubject> Configuration { get; set; }
-        protected ICompiler<TSubject> Compiler { get; set; }
+        // protected ICompilerConfiguration<TSubject> Configuration { get; set; }
+        // protected ICompiler<TSubject> Compiler { get; set; }
         protected static int[,] Operations { get; set; }
 
         [OneTimeSetUp]
@@ -145,39 +184,6 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
             }
             Console.WriteLine($"Generated {Operations.GetLength(0)} expressions");
         }
-        
-        public void BuildMultiActionTestSubject(int n)
-        {
-            Configuration = new CompilerConfiguration<TSubject>("ArmatSoftware.Code.Engine.Tests.Performance");
-
-            Compiler = new CSharpCompiler<TSubject>();
-            
-            for (var index = 0; index < n; index++)
-            {
-                Configuration.Actions.Add(new CompilerPerformanceTestSubjectAction<TSubject>
-                {
-                    Name = $"Action{index}",
-                    Code = $"var result = {Operations[index, 0]} + {Operations[index, 1]};"
-                });
-            }
-            
-            TestSubject = Compiler.Compile(Configuration);
-        }
-        
-        public void BuildSingleActionTestSubject()
-        {
-            Configuration = new CompilerConfiguration<TSubject>("ArmatSoftware.Code.Engine.Tests.Performance");
-
-            Compiler = new CSharpCompiler<TSubject>();
-            
-            Configuration.Actions.Add(new CompilerPerformanceTestSubjectAction<TSubject>
-            {
-                Name = "SingleAction",
-                Code = "Subject.Result = Subject.Operand1 + Subject.Operand2;"
-            });
-            
-            TestSubject = Compiler.Compile(Configuration);
-        }
     }
 
     public class CompilerPerformanceTestSubject
@@ -187,7 +193,7 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
         public int Result { get; set; }
     }
 
-    public class CompilerPerformanceTestSubjectAction<TSubject> : ISubjectAction<TSubject> where TSubject: CompilerPerformanceTestSubject
+    public class CompilerPerformanceTestSubjectAction : ISubjectAction<CompilerPerformanceTestSubject> // where TSubject: CompilerPerformanceTestSubject
     {
         public string Name { get; set; }
         public string Code { get; set; }

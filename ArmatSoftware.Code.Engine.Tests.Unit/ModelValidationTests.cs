@@ -1,25 +1,28 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using ArmatSoftware.Code.Engine.Compiler;
-using ArmatSoftware.Code.Engine.Compiler.Base;
 using ArmatSoftware.Code.Engine.Compiler.CSharp;
+using ArmatSoftware.Code.Engine.Compiler.DI;
 using ArmatSoftware.Code.Engine.Compiler.Vb;
 using ArmatSoftware.Code.Engine.Core;
+using Moq;
 using NUnit.Framework;
 
 namespace ArmatSoftware.Code.Engine.Tests.Unit;
 
 [TestFixture, TestOf(typeof(CSharpCompiler<>)), TestOf(typeof(VbCompiler<>))]
-public class ModelValidationTests : ModelValidationTestBase<TestSubject>
+internal class ModelValidationTests : ModelValidationTestBase<TestSubject>
 {
    [Test]
    public void Should_Fail_Validate_Invalid_Model_IfEnabled_CSharp()
    {
        Assert.That(() =>
        {
-           Configuration.Actions.Add(new TestSubjectAction<TestSubject> { Name = "ValidateThisModel", Code = "Subject.Data = \"short string\";" });
-           Configuration.ValidateModelsAfterExecution = true;
-           
-           var executor = BuildCSharpCompiler();
+           RegistrationOptions.ValidateModelsAfterExecution = true;
+           RegistrationOptions.CompilerType = CompilerTypeEnum.CSharp;
+           var executor =  BuildAndCompile(new List<ISubjectAction<TestSubject>>()
+           {
+               new TestSubjectAction<TestSubject> { Name = "ValidateThisModel", Code = "Subject.Data = \"short string\";" }
+           });
            
            executor.Execute(new TestSubject());
        }, Throws.TypeOf<ValidationException>());
@@ -30,10 +33,12 @@ public class ModelValidationTests : ModelValidationTestBase<TestSubject>
    {
        Assert.That(() =>
        {
-           Configuration.Actions.Add(new TestSubjectAction<TestSubject> { Name = "ValidateThisModel", Code = "Subject.Data = \"short string\";" });
-           Configuration.ValidateModelsAfterExecution = false;
-           
-           var executor = BuildCSharpCompiler();
+           RegistrationOptions.ValidateModelsAfterExecution = false;
+           RegistrationOptions.CompilerType = CompilerTypeEnum.CSharp;
+           var executor =  BuildAndCompile(new List<ISubjectAction<TestSubject>>()
+           {
+               new TestSubjectAction<TestSubject> { Name = "ValidateThisModel", Code = "Subject.Data = \"short string\";" }
+           });
            
            executor.Execute(new TestSubject());
        }, Throws.Nothing);
@@ -44,10 +49,12 @@ public class ModelValidationTests : ModelValidationTestBase<TestSubject>
    {
        Assert.That(() =>
        {
-           Configuration.Actions.Add(new TestSubjectAction<TestSubject> { Name = "ValidateThisModel", Code = "Subject.Data = \"long enough string value\"; \r\n Subject.Id = 1;" });
-           Configuration.ValidateModelsAfterExecution = true;
-           
-           var executor = BuildCSharpCompiler();
+           RegistrationOptions.ValidateModelsAfterExecution = true;
+           RegistrationOptions.CompilerType = CompilerTypeEnum.CSharp;
+           var executor =  BuildAndCompile(new List<ISubjectAction<TestSubject>>()
+           {
+               new TestSubjectAction<TestSubject> { Name = "ValidateThisModel", Code = "Subject.Data = \"long enough string value\"; \r\n Subject.Id = 1;" }
+           });
            
            executor.Execute(new TestSubject());
        }, Throws.Nothing);
@@ -58,10 +65,12 @@ public class ModelValidationTests : ModelValidationTestBase<TestSubject>
    {
        Assert.That(() =>
        {
-           Configuration.Actions.Add(new TestSubjectAction<TestSubject> { Name = "ValidateThisModel", Code = "Subject.Data = \"short string\"" });
-           Configuration.ValidateModelsAfterExecution = true;
-           
-           var executor = BuildVbCompiler();
+           RegistrationOptions.ValidateModelsAfterExecution = true;
+           RegistrationOptions.CompilerType = CompilerTypeEnum.Vb;
+           var executor =  BuildAndCompile(new List<ISubjectAction<TestSubject>>()
+           {
+               new TestSubjectAction<TestSubject> { Name = "ValidateThisModel", Code = "Subject.Data = \"short string\"" }
+           });
            
            executor.Execute(new TestSubject());
        }, Throws.TypeOf<ValidationException>());
@@ -72,10 +81,12 @@ public class ModelValidationTests : ModelValidationTestBase<TestSubject>
    {
        Assert.That(() =>
        {
-           Configuration.Actions.Add(new TestSubjectAction<TestSubject> { Name = "ValidateThisModel", Code = "Subject.Data = \"short string\"" });
-           Configuration.ValidateModelsAfterExecution = false;
-           
-           var executor = BuildVbCompiler();
+           RegistrationOptions.ValidateModelsAfterExecution = false;
+           RegistrationOptions.CompilerType = CompilerTypeEnum.Vb;
+           var executor =  BuildAndCompile(new List<ISubjectAction<TestSubject>>()
+           {
+               new TestSubjectAction<TestSubject> { Name = "ValidateThisModel", Code = "Subject.Data = \"short string\"" }
+           });
            
            executor.Execute(new TestSubject());
        }, Throws.Nothing);
@@ -86,37 +97,39 @@ public class ModelValidationTests : ModelValidationTestBase<TestSubject>
    {
        Assert.That(() =>
        {
-           Configuration.Actions.Add(new TestSubjectAction<TestSubject> { Name = "ValidateThisModel", Code = "Subject.Data = \"long enough string value\" \r\n Subject.Id = 1" });
-           Configuration.ValidateModelsAfterExecution = true;
-           
-           var executor = BuildVbCompiler();
+           RegistrationOptions.ValidateModelsAfterExecution = true;
+           RegistrationOptions.CompilerType = CompilerTypeEnum.Vb;
+           var executor =  BuildAndCompile(new List<ISubjectAction<TestSubject>>()
+           {
+               new TestSubjectAction<TestSubject>
+               {
+                   Name = "ValidateThisModel", Code = "Subject.Data = \"long enough string value\" \r\n Subject.Id = 1"
+               }
+           });
            
            executor.Execute(new TestSubject());
        }, Throws.Nothing);
    }
 }
 
-public class ModelValidationTestBase<TSubject> where TSubject: class
+internal class ModelValidationTestBase<TSubject> : ExecutorBuilderBase<TSubject>
+    where TSubject: class, new()
 {
-    public ICompilerConfiguration<TSubject> Configuration { get; private set; }
-
     [SetUp]
     public void Init()
     {
-        Configuration = new CompilerConfiguration<TSubject>("ArmatSoftware.Code.Engine.Tests.Unit");
+        base.Init();
     }
 
-    protected IExecutor<TSubject> BuildCSharpCompiler()
+    protected IExecutor<TSubject> BuildCSharpCompiler2()
     {
-        var compiler = new CSharpCompiler<TSubject>();
-        
-        return compiler.Compile(Configuration);
+        RegistrationOptions.CompilerType = CompilerTypeEnum.CSharp;
+        return BuildAndCompile(new List<ISubjectAction<TSubject>>());
     }
     
-    protected IExecutor<TSubject> BuildVbCompiler()
+    protected IExecutor<TSubject> BuildVbCompiler2()
     {
-        var compiler = new VbCompiler<TSubject>();
-        
-        return compiler.Compile(Configuration);
+        RegistrationOptions.CompilerType = CompilerTypeEnum.Vb;
+        return BuildAndCompile(new List<ISubjectAction<TSubject>>());
     }
 }

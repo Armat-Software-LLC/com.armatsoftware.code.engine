@@ -72,107 +72,107 @@ namespace ArmatSoftware.Code.Engine.Compiler.Vb
             
             #line default
             #line hidden
-            this.Write(")\n\t\n\t\tPrivate _runtimeValues As Dictionary(Of String, Object) = new Dictionary(Of String, Object)\n\t    Private _logger As ILogger\n\t    Private _subject As ");
+            this.Write(")\n\t\n\t\tPrivate _runtimeValues As Dictionary(Of String, Object) = new Dictionary(Of String, Object)\n\t    Private _logger As ILogger\n\t\tPrivate _logContext As LogContext\n\t    Private _subject As ");
             
-            #line 20 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
+            #line 21 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Configuration.GetSubjectType()));
             
             #line default
             #line hidden
             this.Write("\n\t\t\n\t\tPublic Readonly Property Subject As ");
             
-            #line 22 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
+            #line 23 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Configuration.GetSubjectType()));
             
             #line default
             #line hidden
             this.Write(" Implements IExecutor(Of ");
             
-            #line 22 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
+            #line 23 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Configuration.GetSubjectType()));
             
             #line default
             #line hidden
             this.Write(").Subject\n    \t\tGet\n            \tReturn _subject\n        \tEnd Get\n    \tEnd Property\n\n\t\tPublic ReadOnly Property Log As ILogger Implements IExecutor(Of ");
             
-            #line 28 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
+            #line 29 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Configuration.GetSubjectType()));
             
             #line default
             #line hidden
             this.Write(").Log\n\t        Get\n\t            Return _logger\n\t        End Get\n\t    End Property\n\n        Public Function Read(key As String) As Object Implements IExecutionContext.Read\n            Return _runtimeValues(key)\n        End Function\n        \n        Public Sub Save(key As String, value As Object) Implements IExecutionContext.Save\n            _runtimeValues.Add(key, value)\n        End Sub\n\n    \tPublic Function Clone() As IExecutor(Of ");
             
-            #line 42 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
+            #line 43 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Configuration.GetSubjectType()));
             
             #line default
             #line hidden
             this.Write(") Implements IExecutor(Of ");
             
-            #line 42 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
+            #line 43 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Configuration.GetSubjectType()));
             
             #line default
             #line hidden
             this.Write(").Clone\n\t\t\tReturn DirectCast(MemberwiseClone(), IExecutor(Of ");
             
-            #line 43 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
+            #line 44 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Configuration.GetSubjectType()));
             
             #line default
             #line hidden
-            this.Write("))\n\t\tEnd Function\n\n\t    Public Sub SetLogger(logger As ILogger) Implements IFactoryExecutor(Of ");
+            this.Write("))\n\t\tEnd Function\n\n\t    Public Sub SetLogger(logger As ILogger, context As LogContext) Implements IFactoryExecutor(Of ");
             
-            #line 46 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
+            #line 47 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Configuration.GetSubjectType()));
             
             #line default
             #line hidden
-            this.Write(").SetLogger\n\t        _logger = logger\n\t    End Sub\n\n\t\tPublic Function Execute(subject As ");
+            this.Write(").SetLogger\n\t        _logger = logger\n\t\t\t_logContext = context\n\t    End Sub\n\n\t\tPublic Function Execute(subject As ");
             
-            #line 50 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
+            #line 52 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Configuration.GetSubjectType()));
             
             #line default
             #line hidden
             this.Write(") As ");
             
-            #line 50 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
+            #line 52 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Configuration.GetSubjectType()));
             
             #line default
             #line hidden
             this.Write(" Implements IExecutor(Of ");
             
-            #line 50 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
+            #line 52 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Configuration.GetSubjectType()));
             
             #line default
             #line hidden
-            this.Write(").Execute\n\t\t\t_subject = subject\n\n");
+            this.Write(").Execute\n\t\t\t_subject = subject\n\t\t\tLog.BeginScope(_logContext)\n\n");
             
-            #line 53 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
+            #line 56 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
  foreach (var action in Configuration.GetActions()) { 
             
             #line default
             #line hidden
             this.Write("\t\t\t");
             
-            #line 54 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
+            #line 57 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(action.Key));
             
             #line default
             #line hidden
             this.Write("()\n");
             
-            #line 55 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
+            #line 58 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
  } 
             
             #line default
             #line hidden
             this.Write("\n");
             
-            #line 57 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
+            #line 60 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
 
    if (Configuration.EnableModelValidation())
    {
@@ -182,7 +182,7 @@ namespace ArmatSoftware.Code.Engine.Compiler.Vb
             #line hidden
             this.Write("\t\t\tObjectValidator.Validate(_subject)\t\t\t\n");
             
-            #line 62 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
+            #line 65 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
 
    }
 
@@ -191,28 +191,28 @@ namespace ArmatSoftware.Code.Engine.Compiler.Vb
             #line hidden
             this.Write("\n\t\t\tReturn _subject\n\t\tEnd Function\n\t\t\n");
             
-            #line 69 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
+            #line 72 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
  foreach (var action in Configuration.GetActions()) { 
             
             #line default
             #line hidden
             this.Write("\n\t\tPrivate Sub ");
             
-            #line 71 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
+            #line 74 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(action.Key));
             
             #line default
             #line hidden
             this.Write("()\n\t\t\t");
             
-            #line 72 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
+            #line 75 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(action.Value));
             
             #line default
             #line hidden
             this.Write("\n\t\tEnd Sub\n");
             
-            #line 74 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
+            #line 77 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
  } 
             
             #line default

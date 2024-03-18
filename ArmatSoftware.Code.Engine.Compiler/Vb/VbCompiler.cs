@@ -9,6 +9,7 @@ using System.Runtime.Loader;
 using System.Text;
 using ArmatSoftware.Code.Engine.Compiler.Utils;
 using ArmatSoftware.Code.Engine.Core;
+using ArmatSoftware.Code.Engine.Core.Logging;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Emit;
 using Microsoft.CodeAnalysis.VisualBasic;
@@ -119,6 +120,7 @@ namespace ArmatSoftware.Code.Engine.Compiler.Vb
 			configuration.References.Add(typeof(IExecutor<>));
 			configuration.References.Add(typeof(ILogger));
 			configuration.References.Add(typeof(DynamicAttribute));
+			configuration.References.Add(typeof(LogContext));
 			
 			if (configuration.EnableModelValidation())
 			{

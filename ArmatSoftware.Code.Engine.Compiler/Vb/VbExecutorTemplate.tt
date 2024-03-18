@@ -17,6 +17,7 @@ Namespace <#=Configuration.GetNamespace()#>
 	
 		Private _runtimeValues As Dictionary(Of String, Object) = new Dictionary(Of String, Object)
 	    Private _logger As ILogger
+		Private _logContext As LogContext
 	    Private _subject As <#=Configuration.GetSubjectType()#>
 		
 		Public Readonly Property Subject As <#=Configuration.GetSubjectType()#> Implements IExecutor(Of <#=Configuration.GetSubjectType()#>).Subject
@@ -43,12 +44,14 @@ Namespace <#=Configuration.GetNamespace()#>
 			Return DirectCast(MemberwiseClone(), IExecutor(Of <#=Configuration.GetSubjectType()#>))
 		End Function
 
-	    Public Sub SetLogger(logger As ILogger) Implements IFactoryExecutor(Of <#=Configuration.GetSubjectType()#>).SetLogger
+	    Public Sub SetLogger(logger As ILogger, context As LogContext) Implements IFactoryExecutor(Of <#=Configuration.GetSubjectType()#>).SetLogger
 	        _logger = logger
+			_logContext = context
 	    End Sub
 
 		Public Function Execute(subject As <#=Configuration.GetSubjectType()#>) As <#=Configuration.GetSubjectType()#> Implements IExecutor(Of <#=Configuration.GetSubjectType()#>).Execute
 			_subject = subject
+			Log.BeginScope(_logContext)
 
 <# foreach (var action in Configuration.GetActions()) { #>
 			<#=action.Key#>()

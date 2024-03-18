@@ -16,11 +16,9 @@ namespace <#=Configuration.GetNamespace()#>
 	public class <#=Configuration.GetClassName()#> : IFactoryExecutor<<#=Configuration.GetSubjectType()#>>
 	{
 		private Dictionary<string, dynamic> _runtimeValues = new Dictionary<string, dynamic>();
-
 		private <#=Configuration.GetSubjectType()#> _subject;
-
 		private ILogger _logger;
-
+		private LogContext _logContext;
 
 		public <#=Configuration.GetSubjectType()#> Subject => _subject;
 
@@ -44,6 +42,7 @@ namespace <#=Configuration.GetNamespace()#>
         public <#=Configuration.GetSubjectType()#> Execute(<#=Configuration.GetSubjectType()#> subject)
         {
             _subject = subject;
+			Log.BeginScope(_logContext);
             
 <# foreach (var action in Configuration.GetActions()) { #>
 			<#=action.Key#>();
@@ -60,9 +59,10 @@ namespace <#=Configuration.GetNamespace()#>
             return _subject;
         }
 
-	    public void SetLogger(ILogger logger)
+	    public void SetLogger(ILogger logger, LogContext context)
 	    {
 	        _logger = logger;
+			_logContext = context;
 	    }
 		
 <# foreach (var action in Configuration.GetActions()) { #>

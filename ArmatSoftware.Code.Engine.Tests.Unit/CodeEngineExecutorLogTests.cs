@@ -137,7 +137,8 @@ public class CodeEngineExecutorLogTestBuilder
             CodeEngineNamespace = "ArmatSoftware.Code.Engine.Tests.Unit",
             CompilerType = CompilerTypeEnum.CSharp,
             Provider = Provider,
-            Logger = Logger
+            Logger = Logger,
+            Tracer = new Tracer()
         };
         
         MemCache = new MemoryCache(Options.Create(new MemoryCacheOptions()
@@ -181,11 +182,11 @@ public class CodeEngineExecutorLogTestLogger : ILogger
 
     public bool IsEnabled(LogLevel logLevel)
     {
-        throw new NotImplementedException();
+        return true;
     }
 
     public IDisposable BeginScope<TState>(TState state)
     {
-        throw new NotImplementedException();
+        return null;
     }
 }

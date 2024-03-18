@@ -29,7 +29,7 @@ namespace ArmatSoftware.Code.Engine.Compiler.DI
             
             if (options.Logger != null)
             {
-                services.AddScoped<ILogger>(provider => options.Logger);
+                services.AddTransient<ILogger>(provider => options.Logger);
             }
             else
             {
@@ -40,7 +40,7 @@ namespace ArmatSoftware.Code.Engine.Compiler.DI
                 });
 
                 // Create a logger
-                services.AddScoped<ILogger>(provider => loggerFactory.CreateLogger("console"));
+                services.AddTransient<ILogger>(provider => loggerFactory.CreateLogger("console"));
             }
 
             if (options.Provider != null)
