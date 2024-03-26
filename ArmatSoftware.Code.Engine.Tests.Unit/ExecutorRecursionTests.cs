@@ -1,15 +1,15 @@
 using ArmatSoftware.Code.Engine.Compiler.Base;
 using ArmatSoftware.Code.Engine.Compiler.CSharp;
+using ArmatSoftware.Code.Engine.Compiler.Vb;
 using ArmatSoftware.Code.Engine.Core;
 using NUnit.Framework;
 
 namespace ArmatSoftware.Code.Engine.Tests.Unit;
 
-/// <summary>
-/// Demonstrating several comparison and benchmarking tests
-/// </summary>
-[TestFixture, TestOf(typeof(CSharpCompiler<>))]
-internal class ExecutorRecursionTests : CompilerBuilderBase<RecursionSubject>
+internal class ExecutorRecursionTests
+{
+    [TestFixture, TestOf(typeof(CSharpCompiler<>))]
+internal class CSharpRecursionTests : CompilerBuilderBase<RecursionSubject>
 {
     [SetUp]
     public void Setup()
@@ -65,6 +65,47 @@ internal class ExecutorRecursionTests : CompilerBuilderBase<RecursionSubject>
     //         Assert.Pass(ex.Message, ex);
     //     }
     // }
+}
+
+/// <summary>
+/// Demonstrating several comparison and benchmarking tests
+/// </summary>
+[TestFixture, TestOf(typeof(CSharpCompiler<>))]
+internal class VbRecursionTests : CompilerBuilderBase<RecursionSubject>
+{
+    [SetUp]
+    public void Setup()
+    {
+        Configuration = new CompilerConfiguration<RecursionSubject>("ArmatSoftware.Code.Engine.Tests.Recursion");
+
+        Compiler = new VbCompiler<RecursionSubject>();
+        
+        Configuration.Actions.Add(new RecursionSubjectAction
+        {
+            Name = "DoubleUntilGreaterThan1000",
+            Code = "Subject.Counter = Subject.Counter * 2 \r\n If Subject.Counter < 1000 \r\n Execute(Subject) \r\n End If",
+            Order = 1
+        });
+        
+        Target = Compiler.Compile(Configuration);
+    }
+    
+    
+    /// <summary>
+    /// Simple recursion scenario
+    /// </summary>
+    [Test]
+    public void Should_Execute_Recursively()
+    {
+        Assert.That(() =>
+        {
+            var subject = new RecursionSubject { Counter = 1 };
+            Target.Execute(subject);
+            Assert.AreEqual(1024, subject.Counter);
+        }, Throws.Nothing);
+    }
+}
+
 }
 
 public class RecursionSubject
