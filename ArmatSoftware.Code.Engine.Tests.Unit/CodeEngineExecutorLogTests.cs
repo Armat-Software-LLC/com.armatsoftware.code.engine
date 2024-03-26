@@ -149,7 +149,7 @@ public class CodeEngineExecutorLogTestBuilder
         
         Tracer = new Tracer();
         
-        Factory = new ExecutorFactory(RegistrationOptions, Provider, Cache, Tracer);
+        Factory = new ExecutorFactory(RegistrationOptions, Provider, Cache, Tracer, Logger);
         
         return Factory.Provide<TestSubject>();
     }

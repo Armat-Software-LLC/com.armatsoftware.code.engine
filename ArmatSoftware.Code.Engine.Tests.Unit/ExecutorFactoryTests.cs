@@ -141,7 +141,7 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
         
         public void Build()
         {
-            Target = new ExecutorFactory(RegistrationOptions, Provider, Cache, Tracer);
+            Target = new ExecutorFactory(RegistrationOptions, Provider, Cache, Tracer, Logger);
         }
     }
 
