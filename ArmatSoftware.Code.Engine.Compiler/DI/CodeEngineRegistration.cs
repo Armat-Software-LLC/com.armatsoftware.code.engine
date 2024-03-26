@@ -2,11 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using ArmatSoftware.Code.Engine.Compiler.Execution;
+using ArmatSoftware.Code.Engine.Compiler.Tracing;
 using ArmatSoftware.Code.Engine.Core;
-using ArmatSoftware.Code.Engine.Core.Logging;
 using ArmatSoftware.Code.Engine.Core.Storage;
-using ArmatSoftware.Code.Engine.Logger.File;
+using ArmatSoftware.Code.Engine.Core.Tracing;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace ArmatSoftware.Code.Engine.Compiler.DI
 {
@@ -27,16 +29,32 @@ namespace ArmatSoftware.Code.Engine.Compiler.DI
             
             if (options.Logger != null)
             {
-                services.AddScoped<ICodeEngineLogger>(provider => options.Logger);
+                services.AddScoped<ILogger>(provider => options.Logger);
             }
             else
             {
-                services.AddScoped<ICodeEngineLogger, CodeEngineFileLogger>();
+                var loggerFactory = LoggerFactory.Create(builder =>
+                {
+                    // Add console logging
+                    builder.AddConsole();
+                });
+
+                // Create a logger
+                services.AddScoped<ILogger>(provider => loggerFactory.CreateLogger("console"));
             }
 
             if (options.Provider != null)
             {
                 services.AddScoped<IActionProvider>(provider => options.Provider);
+            }
+            
+            if (options.Tracer != null)
+            {
+                services.AddScoped<ITracer>(provider => options.Tracer);
+            }
+            else
+            {
+                services.AddScoped<ITracer, Tracer>();
             }
             
             RegisterAllHardcodedExecutors(services);
@@ -54,8 +72,8 @@ namespace ArmatSoftware.Code.Engine.Compiler.DI
                 options.ExpirationScanFrequency = TimeSpan.FromMinutes(1);
             });
             
-            services.AddScoped<ICodeEngineExecutorFactory, CodeEngineExecutorFactory>();
-            services.AddSingleton<ICodeEngineExecutorCache, CodeEngineExecutorCache>();
+            services.AddScoped<IExecutorFactory, ExecutorFactory>();
+            services.AddSingleton<IExecutorCache, ExecutorCache>();
             services.AddScoped(typeof(IExecutor<>), typeof(Executor<>));
             services.AddScoped(typeof(IExecutorCatalog<>), typeof(ExecutorCatalog<>));
         }

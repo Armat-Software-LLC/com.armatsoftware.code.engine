@@ -2,17 +2,20 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using ArmatSoftware.Code.Engine.Compiler.DI;
-using ArmatSoftware.Code.Engine.Core.Logging;
+using ArmatSoftware.Code.Engine.Compiler.Execution;
+using ArmatSoftware.Code.Engine.Compiler.Tracing;
 using ArmatSoftware.Code.Engine.Core.Storage;
+using ArmatSoftware.Code.Engine.Core.Tracing;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
 using NUnit.Framework;
 
 namespace ArmatSoftware.Code.Engine.Tests.Unit
 {
-    [TestFixture, TestOf(typeof(CodeEngineExecutorFactory))]
-    public class CodeEngineExecutorFactoryTests : CodeEngineExecutorFactoryTestBuilder
+    [TestFixture, TestOf(typeof(ExecutorFactory))]
+    public class ExecutorFactoryTests : CodeEngineExecutorFactoryTestBuilder
     {
         [Test]
         public void Should_Construct()
@@ -42,19 +45,33 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
         }
 
         [Test]
-        public void Should_Construct_With_Logger_Null()
+        public void Should_Not_Construct_With_Logger_Null()
         {
-            Logger = null;
-            Build();
-            Assert.That(Target, Is.Not.Null);
+            Assert.That(() =>
+            {
+                Logger = null;
+                Build();                
+            }, Throws.ArgumentNullException);
+        }
+        
+        [Test]
+        public void Should_Not_Construct_With_Tracer_Null()
+        {
+            Assert.That(() =>
+            {
+                Tracer = null;
+                Build();                
+            }, Throws.ArgumentNullException);
         }
 
         [Test]
-        public void Should_Construct_With_Storage_Null()
+        public void Should_Not_Construct_With_Storage_Null()
         {
-            Logger = null;
-            Build();
-            Assert.That(Target, Is.Not.Null);
+            Assert.That(() =>
+            {
+                Provider = null;
+                Build();                
+            }, Throws.ArgumentNullException);
         }
         
         [Test]
@@ -79,17 +96,19 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
 
     public class CodeEngineExecutorFactoryTestBuilder
     {
-        protected ICodeEngineExecutorFactory Target { get; private set; }
+        protected IExecutorFactory Target { get; private set; }
         
         protected CodeEngineOptions RegistrationOptions { get; set; }
         
-        protected ICodeEngineExecutorCache Cache { get; set; }
+        protected IExecutorCache Cache { get; set; }
+        
+        protected ITracer Tracer { get; set; }
         
         protected Mock<IActionProvider> StorageMock { get; private set; }
         protected IActionProvider Provider { get; set; }
         
-        protected Mock<ICodeEngineLogger> LoggerMock { get; private set; }
-        protected ICodeEngineLogger Logger { get; set; }
+        protected Mock<ILogger> LoggerMock { get; private set; }
+        protected ILogger Logger { get; set; }
         
         protected IMemoryCache MemCache { get; set; }
 
@@ -111,7 +130,7 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
             StorageMock = new Mock<IActionProvider>();
             StorageMock.Setup(x => x.Retrieve<CodeEngineFactoryTestSubject>(It.IsAny<string>()))
                 .Returns(SubjectActions.ToList());
-            LoggerMock = new Mock<ICodeEngineLogger>();
+            LoggerMock = new Mock<ILogger>();
             
             Provider = StorageMock.Object;
             Logger = LoggerMock.Object;
@@ -129,12 +148,14 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
                 ExpirationScanFrequency = TimeSpan.FromMinutes(1)
             }));
             
-            Cache = new CodeEngineExecutorCache(MemCache, RegistrationOptions);
+            Cache = new ExecutorCache(MemCache, RegistrationOptions);
+
+            Tracer = new Tracer();
         }
         
         public void Build()
         {
-            Target = new CodeEngineExecutorFactory(RegistrationOptions, Provider, Cache);
+            Target = new ExecutorFactory(RegistrationOptions, Provider, Cache, Tracer, Logger);
         }
     }
 

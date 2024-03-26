@@ -1,11 +1,12 @@
 using System;
+using ArmatSoftware.Code.Engine.Compiler.DI;
 using ArmatSoftware.Code.Engine.Core;
 using Microsoft.Extensions.Caching.Memory;
 
-namespace ArmatSoftware.Code.Engine.Compiler.DI
+namespace ArmatSoftware.Code.Engine.Compiler.Execution
 {
-    public class CodeEngineExecutorCache(IMemoryCache cacheContainer, CodeEngineOptions options)
-        : ICodeEngineExecutorCache
+    public class ExecutorCache(IMemoryCache cacheContainer, CodeEngineOptions options)
+        : IExecutorCache
     {
         private const string CacheKeyPrefix = "CodeEngineExecutorCache";
 
@@ -42,7 +43,7 @@ namespace ArmatSoftware.Code.Engine.Compiler.DI
         }
     }
 
-    public interface ICodeEngineExecutorCache
+    public interface IExecutorCache
     {
         void Cache<TSubject>(IFactoryExecutor<TSubject> executor, string key = "")
             where TSubject : class, new();

@@ -8,10 +8,10 @@ using System.Runtime.Loader;
 using System.Text;
 using ArmatSoftware.Code.Engine.Compiler.Utils;
 using ArmatSoftware.Code.Engine.Core;
-using ArmatSoftware.Code.Engine.Core.Logging;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Emit;
+using Microsoft.Extensions.Logging;
 
 namespace ArmatSoftware.Code.Engine.Compiler.CSharp
 {
@@ -112,8 +112,9 @@ namespace ArmatSoftware.Code.Engine.Compiler.CSharp
 			configuration.References.Add(typeof(Dictionary<,>));
 			configuration.References.Add(typeof(TSubject));
 			configuration.References.Add(typeof(IExecutor<>));
-			configuration.References.Add(typeof(ICodeEngineLogger));
+			configuration.References.Add(typeof(ILogger));
 			configuration.References.Add(typeof(DynamicAttribute));
+			// configuration.References.Add(typeof(LogLevel));
 			
 			if (configuration.EnableModelValidation())
 			{

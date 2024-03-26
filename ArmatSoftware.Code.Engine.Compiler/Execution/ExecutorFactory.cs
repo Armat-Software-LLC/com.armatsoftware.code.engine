@@ -2,34 +2,40 @@
 // #define NOCACHE
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using ArmatSoftware.Code.Engine.Compiler.Base;
 using ArmatSoftware.Code.Engine.Compiler.CSharp;
+using ArmatSoftware.Code.Engine.Compiler.DI;
 using ArmatSoftware.Code.Engine.Compiler.Vb;
 using ArmatSoftware.Code.Engine.Core;
 using ArmatSoftware.Code.Engine.Core.Logging;
 using ArmatSoftware.Code.Engine.Core.Storage;
+using ArmatSoftware.Code.Engine.Core.Tracing;
+using Microsoft.Extensions.Logging;
 
-namespace ArmatSoftware.Code.Engine.Compiler.DI
+namespace ArmatSoftware.Code.Engine.Compiler.Execution
 {
-    public class CodeEngineExecutorFactory(
+    public class ExecutorFactory(
         CodeEngineOptions options,
         IActionProvider actionProvider,
-        ICodeEngineExecutorCache cache)
-        : ICodeEngineExecutorFactory
+        IExecutorCache cache,
+        ITracer tracer,
+        ILogger logger)
+        : IExecutorFactory
     {
         private readonly CodeEngineOptions _options = options ?? throw new ArgumentNullException(nameof(options));
-        
-        private readonly ICodeEngineExecutorCache _cache = cache ?? throw new ArgumentNullException(nameof(cache));
-        private readonly ICodeEngineLogger _logger = options.Logger ?? throw new ArgumentNullException(nameof(options.Logger));
+        private readonly IExecutorCache _cache = cache ?? throw new ArgumentNullException(nameof(cache));
+        private readonly ILogger _logger = logger ?? throw new ArgumentNullException(nameof(options.Logger));
         private readonly IActionProvider _actionProvider = actionProvider ?? throw new ArgumentNullException(nameof(actionProvider));
-
+        private readonly ITracer _tracer = tracer ?? throw new ArgumentNullException(nameof(tracer));
+        
         /// <summary>
         /// Default factory implementation for the <c>Provide()</c> method.
         /// Uses caching and registered <c>IActionProvider</c> to retrieve executor instances
         /// </summary>
         /// <param name="key"></param>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TSubject"></typeparam>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
@@ -48,7 +54,7 @@ namespace ArmatSoftware.Code.Engine.Compiler.DI
             var cachedExecutor = _cache.Retrieve<TSubject>(key);
             if (cachedExecutor != null)
             {
-                return ManufactureClone(cachedExecutor);
+                return ManufactureClone(cachedExecutor, key);
             }
 #endif
             
@@ -75,13 +81,29 @@ namespace ArmatSoftware.Code.Engine.Compiler.DI
 #if !NOCACHE
             _cache.Cache(compiledExecutor, key);
 #endif
-            return ManufactureClone(compiledExecutor);
+            return ManufactureClone(compiledExecutor, key);
         }
         
-        private IExecutor<TSubject> ManufactureClone<TSubject>(IFactoryExecutor<TSubject> executor)
+        /// <summary>
+        /// Try to configure a new instance of Factory executor
+        /// before cloning it
+        /// </summary>
+        /// <param name="executor"></param>
+        /// <param name="key"></param>
+        /// <typeparam name="TSubject"></typeparam>
+        /// <returns></returns>
+        private IExecutor<TSubject> ManufactureClone<TSubject>(IFactoryExecutor<TSubject> executor, string key)
             where TSubject : class, new()
         {
+            _logger.BeginScope(new LogContext
+            {
+                Key = key,
+                SubjectType = typeof(TSubject).FullName,
+                CorrelationId = _tracer.CorrelationId
+            });
+            
             executor.SetLogger(_logger);
+            
             return executor.Clone();
         }
     }
@@ -91,7 +113,7 @@ namespace ArmatSoftware.Code.Engine.Compiler.DI
 /// IExecutor factory is used to create new instances of IExecutor for the supplied
 /// subject type. Caching is used for performance.
 /// </summary>
-public interface ICodeEngineExecutorFactory
+public interface IExecutorFactory
 {
     /// <summary>
     /// Provide a new instance of IExecutor for the supplied subject type

@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using ArmatSoftware.Code.Engine.Core.Storage;
 using ArmatSoftware.Code.Engine.Core;
-using ArmatSoftware.Code.Engine.Core.Logging;
 using ArmatSoftware.Code.Engine.Storage.Contracts;
+using Microsoft.Extensions.Logging;
 
 namespace ArmatSoftware.Code.Engine.Storage;
 
-public class CodeEngineActionStorage(ICodeEngineLogger logger, IStorageAdapter storageAdapter) : IActionStorage
+public class CodeEngineActionStorage(ILogger logger, IStorageAdapter storageAdapter) : IActionStorage
 {
-    private readonly ICodeEngineLogger _logger = logger ?? throw new ArgumentNullException(nameof(logger), "Supplied logger is null");
+    private readonly ILogger _logger = logger ?? throw new ArgumentNullException(nameof(logger), "Supplied logger is null");
     private readonly IStorageAdapter _storageAdapter = storageAdapter ??
                                                        throw new ArgumentNullException(nameof(storageAdapter), "Supplied storage adapter is null"); // new FileIOAdapter(fileStorageRootPath, fileExtension, _logger);
 

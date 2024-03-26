@@ -1,4 +1,4 @@
-using ArmatSoftware.Code.Engine.Core.Logging;
+using Microsoft.Extensions.Logging;
 
 namespace ArmatSoftware.Code.Engine.Core;
 
@@ -10,5 +10,5 @@ namespace ArmatSoftware.Code.Engine.Core;
 public interface IFactoryExecutor<TSubject> : IExecutor<TSubject>
     where TSubject : class
 {
-    void SetLogger(ICodeEngineLogger logger);
+    void SetLogger(ILogger logger);
 }

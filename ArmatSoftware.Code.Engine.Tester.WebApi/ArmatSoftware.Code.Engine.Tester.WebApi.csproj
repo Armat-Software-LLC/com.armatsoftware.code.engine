@@ -16,7 +16,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\ArmatSoftware.Code.Engine.Compiler\ArmatSoftware.Code.Engine.Compiler.csproj" />
-      <ProjectReference Include="..\ArmatSoftware.Code.Engine.Logger.File\ArmatSoftware.Code.Engine.Logger.File.csproj" />
       <ProjectReference Include="..\ArmatSoftware.Code.Engine.Storage.File\ArmatSoftware.Code.Engine.Storage.File.csproj" />
     </ItemGroup>
 

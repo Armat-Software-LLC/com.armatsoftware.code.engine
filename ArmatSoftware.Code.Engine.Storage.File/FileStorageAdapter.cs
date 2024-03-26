@@ -1,6 +1,7 @@
 using System.Security;
 using ArmatSoftware.Code.Engine.Core.Logging;
 using ArmatSoftware.Code.Engine.Storage.Contracts;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
 namespace ArmatSoftware.Code.Engine.Storage.File;
@@ -9,9 +10,9 @@ public class FileStorageAdapter : IStorageAdapter
 {
     private readonly DirectoryInfo _storageRootDirectory;
     private readonly string _fileExtension;
-    private readonly ICodeEngineLogger _logger;
+    private readonly ILogger _logger;
 
-    public FileStorageAdapter(FileStorageOptions options, ICodeEngineLogger logger)
+    public FileStorageAdapter(FileStorageOptions options, ILogger logger)
     {
         _ = options ?? throw new ArgumentNullException(nameof(options), "Supplied options are null");
 
@@ -40,27 +41,27 @@ public class FileStorageAdapter : IStorageAdapter
         }
         catch (ArgumentNullException e)
         {
-            _logger.Error("Supplied storage path is empty or null", e);
+            _logger.LogError("Supplied storage path is empty or null", e);
             throw;
         }
         catch (ArgumentException e)
         {
-            _logger.Error("Supplied storage path is invalid", e);
+            _logger.LogError("Supplied storage path is invalid", e);
             throw;
         }
         catch (SecurityException e)
         {
-            _logger.Error("Insufficient permissions to the supplied storage path", e);
+            _logger.LogError("Insufficient permissions to the supplied storage path", e);
             throw;
         }
         catch (PathTooLongException e)
         {
-            _logger.Error("Supplied storage path is too long", e);
+            _logger.LogError("Supplied storage path is too long", e);
             throw;
         }
         catch (Exception e)
         {
-            _logger.Error("Exception occured", e);
+            _logger.LogError("Exception occured", e);
             throw;
         }
 
@@ -94,7 +95,7 @@ public class FileStorageAdapter : IStorageAdapter
         var pathInfo = GeneratePath(typeof(TSubject), key);
         if (!System.IO.File.Exists(pathInfo.ToString()))
         {
-            _logger.Info($"Code file for {typeof(TSubject).FullName} and key '{key}' does not exist. Returning empty stored actions.");
+            _logger.LogInformation($"Code file for {typeof(TSubject).FullName} and key '{key}' does not exist. Returning empty stored actions.");
             return new StoredSubjectActions<TSubject>();
         }
         
@@ -104,7 +105,7 @@ public class FileStorageAdapter : IStorageAdapter
         
         if (storedActions == null)
         {
-            _logger.Info($"Code file for {typeof(TSubject).FullName} and key '{key}' is empty. Returning empty stored actions.");
+            _logger.LogInformation($"Code file for {typeof(TSubject).FullName} and key '{key}' is empty. Returning empty stored actions.");
             return new StoredSubjectActions<TSubject>();
         }
 

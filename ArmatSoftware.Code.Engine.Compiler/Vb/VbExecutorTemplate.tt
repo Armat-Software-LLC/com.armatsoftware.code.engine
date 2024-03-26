@@ -16,7 +16,7 @@ Namespace <#=Configuration.GetNamespace()#>
 		Implements IFactoryExecutor(Of <#=Configuration.GetSubjectType()#>)
 	
 		Private _runtimeValues As Dictionary(Of String, Object) = new Dictionary(Of String, Object)
-	    Private _logger As ICodeEngineLogger
+	    Private _logger As ILogger
 	    Private _subject As <#=Configuration.GetSubjectType()#>
 		
 		Public Readonly Property Subject As <#=Configuration.GetSubjectType()#> Implements IExecutor(Of <#=Configuration.GetSubjectType()#>).Subject
@@ -25,7 +25,7 @@ Namespace <#=Configuration.GetNamespace()#>
         	End Get
     	End Property
 
-		Public ReadOnly Property Log As ICodeEngineLogger Implements IExecutor(Of <#=Configuration.GetSubjectType()#>).Log
+		Public ReadOnly Property Log As ILogger Implements IExecutor(Of <#=Configuration.GetSubjectType()#>).Log
 	        Get
 	            Return _logger
 	        End Get
@@ -43,7 +43,7 @@ Namespace <#=Configuration.GetNamespace()#>
 			Return DirectCast(MemberwiseClone(), IExecutor(Of <#=Configuration.GetSubjectType()#>))
 		End Function
 
-	    Public Sub SetLogger(logger As ICodeEngineLogger) Implements IFactoryExecutor(Of <#=Configuration.GetSubjectType()#>).SetLogger
+	    Public Sub SetLogger(logger As ILogger) Implements IFactoryExecutor(Of <#=Configuration.GetSubjectType()#>).SetLogger
 	        _logger = logger
 	    End Sub
 

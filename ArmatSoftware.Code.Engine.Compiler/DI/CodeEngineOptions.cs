@@ -1,5 +1,6 @@
-using ArmatSoftware.Code.Engine.Core.Logging;
 using ArmatSoftware.Code.Engine.Core.Storage;
+using ArmatSoftware.Code.Engine.Core.Tracing;
+using Microsoft.Extensions.Logging;
 
 namespace ArmatSoftware.Code.Engine.Compiler.DI;
 
@@ -24,7 +25,7 @@ public class CodeEngineOptions
     /// Optionally, provide a logger to use for the code engine.
     /// If none is provided, a <c>CodeEngineFileLogger</c> will be used.
     /// </summary>
-    public ICodeEngineLogger Logger { get; set; }
+    public ILogger Logger { get; set; }
             
     /// <summary>
     /// Optionally, provide a storage to use for the code engine.
@@ -37,6 +38,18 @@ public class CodeEngineOptions
     /// </summary>
     public double CacheExpirationMinutes { get; set; } = 3;
     
-    
+    /// <summary>
+    /// Data-annotated subject models will be validated before they are returned to the caller.
+    /// </summary>
     public bool ValidateModelsAfterExecution { get; set; } = false;
+    
+    /// <summary>
+    /// Provider of essential tracing information for the code engine.
+    /// </summary>
+    public ITracer Tracer { get; set; }
+    
+    /// <summary>
+    /// Log level for the code engine. Use with default logger.
+    /// </summary>
+    public LogLevel LogLevel { get; set; } = LogLevel.Information;
 }
