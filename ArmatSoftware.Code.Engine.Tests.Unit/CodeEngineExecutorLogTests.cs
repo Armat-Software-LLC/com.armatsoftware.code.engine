@@ -157,6 +157,8 @@ public class CodeEngineExecutorLogTestBuilder
 
 public class CodeEngineExecutorLogTestLogger : ILogger
 {
+    public object State { get; set; }
+    
     public List<string> InfoLog { get; } = new();
     public List<string> ErrorLog { get; } = new();
     public List<string> WarningLog { get; } = new();
@@ -181,11 +183,17 @@ public class CodeEngineExecutorLogTestLogger : ILogger
 
     public bool IsEnabled(LogLevel logLevel)
     {
-        throw new NotImplementedException();
+        return true;
     }
 
     public IDisposable BeginScope<TState>(TState state)
     {
-        throw new NotImplementedException();
+        if (typeof(IDisposable).IsAssignableFrom(typeof(TState)))
+        {
+            State = state;
+            return (IDisposable) state;
+        }
+        
+        throw new InvalidOperationException("State needs to be disposable");
     }
 }

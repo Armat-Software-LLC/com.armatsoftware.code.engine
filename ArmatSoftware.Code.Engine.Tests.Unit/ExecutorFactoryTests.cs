@@ -45,19 +45,33 @@ namespace ArmatSoftware.Code.Engine.Tests.Unit
         }
 
         [Test]
-        public void Should_Construct_With_Logger_Null()
+        public void Should_Not_Construct_With_Logger_Null()
         {
-            Logger = null;
-            Build();
-            Assert.That(Target, Is.Not.Null);
+            Assert.That(() =>
+            {
+                Logger = null;
+                Build();                
+            }, Throws.ArgumentNullException);
+        }
+        
+        [Test]
+        public void Should_Not_Construct_With_Tracer_Null()
+        {
+            Assert.That(() =>
+            {
+                Tracer = null;
+                Build();                
+            }, Throws.ArgumentNullException);
         }
 
         [Test]
-        public void Should_Construct_With_Storage_Null()
+        public void Should_Not_Construct_With_Storage_Null()
         {
-            Logger = null;
-            Build();
-            Assert.That(Target, Is.Not.Null);
+            Assert.That(() =>
+            {
+                Provider = null;
+                Build();                
+            }, Throws.ArgumentNullException);
         }
         
         [Test]

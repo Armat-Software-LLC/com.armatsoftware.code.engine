@@ -2,12 +2,14 @@
 // #define NOCACHE
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using ArmatSoftware.Code.Engine.Compiler.Base;
 using ArmatSoftware.Code.Engine.Compiler.CSharp;
 using ArmatSoftware.Code.Engine.Compiler.DI;
 using ArmatSoftware.Code.Engine.Compiler.Vb;
 using ArmatSoftware.Code.Engine.Core;
+using ArmatSoftware.Code.Engine.Core.Logging;
 using ArmatSoftware.Code.Engine.Core.Storage;
 using ArmatSoftware.Code.Engine.Core.Tracing;
 using Microsoft.Extensions.Logging;
@@ -52,7 +54,7 @@ namespace ArmatSoftware.Code.Engine.Compiler.Execution
             var cachedExecutor = _cache.Retrieve<TSubject>(key);
             if (cachedExecutor != null)
             {
-                return ManufactureClone(cachedExecutor);
+                return ManufactureClone(cachedExecutor, key);
             }
 #endif
             
@@ -79,14 +81,29 @@ namespace ArmatSoftware.Code.Engine.Compiler.Execution
 #if !NOCACHE
             _cache.Cache(compiledExecutor, key);
 #endif
-            return ManufactureClone(compiledExecutor);
+            return ManufactureClone(compiledExecutor, key);
         }
         
-        private IExecutor<TSubject> ManufactureClone<TSubject>(IFactoryExecutor<TSubject> executor)
+        /// <summary>
+        /// Try to configure a new instance of Factory executor
+        /// before cloning it
+        /// </summary>
+        /// <param name="executor"></param>
+        /// <param name="key"></param>
+        /// <typeparam name="TSubject"></typeparam>
+        /// <returns></returns>
+        private IExecutor<TSubject> ManufactureClone<TSubject>(IFactoryExecutor<TSubject> executor, string key)
             where TSubject : class, new()
         {
-            //TODO: add tracing context to the executor
+            _logger.BeginScope(new LogContext
+            {
+                Key = key,
+                SubjectType = typeof(TSubject).FullName,
+                CorrelationId = _tracer.CorrelationId
+            });
+            
             executor.SetLogger(_logger);
+            
             return executor.Clone();
         }
     }
