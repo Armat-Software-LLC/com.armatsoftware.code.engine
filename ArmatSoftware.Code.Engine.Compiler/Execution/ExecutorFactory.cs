@@ -18,12 +18,13 @@ namespace ArmatSoftware.Code.Engine.Compiler.Execution
         CodeEngineOptions options,
         IActionProvider actionProvider,
         IExecutorCache cache,
-        ITracer tracer)
+        ITracer tracer,
+        ILogger logger)
         : IExecutorFactory
     {
         private readonly CodeEngineOptions _options = options ?? throw new ArgumentNullException(nameof(options));
         private readonly IExecutorCache _cache = cache ?? throw new ArgumentNullException(nameof(cache));
-        private readonly ILogger _logger = options.Logger ?? throw new ArgumentNullException(nameof(options.Logger));
+        private readonly ILogger _logger = logger ?? throw new ArgumentNullException(nameof(options.Logger));
         private readonly IActionProvider _actionProvider = actionProvider ?? throw new ArgumentNullException(nameof(actionProvider));
         private readonly ITracer _tracer = tracer ?? throw new ArgumentNullException(nameof(tracer));
         

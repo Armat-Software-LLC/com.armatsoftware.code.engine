@@ -26,6 +26,12 @@ builder.Services.AddControllers()
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddLogging(builder =>
+{
+    builder.AddDebug();
+    builder.AddConsole();
+});
+
 // Specify that you are going to use code engine
 // to enable the injection of the code engine implementations
 builder.Services.UseCodeEngine(new()
