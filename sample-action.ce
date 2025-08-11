@@ -1,0 +1,47 @@
+// Sample Code Engine Action
+// This file demonstrates the Language Server capabilities
+
+// Basic subject manipulation
+if (string.IsNullOrEmpty(Subject.Data))
+{
+    Subject.Data = "Default Value";
+    Log.LogWarning("Subject data was empty, set to default");
+}
+else
+{
+    Subject.Data = Subject.Data.ToUpper();
+    Log.LogInformation($"Converted data to uppercase: {Subject.Data}");
+}
+
+// Runtime value operations
+Save("processedAt", DateTime.UtcNow);
+Save("originalLength", Subject.Data.Length);
+Save("actionName", "StringProcessingAction");
+
+// Read previously saved values
+try 
+{
+    var lastProcessed = Read("processedAt");
+    Log.LogInformation($"Last processed: {lastProcessed}");
+    
+    var originalLength = Read("originalLength");
+    Log.LogInformation($"Original length was: {originalLength}");
+}
+catch (Exception ex)
+{
+    Log.LogWarning($"Could not read runtime values: {ex.Message}");
+}
+
+// Advanced string operations
+var words = Subject.Data.Split(' ');
+var wordCount = words.Length;
+Save("wordCount", wordCount);
+
+if (wordCount > 5)
+{
+    Subject.Data = string.Join(" ", words.Take(5)) + "...";
+    Log.LogInformation("Truncated long text to first 5 words");
+}
+
+// Final logging
+Log.LogInformation($"Action completed. Final data: {Subject.Data}");
