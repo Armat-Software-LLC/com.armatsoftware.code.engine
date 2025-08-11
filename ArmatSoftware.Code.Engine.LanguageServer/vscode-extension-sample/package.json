@@ -1,0 +1,83 @@
+{
+  "name": "code-engine-language-support",
+  "displayName": "Code Engine Language Support",
+  "description": "Language support for Code Engine actions",
+  "version": "1.0.0",
+  "publisher": "armatsoftware",
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "keywords": [
+    "code-engine",
+    "csharp",
+    "intellisense"
+  ],
+  "activationEvents": [
+    "onLanguage:codeengine"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "languages": [
+      {
+        "id": "codeengine",
+        "aliases": [
+          "Code Engine",
+          "codeengine"
+        ],
+        "extensions": [
+          ".ce"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "codeengine",
+        "scopeName": "source.csharp",
+        "path": "./syntaxes/csharp.tmGrammar.json"
+      }
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "Code Engine Language Server",
+      "properties": {
+        "codeEngineLanguageServer.enable": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable Code Engine Language Server"
+        },
+        "codeEngineLanguageServer.serverPath": {
+          "type": "string",
+          "default": "",
+          "description": "Path to Code Engine Language Server executable"
+        },
+        "codeEngineLanguageServer.trace.server": {
+          "type": "string",
+          "enum": [
+            "off",
+            "messages",
+            "verbose"
+          ],
+          "default": "off",
+          "description": "Traces the communication between VS Code and the language server."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.74.0",
+    "@types/node": "16.x",
+    "typescript": "^4.9.4"
+  },
+  "dependencies": {
+    "vscode-languageclient": "^8.1.0"
+  }
+}
