@@ -20,12 +20,21 @@
     <Nullable>enable</Nullable>
     <LangVersion>12</LangVersion>
     <IsPackable>true</IsPackable>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageId>com.armatsoftware.code.engine.storage.file</PackageId>
-    <Version>$([System.DateTime]::Now.ToString(`yyyyM.d.Hm`))</Version>
     <Title>Armat Software Code Engine File Storage</Title>
-    <Authors>Yuri Kazarov</Authors>
-    <Description>Local package for testing and demonstrations</Description>
   </PropertyGroup>
-
+    
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Authors>Yuri Kazarov</Authors>
+        <Description>Local core Code Engine File Storage package (for testing only)</Description>
+        <PackageVersion>$([System.DateTime]::Now.ToString(`yy.MMdd.HHmm`))</PackageVersion>
+        <Version>$([System.DateTime]::Now.ToString(`yy.MMdd.HHmm`))</Version>
+        <PackageOutputPath>/tmp/.nuget</PackageOutputPath>
+        <DebugType>portable</DebugType>
+        <DebugSymbols>true</DebugSymbols>
+        <Optimize>false</Optimize>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    </PropertyGroup>
 </Project>

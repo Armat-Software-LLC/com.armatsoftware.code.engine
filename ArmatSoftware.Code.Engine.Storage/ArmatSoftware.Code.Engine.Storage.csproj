@@ -1,14 +1,24 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <IsPackable>true</IsPackable>
         <PackageId>com.armatsoftware.code.engine.storage</PackageId>
-        <Authors>Yuri Kazarov</Authors>
-        <Description>Local storage package for testing and demonstrations</Description>
         <LangVersion>12</LangVersion>
         <TargetFramework>netcoreapp3.1</TargetFramework>
-        <Version>$([System.DateTime]::Now.ToString(`yyyyM.d.Hm`))</Version>
         <Title>Armat Software Code Engine Storage</Title>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Authors>Yuri Kazarov</Authors>
+        <Description>Local core Code Engine Storage package (for testing only)</Description>
+        <PackageVersion>$([System.DateTime]::Now.ToString(`yy.MMdd.HHmm`))</PackageVersion>
+        <Version>$([System.DateTime]::Now.ToString(`yy.MMdd.HHmm`))</Version>
+        <PackageOutputPath>/tmp/.nuget</PackageOutputPath>
+        <DebugType>portable</DebugType>
+        <DebugSymbols>true</DebugSymbols>
+        <Optimize>false</Optimize>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     </PropertyGroup>
     
     <PropertyGroup>
