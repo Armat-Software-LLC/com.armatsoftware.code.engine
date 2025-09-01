@@ -16,8 +16,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArmatSoftware.Code.Engine.S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArmatSoftware.Code.Engine.Storage.Tests", "ArmatSoftware.Code.Engine.Storage.Tests\ArmatSoftware.Code.Engine.Storage.Tests.csproj", "{BD4C8B0E-FFF2-4ED3-BDB0-13550E5E8718}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArmatSoftware.Code.Engine.LanguageServer", "ArmatSoftware.Code.Engine.LanguageServer\ArmatSoftware.Code.Engine.LanguageServer.csproj", "{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -56,9 +54,5 @@ Global
 		{BD4C8B0E-FFF2-4ED3-BDB0-13550E5E8718}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BD4C8B0E-FFF2-4ED3-BDB0-13550E5E8718}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BD4C8B0E-FFF2-4ED3-BDB0-13550E5E8718}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
