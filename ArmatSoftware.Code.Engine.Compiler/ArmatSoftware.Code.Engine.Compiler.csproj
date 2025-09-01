@@ -7,7 +7,7 @@
     <Authors>Yuri Kazarov</Authors>
     <Description>Local package for testing and demonstrations</Description>
     <LangVersion>12</LangVersion>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <Version>$([System.DateTime]::Now.ToString(`yyyyM.d.Hm`))</Version>
     <Title>Armat Software Code Engine</Title>
   </PropertyGroup>
