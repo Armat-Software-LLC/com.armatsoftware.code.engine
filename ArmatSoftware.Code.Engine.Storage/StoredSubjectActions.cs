@@ -44,6 +44,7 @@ public class StoredSubjectActions<TSubject> : IStoredSubjectActions<TSubject>
                 a.Order >= order && a.Order < action.Order), // action order in decreased (moved up the list)
             1 => new Func<IStoredSubjectAction<TSubject>, bool>(a =>
                 a.Order <= order && a.Order > action.Order), // action order in increased (moved down the list)
+            _ => throw new InvalidOperationException($"Unexpected reorder direction: {directionOfReorder}"),
         };
             
         var actionsBetween = this.Where(a => shouldBeMoved(a)).ToList();
