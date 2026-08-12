@@ -15,7 +15,6 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <LangVersion>12</LangVersion>
@@ -26,6 +25,7 @@
     <Title>Armat Software Code Engine File Storage</Title>
     <Authors>Yuri Kazarov</Authors>
     <Description>Local package for testing and demonstrations</Description>
+    <TargetFramework>net10.0</TargetFramework>
   </PropertyGroup>
 
 </Project>
