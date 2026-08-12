@@ -6,13 +6,12 @@
         <Authors>Yuri Kazarov</Authors>
         <Description>Local storage package for testing and demonstrations</Description>
         <LangVersion>12</LangVersion>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <TargetFramework>net10.0</TargetFramework>
         <Version>$([System.DateTime]::Now.ToString(`yyM.dH.m`))</Version>
         <Title>Armat Software Code Engine Storage</Title>
     </PropertyGroup>
     
     <PropertyGroup>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
         <LangVersion>12</LangVersion>
     </PropertyGroup>
 
