@@ -5,10 +5,10 @@ public class FileStorageOptions
     /// <summary>
     /// Root path of the storage location
     /// </summary>
-    public string StoragePath { get; set; }
-    
+    public string StoragePath { get; set; } = string.Empty;
+
     /// <summary>
     /// File extension of the code files
     /// </summary>
-    public string FileExtension { get; set; }
+    public string FileExtension { get; set; } = string.Empty;
 }
