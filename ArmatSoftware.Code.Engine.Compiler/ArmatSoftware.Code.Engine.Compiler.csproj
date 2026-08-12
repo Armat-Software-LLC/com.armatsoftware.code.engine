@@ -10,6 +10,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <Version>$([System.DateTime]::Now.ToString(`yyM.dH.m`))</Version>
     <Title>Armat Software Code Engine</Title>
+    <NoWarn>$(NoWarn);CS0105</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
