@@ -3,10 +3,11 @@
 2. [Why Code Engine](#why-code-engine)
 3. [Terminology](#terminology)
 4. [How to use it?](#how-to-use-it)
-5. [Versions](#versions)
-6. [What's in this version?](#whats-in-this-version)
-7. [What's next?](#whats-next)
-8. [Links](#links)
+5. [Editor integration: the Language Server](#editor-integration-the-language-server)
+6. [Versions](#versions)
+7. [What's in this version?](#whats-in-this-version)
+8. [What's next?](#whats-next)
+9. [Links](#links)
 
 # Code Engine
 
@@ -84,6 +85,17 @@ Code Engine performance is as close to that of the compiled and deployed code as
       }
     ```
 
+# Editor integration: the Language Server
+
+`ArmatSoftware.Code.Engine.LanguageServer` is a standards-compliant [LSP](https://microsoft.github.io/language-server-protocol/)
+server that gives any LSP-capable editor - VS Code, monaco-editor in a browser, or anything else that
+speaks the protocol - real C#/VB.NET intellisense (diagnostics, completion, hover, document symbols)
+against a subject action exactly as it will actually compile and run, plus commands to list, open, save,
+version, and reorder actions against the existing storage layer above. It's the "simple web-based UI to
+allow for the composition of the custom logic" mentioned under "What's next?" below - reference VS Code
+and monaco-editor client samples are included. See that project's own README for setup, configuration,
+and the two supported transports (stdio and HTTP/WebSocket).
+
 # Versions
 - 1.x.x - essential contracts and base implementation for injection, compilation and execution of the custom logic, including initialization method and implementations for the file storage and file logger
 - 2.x.x - added keyed executor lookup and rafactored file storage
@@ -123,7 +135,9 @@ Another major update is the simplified interface of the `IExecutor<T>`. Now, the
 
 # What's next?
 
-- I realize that the next big update should be within the usability area and the best starting point there is to offer a way to quickly compose the actions. I am looking at options of creating a simple web-based UI to allow for the composition of the custom logic.
+- ~~I realize that the next big update should be within the usability area and the best starting point there is to offer a way to quickly compose the actions. I am looking at options of creating a simple web-based UI to allow for the composition of the custom logic.~~ Addressed by `ArmatSoftware.Code.Engine.LanguageServer` (see [above](#editor-integration-the-language-server)) - a real editor experience via the standard LSP protocol, rather than a bespoke web UI, so any LSP-capable editor benefits, not just one.
+- Publish the sample VS Code extension and monaco-editor client as proper, installable artifacts rather than reference-only samples.
+- Additional out-of-the-box `IStorageAdapter` implementations beyond the file-based one (e.g. a relational database), loadable by the Language Server (or any host) the same runtime-configurable way.
 
 
 # Links

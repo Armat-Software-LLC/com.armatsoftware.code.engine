@@ -6,6 +6,7 @@
 1. [Code EngineStorage](##code-engine-storage)
 2. [Benefits](##benefits)
 3. [How to use it?](##how-to-use-it)
+4. [Choosing a storage adapter at runtime](##choosing-a-storage-adapter-at-runtime)
 
 ## Code Engine Storage
 
@@ -49,6 +50,12 @@ With the default storage implementation, you only need to choose between using o
     ``` c#
    builder.Services.UseCodeEngineStorage(new CustomStorageAdapter());
     ```
+    `UseCodeEngineStorage` also takes an optional `ServiceLifetime` (defaults to `Scoped`, matching typical
+    per-request hosting like ASP.NET Core). Pass `ServiceLifetime.Singleton` for hosts that resolve
+    services from a root container with no active DI scope (e.g. a long-lived background process):
+    ``` c#
+   builder.Services.UseCodeEngineStorage(lifetime: ServiceLifetime.Singleton);
+    ```
 1. Inject the `IActionStorage` and use it as needed to manage the subject actions. Ex:
     ``` c#
      [HttpPost, Route("create")]
@@ -66,3 +73,25 @@ With the default storage implementation, you only need to choose between using o
          return string.Join(", ", storage.Retrieve<SimpleSubject>().Select(x => x.Name));
      }
     ```
+
+## Choosing a storage adapter at runtime
+
+Most hosts know which `IStorageAdapter` they want at compile time and just call its own registration
+extension directly (e.g. `services.UseCodeEngineFileAdapter(options)`), as shown above.
+
+Some hosts instead need to pick the adapter at *runtime* - e.g. from configuration, without taking a
+compile-time dependency on any specific adapter implementation. `DI/IStorageAdapterRegistrar.cs` exists
+for exactly that case:
+
+``` c#
+public interface IStorageAdapterRegistrar
+{
+    void Register(IServiceCollection services, IConfiguration configuration, ServiceLifetime lifetime);
+}
+```
+
+An adapter package implements this once (a small wrapper around its own registration extension, reading
+whatever configuration section it needs), and a host loads the chosen implementation by assembly path +
+type full name via reflection (public parameterless constructor required), the same way `ArmatSoftware.Code.Engine.LanguageServer`
+picks its `IStorageAdapter` from configuration - see that project's README for a concrete example of the
+host side of this pattern.
