@@ -103,6 +103,11 @@ namespace ArmatSoftware.Code.Engine.Compiler.Execution
             });
             
             executor.SetLogger(_logger);
+
+            if (executor is IExecutorMetadata metadata)
+            {
+                metadata.SetMetadata(key, _options.CompilerType.ToString());
+            }
             
             return executor.Clone();
         }

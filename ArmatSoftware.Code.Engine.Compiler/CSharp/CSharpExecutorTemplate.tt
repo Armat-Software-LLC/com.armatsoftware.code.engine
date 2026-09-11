@@ -13,13 +13,15 @@ using <#=import#>;
 
 namespace <#=Configuration.GetNamespace()#>
 {
-	public class <#=Configuration.GetClassName()#> : IFactoryExecutor<<#=Configuration.GetSubjectType()#>>
+	public class <#=Configuration.GetClassName()#> : IFactoryExecutor<<#=Configuration.GetSubjectType()#>>, IExecutorMetadata
 	{
 		private Dictionary<string, dynamic> _runtimeValues = new Dictionary<string, dynamic>();
 
 		private <#=Configuration.GetSubjectType()#> _subject;
 
 		private ILogger _logger;
+		private string _executorKey;
+		private string _compiler = "CSharp";
 
 
 		public <#=Configuration.GetSubjectType()#> Subject => _subject;
@@ -43,7 +45,10 @@ namespace <#=Configuration.GetNamespace()#>
 
         public <#=Configuration.GetSubjectType()#> Execute(<#=Configuration.GetSubjectType()#> subject)
         {
-            _subject = subject;
+            var activity = CodeEngineActivity.StartExecution(typeof(<#=Configuration.GetSubjectType()#>), _executorKey, _compiler, <#=Configuration.GetActions().Count#>);
+            try
+            {
+                _subject = subject;
             
 <# foreach (var action in Configuration.GetActions()) { #>
 			<#=action.Key#>();
@@ -57,12 +62,28 @@ namespace <#=Configuration.GetNamespace()#>
 <#
    }
 #>
-            return _subject;
+                return _subject;
+            }
+            catch (Exception exception)
+            {
+                CodeEngineActivity.RecordException(activity, exception);
+                throw;
+            }
+            finally
+            {
+                activity?.Stop();
+            }
         }
 
 	    public void SetLogger(ILogger logger)
 	    {
 	        _logger = logger;
+	    }
+
+	    public void SetMetadata(string key, string compiler)
+	    {
+	        _executorKey = key;
+	        _compiler = compiler;
 	    }
 		
 <# foreach (var action in Configuration.GetActions()) { #>

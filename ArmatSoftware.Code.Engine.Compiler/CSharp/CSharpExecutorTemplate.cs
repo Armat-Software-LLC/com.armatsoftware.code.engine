@@ -72,14 +72,14 @@ namespace ArmatSoftware.Code.Engine.Compiler.CSharp
             
             #line default
             #line hidden
-            this.Write(">\n\t{\n\t\tprivate Dictionary<string, dynamic> _runtimeValues = new Dictionary<string, dynamic>();\n\n\t\tprivate ");
+            this.Write(">, IExecutorMetadata\n\t{\n\t\tprivate Dictionary<string, dynamic> _runtimeValues = new Dictionary<string, dynamic>();\n\n\t\tprivate ");
             
             #line 20 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Configuration.GetSubjectType()));
             
             #line default
             #line hidden
-            this.Write(" _subject;\n\n\t\tprivate ILogger _logger;\n\n\n\t\tpublic ");
+            this.Write(" _subject;\n\n\t\tprivate ILogger _logger;\n\t\tprivate string _executorKey;\n\t\tprivate string _compiler = \"CSharp\";\n\n\n\t\tpublic ");
             
             #line 25 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Configuration.GetSubjectType()));
@@ -114,7 +114,21 @@ namespace ArmatSoftware.Code.Engine.Compiler.CSharp
             
             #line default
             #line hidden
-            this.Write(" subject)\n        {\n            _subject = subject;\n            \n");
+            this.Write(" subject)\n        {\n            var activity = CodeEngineActivity.StartExecution(typeof(");
+
+            #line 48 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Configuration.GetSubjectType()));
+
+            #line default
+            #line hidden
+            this.Write("), _executorKey, _compiler, ");
+
+            #line 48 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Configuration.GetActions().Count));
+
+            #line default
+            #line hidden
+            this.Write(");\n            try\n            {\n                _subject = subject;\n            \n");
             
             #line 48 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
  foreach (var action in Configuration.GetActions()) { 
@@ -154,7 +168,7 @@ namespace ArmatSoftware.Code.Engine.Compiler.CSharp
             
             #line default
             #line hidden
-            this.Write("            return _subject;\n        }\n\n\t    public void SetLogger(ILogger logger)\n\t    {\n\t        _logger = logger;\n\t    }\n\t\t\n");
+            this.Write("                return _subject;\n            }\n            catch (Exception exception)\n            {\n                CodeEngineActivity.RecordException(activity, exception);\n                throw;\n            }\n            finally\n            {\n                activity?.Stop();\n            }\n        }\n\n\t    public void SetLogger(ILogger logger)\n\t    {\n\t        _logger = logger;\n\t    }\n\n\t    public void SetMetadata(string key, string compiler)\n\t    {\n\t        _executorKey = key;\n\t        _compiler = compiler;\n\t    }\n\t\t\n");
             
             #line 68 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/CSharp/CSharpExecutorTemplate.tt"
  foreach (var action in Configuration.GetActions()) { 

@@ -84,6 +84,21 @@ Code Engine performance is as close to that of the compiled and deployed code as
       }
     ```
 
+# OpenTelemetry
+
+Code Engine emits an internal `codeengine.execute` span for each custom code
+execution through the `ArmatSoftware.Code.Engine` activity source. Configure
+the OpenTelemetry provider in the host application and register the source:
+
+``` c#
+builder.Services.AddOpenTelemetry()
+    .WithTracing(tracing => tracing.AddSource("ArmatSoftware.Code.Engine"));
+```
+
+Execution spans include the subject type, executor key when available, compiler
+type, and action count. Exceptions are recorded and mark the span as failed.
+Code Engine does not configure exporters or add an OpenTelemetry SDK dependency.
+
 # Versions
 - 1.x.x - essential contracts and base implementation for injection, compilation and execution of the custom logic, including initialization method and implementations for the file storage and file logger
 - 2.x.x - added keyed executor lookup and rafactored file storage
