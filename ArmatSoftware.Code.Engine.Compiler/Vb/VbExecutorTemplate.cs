@@ -72,14 +72,14 @@ namespace ArmatSoftware.Code.Engine.Compiler.Vb
             
             #line default
             #line hidden
-            this.Write(")\n\t\n\t\tPrivate _runtimeValues As Dictionary(Of String, Object) = new Dictionary(Of String, Object)\n\t    Private _logger As ILogger\n\t    Private _subject As ");
+            this.Write(")\n\t\tImplements IExecutorMetadata\n\t\n\t\tPrivate _runtimeValues As Dictionary(Of String, Object) = new Dictionary(Of String, Object)\n\t    Private _logger As ILogger\n\t    Private _subject As ");
             
             #line 20 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Configuration.GetSubjectType()));
             
             #line default
             #line hidden
-            this.Write("\n\t\t\n\t\tPublic Readonly Property Subject As ");
+            this.Write("\n\t    Private _executorKey As String\n\t    Private _compiler As String = \"Vb\"\n\t\t\n\t\tPublic Readonly Property Subject As ");
             
             #line 22 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Configuration.GetSubjectType()));
@@ -128,7 +128,7 @@ namespace ArmatSoftware.Code.Engine.Compiler.Vb
             
             #line default
             #line hidden
-            this.Write(").SetLogger\n\t        _logger = logger\n\t    End Sub\n\n\t\tPublic Function Execute(subject As ");
+            this.Write(").SetLogger\n\t        _logger = logger\n\t    End Sub\n\n\t    Public Sub SetMetadata(key As String, compiler As String) Implements IExecutorMetadata.SetMetadata\n\t        _executorKey = key\n\t        _compiler = compiler\n\t    End Sub\n\n\t\tPublic Function Execute(subject As ");
             
             #line 50 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Configuration.GetSubjectType()));
@@ -149,7 +149,21 @@ namespace ArmatSoftware.Code.Engine.Compiler.Vb
             
             #line default
             #line hidden
-            this.Write(").Execute\n\t\t\t_subject = subject\n\n");
+            this.Write(").Execute\n\t\t\tDim activity = CodeEngineActivity.StartExecution(GetType(");
+
+            #line 50 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Configuration.GetSubjectType()));
+
+            #line default
+            #line hidden
+            this.Write("), _executorKey, _compiler, ");
+
+            #line 50 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Configuration.GetActions().Count));
+
+            #line default
+            #line hidden
+            this.Write(")\n\t\t\tTry\n\t\t\t_subject = subject\n\n");
             
             #line 53 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
  foreach (var action in Configuration.GetActions()) { 
@@ -189,7 +203,7 @@ namespace ArmatSoftware.Code.Engine.Compiler.Vb
             
             #line default
             #line hidden
-            this.Write("\n\t\t\tReturn _subject\n\t\tEnd Function\n\t\t\n");
+            this.Write("\n\t\t\tReturn _subject\n\t\t\tCatch exception As Exception\n\t\t\t\tCodeEngineActivity.RecordException(activity, exception)\n\t\t\t\tThrow\n\t\t\tFinally\n\t\t\t\tIf activity IsNot Nothing Then activity.Stop()\n\t\t\tEnd Try\n\t\tEnd Function\n\t\t\n");
             
             #line 69 "/Users/yurikazarov/Projects/com.armatsoftware.code.engine/ArmatSoftware.Code.Engine.Compiler/Vb/VbExecutorTemplate.tt"
  foreach (var action in Configuration.GetActions()) { 
