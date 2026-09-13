@@ -9,6 +9,7 @@ using System.Runtime.Loader;
 using System.Text;
 using ArmatSoftware.Code.Engine.Compiler.Utils;
 using ArmatSoftware.Code.Engine.Core;
+using ArmatSoftware.Code.Engine.Core.Tracing;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Emit;
 using Microsoft.CodeAnalysis.VisualBasic;
@@ -88,6 +89,7 @@ namespace ArmatSoftware.Code.Engine.Compiler.Vb
 			references.AddRange(new List<MetadataReference>
 			{
 				MetadataReference.CreateFromFile(Assembly.Load(new AssemblyName("Microsoft.VisualBasic")).Location),
+				MetadataReference.CreateFromFile(Assembly.Load(new AssemblyName("Microsoft.VisualBasic.Core")).Location),
 				MetadataReference.CreateFromFile(Assembly.Load(new AssemblyName("netstandard")).Location),
 				MetadataReference.CreateFromFile(Assembly.Load(new AssemblyName("System.Runtime")).Location)
 			});
@@ -118,6 +120,9 @@ namespace ArmatSoftware.Code.Engine.Compiler.Vb
 			configuration.References.Add(typeof(TSubject));
 			configuration.References.Add(typeof(IExecutor<>));
 			configuration.References.Add(typeof(ILogger));
+			configuration.References.Add(typeof(CodeEngineActivity));
+			configuration.References.Add(typeof(Activity));
+			configuration.References.Add(typeof(Exception));
 			configuration.References.Add(typeof(DynamicAttribute));
 			
 			if (configuration.EnableModelValidation())
