@@ -364,3 +364,9 @@ test.sh
 
 # Ignore Mac OS files
 .DS_Store
+
+# Local architecture decision records
+/ADR/
+
+# Local tester API storage
+/demo-data/
