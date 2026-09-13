@@ -1,12 +1,26 @@
 using ArmatSoftware.Code.Engine.Compiler.DI;
+using ArmatSoftware.Code.Engine.Core.Tracing;
 using ArmatSoftware.Code.Engine.Storage.DI;
 using ArmatSoftware.Code.Engine.Storage.File;
 using ArmatSoftware.Code.Engine.Storage.File.DI;
 using Microsoft.AspNetCore.Mvc;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 
 var builder = WebApplication.CreateBuilder(args);
 
 var config = builder.Configuration;
+
+var otlpEndpoint = config["OTEL_EXPORTER_OTLP_ENDPOINT"];
+if (Uri.TryCreate(otlpEndpoint, UriKind.Absolute, out var otlpEndpointUri))
+{
+    builder.Services.AddOpenTelemetry()
+        .WithTracing(tracing => tracing
+            .ConfigureResource(resource => resource.AddService(config["OTEL_SERVICE_NAME"] ?? "code-engine-tester"))
+            .AddAspNetCoreInstrumentation()
+            .AddSource(CodeEngineActivity.SourceName)
+            .AddOtlpExporter(exporter => exporter.Endpoint = otlpEndpointUri));
+}
 
 // add controllers
 builder.Services.AddControllers()

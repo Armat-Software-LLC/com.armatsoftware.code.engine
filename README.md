@@ -99,6 +99,24 @@ Execution spans include the subject type, executor key when available, compiler
 type, and action count. Exceptions are recorded and mark the span as failed.
 Code Engine does not configure exporters or add an OpenTelemetry SDK dependency.
 
+## Docker and Aspire Dashboard Demo
+
+The tester API can run beside the standalone Aspire Dashboard to demonstrate
+the execution spans:
+
+``` bash
+docker compose up --build
+```
+
+Open `http://localhost:18888` for the Aspire Dashboard, then call
+`http://localhost:8080/api/CodeEngine/execute_default`. The API sends its
+ASP.NET Core request span and nested Code Engine execution span to the
+dashboard over OTLP/gRPC. Stop the demo with:
+
+``` bash
+docker compose down
+```
+
 # Versions
 - 1.x.x - essential contracts and base implementation for injection, compilation and execution of the custom logic, including initialization method and implementations for the file storage and file logger
 - 2.x.x - added keyed executor lookup and rafactored file storage

@@ -1,0 +1,26 @@
+services:
+  aspire-dashboard:
+    image: mcr.microsoft.com/dotnet/aspire-dashboard:13
+    environment:
+      ASPIRE_DASHBOARD_UNSECURED_ALLOW_ANONYMOUS: "true"
+    ports:
+      - "18888:18888"
+      - "4317:18889"
+
+  tester-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - aspire-dashboard
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASCE_FILE_STORAGE_PATH: /data/storage/
+      ASCE_FILE_STORAGE_EXTENSION: asce
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://aspire-dashboard:18889
+      OTEL_EXPORTER_OTLP_PROTOCOL: grpc
+      OTEL_SERVICE_NAME: code-engine-tester
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./demo-data:/data/storage
