@@ -1,164 +1,169 @@
-# Table of Contents
-1. [Code Engine](#code-engine)
-2. [Why Code Engine](#why-code-engine)
-3. [Terminology](#terminology)
-4. [How to use it?](#how-to-use-it)
-5. [Versions](#versions)
-6. [What's in this version?](#whats-in-this-version)
-7. [What's next?](#whats-next)
-8. [Links](#links)
-
 # Code Engine
 
-Code Engine is a simple, yet powerful, code execution engine. It is designed to be used in applications, where you want to empower your business users to maintain fragments of the application logic in a secure and controlled environment, offer the level of flexibility and maintainability that is not possible with the compiled and deployed code, and to do so without sacrificing the performance and security of the application.
+Code Engine lets applications run business logic that can be composed and maintained outside the main compiled codebase. It gives business users and developers room to adapt application behavior while keeping execution controlled, testable, observable, and fast.
 
-# Why Code Engine?
+It fits naturally into ASP.NET Core applications through dependency injection and can be added to both new and existing solutions.
 
-Code Engine allows composition, testing,and integration of custom code execution in your web application. It is designed to be secure and easy to use. It is also designed to be easily extendable, so you can add your own implementations to it.
+## Why Code Engine?
 
-For brand new products, adding Code Engine is as easy as adding the NuGet package to your solution, adding some initialization code, injecting specific "executors" throughout your application, and either providing hard-coded logic for their implementation or handing the responsibility to maintain that custom logic to your power users.
+Use Code Engine when parts of your application logic need to change more often than the application itself. A typical integration looks like this:
 
-For existing products, you can use Code Engine to replace some of the existing logic with a more flexible and maintainable solution. It is easy to incorporate into an existing application because it works with the existing dependency injection framework in ASP.NET Core.
+1. Add the Code Engine NuGet package.
+2. Register the engine and any storage adapters you need.
+3. Inject an executor wherever custom logic should run.
+4. Store, test, and update actions without rebuilding the host application.
 
-Code Engine performance is as close to that of the compiled and deployed code as it gets. It is designed to be fast and efficient, to be used in environments with heavy load and high performance demands.
+Code Engine is designed for high-throughput environments and aims to deliver performance close to compiled code, without giving up the flexibility of dynamic logic.
 
-# Terminology
+## Terminology
 
-**Subject** - the object that is being processed by the custom logic. It is the object that is being passed to and returned from the `Execute()` method of the `IExecutor<T>`. This is an arbitrary type, defined and used by the host application. This object can either be the target of the intended updates or contain other public properties that are target of the custom logic. It can be as shallow or as complex as the host application developer needs it to be.
+**Subject** is the object processed by custom logic. It is passed to and returned from `IExecutor<T>.Execute()`. The host application defines the subject type and its public properties.
 
-**Subject Action** (`ISubjectAction`) - a special object that contains information and instruction in form of one of the available language syntaxes (C# or VB.NET) that represents the custom logic to be executed against **Subject**. It is the object that is being stored and maintained via an implementation of `IActionRepository` and used via an implementation of `IActionProvider`.
+**Subject Action** (`ISubjectAction`) contains the language and source code for custom logic. Actions are stored through an `IActionRepository` implementation and retrieved through an `IActionProvider` implementation.
 
-**Executor** (`IExecutor<T>`) - the contract whose dynamically generated implementation is injected into the host application and used to execute the custom logic against the **Subject**.
+**Executor** (`IExecutor<T>`) is the dynamically generated implementation that runs custom logic against a subject.
 
-**Executor Catalog** (`IExecutorCatalog<T>`) - the contract injected into the host application and used to look up a specific executor for a **Subject** type using a key. This is useful when there are multiple executors for the same **Subject** type and the host application needs to pick the right one based on some criteria.
+**Executor Catalog** (`IExecutorCatalog<T>`) looks up an executor for a subject type by key. Use a catalog when an application has multiple executors for the same subject type.
 
-# How to use it?
+## Get Started
 
-1. Start with an existing solution or brand new.
-2. Look up NuGet packages for "armatsoftware.code.engine".
-3. Add the main package `com.armatsoftware.code.engine` to your solution.
-4. Add supplemental packages, if needed. Ex: `com.armatsoftware.code.engine.storage.file`.
-5. Selectively initialize Code Engine, Storage Abstration Layer, File Adapter. Ex:
-    ``` c#
-      services.UseCodeEngine(new CodeEngineOptions()
-      {
-          CacheExpirationMinutes = 1,
-          CodeEngineNamespace = "codeengineuniquenamespace",
-          CompilerType = CompilerTypeEnum.Vb,
-          Logger = new CustomLogger(),
-      });
-      
-      services.UseCodeEngineStorage();
-      
-      services.UseCodeEngineFileAdapter(new FileStorageOptions()
-      {
-          FileExtension = "code",
-          StoragePath = "/tmp/demo/"
-      });
+1. Add the main package to your solution:
+
+   ```bash
+   dotnet add package com.armatsoftware.code.engine
    ```
-6. Inject and use `IExecutor<T>` as needed. Ex:
-    ``` c#
-      public class SimpleService
-      {
-          private readonly IExecutorCatalog<SubjectModel> _messageGenerators;
-          private readonly IExecutor<SubjectModel> _defaultGenerator;
 
-          public SimpleService(
-              IExecutorCatalog<SubjectModel> messageGenerators, 
-              IExecutor<SubjectModel> defaultGenerator)
-          {
-              _messageGenerators = messageGenerators;
-              _defaultGenerator = defaultGenerator;
-          }
-       
-          public SubjectModel SaySomething(string? about)
-          {
-              if (string.IsNullOrWhiteSpace(about))
-              {
-                  return _defaultGenerator.Execute(new SubjectModel());
-              }
-           
-              var executor = _messageGenerators.ForKey(about);
-              return executor.Execute(new SubjectModel());
-          }
-      }
-    ```
+2. Add optional packages when needed, for example:
 
-# OpenTelemetry
+   ```bash
+   dotnet add package com.armatsoftware.code.engine.storage
+   dotnet add package com.armatsoftware.code.engine.storage.file
+   ```
 
-Code Engine emits an internal `codeengine.execute` span for each custom code
-execution through the `ArmatSoftware.Code.Engine` activity source. Configure
-the OpenTelemetry provider in the host application and register the source:
+3. Register the services you plan to use:
 
-``` c#
+   ```csharp
+   services.UseCodeEngine(new CodeEngineOptions
+   {
+       CacheExpirationMinutes = 1,
+       CodeEngineNamespace = "codeengineuniquenamespace",
+       CompilerType = CompilerTypeEnum.Vb,
+       Logger = new CustomLogger()
+   });
+
+   services.UseCodeEngineStorage();
+
+   services.UseCodeEngineFileAdapter(new FileStorageOptions
+   {
+       FileExtension = "code",
+       StoragePath = "/tmp/demo/"
+   });
+   ```
+
+   Create and activate a subject action before executing it. `IActionStorage.AddAction<TSubject>()` creates the action, adds its first revision, and activates that revision:
+
+   ```csharp
+   var actionStorage = serviceProvider.GetRequiredService<IActionStorage>();
+
+   actionStorage.AddAction<SubjectModel>(
+       name: "SetMessage",
+       code: "Subject.Message = \"Hello from Code Engine\"",
+       author: "demo",
+       comment: "Initial message action");
+   ```
+
+4. Inject an executor and run it where you need custom behavior:
+
+   ```csharp
+   public class SimpleService
+   {
+       private readonly IExecutorCatalog<SubjectModel> _messageGenerators;
+       private readonly IExecutor<SubjectModel> _defaultGenerator;
+
+       public SimpleService(
+           IExecutorCatalog<SubjectModel> messageGenerators,
+           IExecutor<SubjectModel> defaultGenerator)
+       {
+           _messageGenerators = messageGenerators;
+           _defaultGenerator = defaultGenerator;
+       }
+
+       public SubjectModel SaySomething(string? about)
+       {
+           if (string.IsNullOrWhiteSpace(about))
+           {
+               return _defaultGenerator.Execute(new SubjectModel());
+           }
+
+           var executor = _messageGenerators.ForKey(about);
+           return executor.Execute(new SubjectModel());
+       }
+   }
+   ```
+
+## OpenTelemetry
+
+Code Engine emits a `codeengine.execute` span for each custom-code execution through the `ArmatSoftware.Code.Engine` activity source. Register that source with the OpenTelemetry provider in the host application:
+
+```csharp
 builder.Services.AddOpenTelemetry()
     .WithTracing(tracing => tracing.AddSource("ArmatSoftware.Code.Engine"));
 ```
 
-Execution spans include the subject type, executor key when available, compiler
-type, and action count. Exceptions are recorded and mark the span as failed.
-Code Engine does not configure exporters or add an OpenTelemetry SDK dependency.
+Execution spans include the subject type, executor key when available, compiler type, and action count. Exceptions are recorded and mark the span as failed.
 
-## Docker and Aspire Dashboard Demo
+Code Engine does not configure exporters or add an OpenTelemetry SDK dependency. The host application remains responsible for choosing and configuring its exporters.
 
-The tester API can run beside the standalone Aspire Dashboard to demonstrate
-the execution spans:
+### Docker and Aspire Dashboard Demo
 
-``` bash
+The tester API can run beside the standalone Aspire Dashboard to demonstrate request and Code Engine execution spans:
+
+```bash
 docker compose up --build
 ```
 
-Open `http://localhost:18888` for the Aspire Dashboard, then call
-`http://localhost:8080/api/CodeEngine/execute_default`. The API sends its
-ASP.NET Core request span and nested Code Engine execution span to the
-dashboard over OTLP/gRPC. Stop the demo with:
+Open `http://localhost:18888` for the Aspire Dashboard, then call `http://localhost:8080/api/CodeEngine/execute_default`. The API sends its ASP.NET Core request span and nested Code Engine execution span to the dashboard over OTLP/gRPC.
 
-``` bash
+Stop the demo with:
+
+```bash
 docker compose down
 ```
 
-# Versions
-- 1.x.x - essential contracts and base implementation for injection, compilation and execution of the custom logic, including initialization method and implementations for the file storage and file logger
-- 2.x.x - added keyed executor lookup and rafactored file storage
-- 3.x.x - refactored and improved initialization and ability to log from custom code
-- 4.x.x (current) - refactored the storage abstraction from the file storage and added and improved default implementations for storage management and file adapter
+## Version History
 
-# What's in this version?
+- **1.x.x**: Added the core contracts and base implementation for injection, compilation, and execution, along with initialization, file storage, and file logging.
+- **2.x.x**: Added keyed executor lookup and refactored file storage.
+- **3.x.x**: Improved initialization and added logging from custom code.
+- **4.x.x (current)**: Refactored the storage abstraction and improved the default storage-management and file-adapter implementations.
 
-The major update of this version is the ability to log information from within custom code. This is done by using available within executors `Log {get;}' property offering three categories of messages to log (Info, Warning, Error). The messages are logged using the logger provided during the initialization of the Code Engine.
+## What's New In 4.x
 
-Another major update is the simplified interface of the `IExecutor<T>`. Now, the `Execute()` method is able to take in the subject model object and returns the same object, updated according to custom code. This allows for a more natural and fluent use of the executor. Method `Execute()` is also able to take in the key of the executor to be used, if the executor catalog is available. is no longer available, as it is no longer needed. Property `Subject` is now read-only and reflects the updates applied by `Execute()`.
+Custom code can write information through the executor's `Log` property. The logger supports three message categories: `Info`, `Warning`, and `Error`. Messages are handled by the logger supplied during Code Engine initialization.
 
-``` c#
-    /// <summary>
-    /// Direct injection of the executor for subject type MessageModel
-    /// </summary>
-    /// <param name="executor"></param>
-    /// <returns></returns>
-    public IActionResult SayHello([FromServices] IExecutor<MessageModel> executor)
-    {
-        return View(executor.Execute(new MessageModel()));
-    }
-    
-    /// <summary>
-    /// Injection of the executor catalog for subject type MessageModel.
-    /// Lookup by key.
-    /// </summary>
-    /// <param name="key">Specific key to look up necessary IExecutor type</param>
-    /// <param name="catalog">Catalog of IExecutor options to pick from using key</param>
-    /// <returns></returns>
-    public IActionResult SayHelloWithKey(string key, [FromServices] IExecutorCatalog<MessageModel> catalog)
-    {
-        var executor = catalog.ForKey(key);
-        return View(executor.Execute(new MessageModel()));
-    }
+The `IExecutor<T>` API is also simpler: `Execute()` accepts a subject and returns that same subject with the changes applied by custom code. When an executor catalog is available, an executor can be selected by key before execution.
+
+```csharp
+// Directly inject an executor for a subject type.
+public IActionResult SayHello([FromServices] IExecutor<MessageModel> executor)
+{
+    return View(executor.Execute(new MessageModel()));
+}
+
+// Look up an executor by key through the catalog.
+public IActionResult SayHelloWithKey(
+    string key,
+    [FromServices] IExecutorCatalog<MessageModel> catalog)
+{
+    var executor = catalog.ForKey(key);
+    return View(executor.Execute(new MessageModel()));
+}
 ```
 
-# What's next?
+## Roadmap
 
-- I realize that the next big update should be within the usability area and the best starting point there is to offer a way to quickly compose the actions. I am looking at options of creating a simple web-based UI to allow for the composition of the custom logic.
+The next major usability improvement is a faster way to compose actions. A simple web-based interface for creating and managing custom logic is being considered.
 
+## Links
 
-# Links
-
-[Project Web Site](https://armatsoftware.com/code-engine/)
+[Project website](https://armatsoftware.com/code-engine/)
